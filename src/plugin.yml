@@ -1,0 +1,10 @@
+name: DeluxeVouchers
+main: nl.marido.deluxevouchers.DeluxeVouchers
+version: 6.0.0
+api-version: 1.13
+author: Marido
+description: Enhance your server with awesome customizable vouchers with a lot of features.
+commands:
+ deluxevouchers:
+  description: Administrator commands for the DeluxeVouchers resource.
+  aliases: [dv, deluxev, dvouchers, deluxevoucher]          

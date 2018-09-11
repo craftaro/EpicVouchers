@@ -1,0 +1,52 @@
+vouchers:
+ example:
+  permission: "deluxevouchers.example"
+  material: "COOKIE"
+  # Keep data on 0 if you are on 1.13 or higher.
+  data: 0
+  name: "&6Example Voucher"
+  lore:
+  - "&eThank you so much for purchasing my resource DeluxeVouchers."
+  - "&eListen to the wise words that this nice cookie will tell you."
+  - ""
+  - "&cWhat could be inside this voucher?"
+  - "&6- Marido"
+  glow: true
+  confirm: true
+  unbreakable: true
+  hide-attributes: false
+  remove-item: true
+  feed-player: true
+  heal-player: true
+  smite-effect: true
+  # Enter a custom cooldown if you wish to.
+  # cooldown: 0 
+  broadcasts:
+  - "&6&l> &e%player% has redeemed the voucher &6%voucher%&e. &6&l<"
+  - "&cUseful addons: [chat] [player], and [op]."
+  - "&cDo not add them to let the console execute it."
+  messages:
+  - "&bYou have redeemed the voucher &6%voucher% &bsuccessfully."
+  commands:
+  - "give %player% stick 1"
+  - "[chat]I love DeluxeVouchers!"
+  # You can use [chat], [player] and [op].
+  # Also use [delay-10] for 10 seconds delay.
+  # Change 10 to any number you want to have.
+  actionbar: "&6Actionbar works on every version."
+  titles:
+   title: "&6Thank you."
+   subtitle: "&eYou have redeemed the voucher %voucher%."
+   fade-in: 10
+   stay: 50
+   fade-out: 10
+  sounds:
+   sound: "NOTE_PLING"
+   pitch: 1
+  particles:
+   particle: "FLAME"
+   amount: 100
+  effects:
+   effect: "SPEED"
+   amplifier: 2
+   duration: 10

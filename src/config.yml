@@ -1,0 +1,92 @@
+check-updates: true
+debugger-mode: true
+outdated-version:
+  sound: "NOTE_BASS"
+  pitch: 1
+cooldown-delay: 10
+editor-settings:
+ editor-title: "&6Editor"
+ editor-slots: 27
+ editor-sounds: 
+  sound: "NOTE_BASS"
+  pitch: 1
+ back-item:
+  slot: 18
+  material: "BARRIER"
+  data: 0
+  name: "&4Return"
+  lore:
+  - "&cReturn to the main menu of the editor."
+  glow: true
+  unbreakable: false
+  hide-attributes: false
+  sounds:
+   sound: ""
+   pitch: 1
+ rename-item:
+  slot: 8
+  material: "NAME_TAG"
+  data: 0
+  name: "&6Rename"
+  lore:
+  - "&eRename the display name of the voucher."
+  glow: true
+  unbreakable: false
+  hide-attributes: false
+  sounds:
+   sound: "NOTE_BASS"
+   pitch: 1
+ receive-item:
+  slot: 0
+  material: "FEATHER"
+  data: 0
+  name: "&2Receive"
+  lore:
+  - "&aReceive a clone item of this voucher."
+  glow: true
+  unbreakable: false
+  hide-attributes: false
+  sounds:
+   sound: "LEVEL_UP"
+   pitch: 1
+ fill-glass: true
+ editor-voucher:
+  title: "&6Editor [&e%voucher%&6]"
+  slots: 27
+  voucher-slot: 13
+  sound: "NOTE_PIANO"
+  pitch: 1
+  fill-glass: true
+confirm-settings:
+ confirm-title: "&6Confirmation"
+ confirm-slots: 27
+ confirm-sounds: 
+  sound: "NOTE_PIANO"
+  pitch: 1
+ fill-glass: true
+ confirm-item:
+  slot: 11
+  material: "EMERALD_BLOCK"
+  data: 0
+  name: "&2&lREDEEM"
+  lore:
+  - "&aClick here if you want to confirm your redeem."
+  glow: true
+  unbreakable: false
+  hide-attributes: false
+  sounds:
+   sound: "LEVEL_UP"
+   pitch: 1
+ cancel-item:
+  slot: 15
+  material: "REDSTONE_BLOCK"
+  data: 0
+  name: "&4&lCANCEL"
+  lore:
+  - "&cClick here if you want to cancel your redeem."
+  glow: true
+  unbreakable: false
+  hide-attributes: false
+  sounds:
+   sound: "CLICK"
+   pitch: 1

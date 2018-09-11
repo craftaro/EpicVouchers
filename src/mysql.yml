@@ -1,0 +1,7 @@
+use-mysql: false
+mysqlhost: "127.0.0.1"
+mysqlport: "3306"
+mysqluser: "root"
+mysqlpass: "banana"
+mysqldata: "deluxevouchers"
+additions: "?useSSL=true"
