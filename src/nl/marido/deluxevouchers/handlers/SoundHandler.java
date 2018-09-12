@@ -3,8 +3,6 @@ package nl.marido.deluxevouchers.handlers;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import nl.marido.deluxevouchers.DeluxeVouchers;
-
 public enum SoundHandler {
 
 	AMBIENCE_CAVE("AMBIENCE_CAVE", "AMBIENT_CAVE"),
@@ -224,14 +222,8 @@ public enum SoundHandler {
 
 	public static void playSound(Player player, String sound, int pitch) {
 		if (!sound.isEmpty()) {
-			try {
-				player.playSound(player.getLocation(), SoundHandler.valueOf(sound).bukkitSound(), Integer.MAX_VALUE, pitch);
-			} catch (Exception error) {
-				DeluxeVouchers.getConsole().sendMessage("§cFailed to play the sound " + sound + " for the player " + player.getName() + ".");
-				if (DataHandler.debugerrors) {
-					error.printStackTrace();
-				}
-			}
+			player.playSound(player.getLocation(), SoundHandler.valueOf(sound).bukkitSound(), Integer.MAX_VALUE, pitch);
+			// TODO: Find an alternative for this to check errors.
 		}
 	}
 

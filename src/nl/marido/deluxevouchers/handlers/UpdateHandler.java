@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import nl.marido.deluxevouchers.DeluxeVouchers;
 
@@ -19,26 +20,30 @@ public class UpdateHandler implements Listener {
 
 	public static void checker() {
 		if (DataHandler.checkupdates) {
-			CommandSender console = DeluxeVouchers.getConsole();
-			try {
-				URL checkurl = new URL("https://api.spigotmc.org/legacy/update.php?resource=52480");
-				URLConnection connection = checkurl.openConnection();
-				String latestversion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-				String currentversion = DeluxeVouchers.getInstance().getDescription().getVersion();
-				if (latestversion.equals(currentversion)) {
-					console.sendMessage("§fLatest version of DeluxeVouchers detected (" + currentversion + ").");
-					oldversion = false;
-				} else {
-					console.sendMessage("§cOutdated version of DeluxeVouchers detected (" + currentversion + ").");
-					console.sendMessage("§cDownload " + latestversion + ": https://spigotmc.org/resources/52480");
-					oldversion = true;
+			new BukkitRunnable() {
+				public void run() {
+					CommandSender console = DeluxeVouchers.getConsole();
+					try {
+						URL checkurl = new URL("https://api.spigotmc.org/legacy/update.php?resource=52480");
+						URLConnection connection = checkurl.openConnection();
+						String latestversion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
+						String currentversion = DeluxeVouchers.getInstance().getDescription().getVersion();
+						if (latestversion.equals(currentversion)) {
+							console.sendMessage("§fLatest version of DeluxeVouchers detected (" + currentversion + ").");
+							oldversion = false;
+						} else {
+							console.sendMessage("§cOutdated version of DeluxeVouchers detected (" + currentversion + ").");
+							console.sendMessage("§cDownload " + latestversion + ": https://spigotmc.org/resources/52480");
+							oldversion = true;
+						}
+					} catch (Exception error) {
+						console.sendMessage("§cFailed to create a connection with the updater host.");
+						if (DataHandler.debugerrors) {
+							error.printStackTrace();
+						}
+					}
 				}
-			} catch (Exception error) {
-				console.sendMessage("§cFailed to create a connection with the updater host.");
-				if (DataHandler.debugerrors) {
-					error.printStackTrace();
-				}
-			}
+			}.runTaskAsynchronously(DeluxeVouchers.getInstance());
 		}
 	}
 
