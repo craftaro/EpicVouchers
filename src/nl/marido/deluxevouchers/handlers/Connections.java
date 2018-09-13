@@ -1,8 +1,10 @@
 package nl.marido.deluxevouchers.handlers;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +19,9 @@ public class Connections {
 		if (DataHandler.mysqlenabled) {
 			if (connection != null) {
 				CommandSender console = DeluxeVouchers.getConsole();
-				String time = String.valueOf(System.currentTimeMillis());
+				Timestamp stamp = new Timestamp(System.currentTimeMillis());
+				Date date = new Date(stamp.getTime());
+				String time = date.toString();
 				try {
 					Statement statement = connection.createStatement();
 					statement.execute("CREATE TABLE IF NOT EXISTS redeems (id INT NOT NULL AUTO_INCREMENT, player varchar(120) NOT NULL, voucher varchar(120) NOT NULL, timestamp varchar(120) NOT NULL, PRIMARY KEY (ID));");
