@@ -3,7 +3,6 @@ package nl.marido.deluxevouchers.vouchers;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -39,9 +38,8 @@ public class VoucherBuilder {
 			item.setItemMeta(meta);
 			return item;
 		} catch (Exception error) {
-			ConsoleCommandSender console = DeluxeVouchers.getConsole();
-			console.sendMessage("§cFailed to build and create the voucher " + voucher + ".");
-			console.sendMessage("§cMake sure to update your voucher options or reset it.");
+			DeluxeVouchers.printConsole("§cFailed to build and create the voucher " + voucher + ".");
+			DeluxeVouchers.printConsole("§cMake sure to update your voucher options or reset it.");
 			if (DataHandler.debugerrors) {
 				error.printStackTrace();
 			}

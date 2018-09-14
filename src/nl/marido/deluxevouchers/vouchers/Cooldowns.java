@@ -34,7 +34,7 @@ public class Cooldowns {
 				}
 			}.runTaskTimer(DeluxeVouchers.getInstance(), 0, 20);
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to add cooldown to the UUID " + uuid + ".");
+			DeluxeVouchers.printConsole("§cFailed to add cooldown to the UUID " + uuid + ".");
 			if (DataHandler.debugerrors) {
 				error.printStackTrace();
 			}

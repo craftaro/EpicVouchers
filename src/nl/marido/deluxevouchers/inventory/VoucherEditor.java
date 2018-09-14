@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.md_5.bungee.api.ChatColor;
+import nl.marido.deluxevouchers.DeluxeVouchers;
 import nl.marido.deluxevouchers.handlers.DataHandler;
 import nl.marido.deluxevouchers.handlers.SoundHandler;
 import nl.marido.deluxevouchers.vouchers.VoucherBuilder;
@@ -276,7 +276,7 @@ public class VoucherEditor implements Listener {
 					}
 					DataHandler.cacheData();
 					String message = DataHandler.editorrenamedone;
-					message = message.replaceAll("%renamed%", ChatColor.translateAlternateColorCodes('&', renamed));
+					message = DeluxeVouchers.applyColor(message);
 					event.getPlayer().sendMessage(message);
 					editVoucher(event.getPlayer(), editor.get(event.getPlayer().getUniqueId()), VoucherBuilder.getVoucher(editor.get(event.getPlayer().getUniqueId()), 1));
 					SoundHandler.playSound(event.getPlayer(), DataHandler.editorvouchersound, DataHandler.editorvoucherpitch);

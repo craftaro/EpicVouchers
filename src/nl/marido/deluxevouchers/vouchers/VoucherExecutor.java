@@ -3,7 +3,6 @@ package nl.marido.deluxevouchers.vouchers;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -30,7 +29,6 @@ public class VoucherExecutor {
 			if (!player.getItemInHand().isSimilar(item)) {
 				duplication = true;
 			}
-			ConsoleCommandSender console = DeluxeVouchers.getConsole();
 			if (!duplication) {
 				if (manual) {
 					Cooldowns.addCooldown(player.getUniqueId(), voucher);
@@ -88,7 +86,7 @@ public class VoucherExecutor {
 						command = command.replace("[delay]", "");
 						throw new UnsupportedOperationException("delay is not supported yet");
 					} else {
-						Bukkit.getServer().dispatchCommand(DeluxeVouchers.getConsole(), command);
+						Bukkit.getServer().dispatchCommand(DeluxeVouchers.console, command);
 					}
 				}
 				String actionbar = DataHandler.getString(DataHandler.vouchers, path + "actionbar");
@@ -119,13 +117,13 @@ public class VoucherExecutor {
 					int duration = DataHandler.getInt(DataHandler.vouchers, path + "particles.duration") * 20;
 					player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));
 				}
-				console.sendMessage("§f" + player.getName() + " has successfully redeemed the voucher " + voucher + ".");
+				DeluxeVouchers.printConsole("§f" + player.getName() + " has successfully redeemed the voucher " + voucher + ".");
 				Connections.saveRedeem(player, voucher);
 			} else {
-				console.sendMessage("§c" + player.getName() + " has failed to duplicate the voucher " + voucher + ".");
+				DeluxeVouchers.printConsole("§c" + player.getName() + " has failed to duplicate the voucher " + voucher + ".");
 			}
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to redeem the voucher " + voucher + " for the player " + player.getName() + ".");
+			DeluxeVouchers.printConsole("§cFailed to redeem the voucher " + voucher + " for the player " + player.getName() + ".");
 			if (DataHandler.debugerrors) {
 				error.printStackTrace();
 			}

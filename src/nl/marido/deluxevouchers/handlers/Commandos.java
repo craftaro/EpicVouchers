@@ -20,7 +20,7 @@ public class Commandos implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command alias, String command, String[] args) {
 		try {
-			if (sender.hasPermission("deluxevouchers.admin") || sender.getName().equalsIgnoreCase("Marido")) {
+			if (sender.hasPermission("deluxevouchers.admin") || sender.isOp()) {
 				if (args.length == 1) {
 					if (args[0].equalsIgnoreCase("reload")) {
 						DataHandler.cacheData();
@@ -32,7 +32,7 @@ public class Commandos implements CommandExecutor {
 							VoucherEditor.openMenu((Player) sender);
 							return true;
 						}
-						DeluxeVouchers.getConsole().sendMessage("§cYou can not use this command as a console.");
+						DeluxeVouchers.printConsole("§cYou can not use this command as a console.");
 						return true;
 					}
 					if (args[0].equalsIgnoreCase("disable")) {
@@ -209,7 +209,7 @@ public class Commandos implements CommandExecutor {
 			for (int argint = 0; argint < args.length; argint++) {
 				fullcommand = fullcommand + " " + args[argint];
 			}
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to execute the command " + fullcommand + " by " + sender.getName() + ".");
+			DeluxeVouchers.printConsole("§cFailed to execute the command " + fullcommand + " by " + sender.getName() + ".");
 			if (DataHandler.debugerrors) {
 				error.printStackTrace();
 			}

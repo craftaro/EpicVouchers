@@ -1,7 +1,7 @@
 package nl.marido.deluxevouchers;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +18,7 @@ import nl.marido.deluxevouchers.vouchers.ClickListener;
 public class DeluxeVouchers extends JavaPlugin {
 
 	public static DeluxeVouchers instance;
+	public static ConsoleCommandSender console;
 
 	// Thank you for purchasing DeluxeVouchers.
 	public static String user = "%%__USER__%%";
@@ -38,15 +39,13 @@ public class DeluxeVouchers extends JavaPlugin {
 	}
 
 	public static void enable() {
-		CommandSender console = DeluxeVouchers.getConsole();
 		String version = DeluxeVouchers.getInstance().getDescription().getVersion();
-		console.sendMessage("§eDeluxeVouchers " + version + " has been enabled successfully.");
+		DeluxeVouchers.printConsole("§eDeluxeVouchers " + version + " has been enabled successfully.");
 	}
 
 	public static void disable() {
-		CommandSender console = DeluxeVouchers.getConsole();
 		String version = DeluxeVouchers.getInstance().getDescription().getVersion();
-		console.sendMessage("§eDeluxeVouchers " + version + " has been disabled successfully.");
+		DeluxeVouchers.printConsole("§eDeluxeVouchers " + version + " has been disabled successfully.");
 	}
 
 	public static void events() {
@@ -62,8 +61,12 @@ public class DeluxeVouchers extends JavaPlugin {
 		return instance;
 	}
 
-	public static ConsoleCommandSender getConsole() {
-		return Bukkit.getConsoleSender();
+	public static String applyColor(String message) {
+		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
+	public static void printConsole(String message) {
+		console.sendMessage(applyColor(message));
 	}
 
 }

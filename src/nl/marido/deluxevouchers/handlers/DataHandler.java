@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -125,7 +123,6 @@ public class DataHandler {
 
 	// TODO: Switch to enums.
 	public static void cacheData() {
-		CommandSender console = DeluxeVouchers.getConsole();
 		try {
 			File folder = DeluxeVouchers.getInstance().getDataFolder();
 			configfile = new File(folder, "config.yml");
@@ -134,19 +131,19 @@ public class DataHandler {
 			messagesfile = new File(folder, "messages.yml");
 			if (!configfile.exists()) {
 				DeluxeVouchers.getInstance().saveResource("config.yml", true);
-				console.sendMessage("§fFailed to find the config.yml file. Generating...");
+				DeluxeVouchers.printConsole("§fFailed to find the config.yml file. Generating...");
 			}
 			if (!vouchersfile.exists()) {
 				DeluxeVouchers.getInstance().saveResource("vouchers.yml", true);
-				console.sendMessage("§fFailed to find the vouchers.yml file. Generating...");
+				DeluxeVouchers.printConsole("§fFailed to find the vouchers.yml file. Generating...");
 			}
 			if (!mysqlfile.exists()) {
 				DeluxeVouchers.getInstance().saveResource("mysql.yml", true);
-				console.sendMessage("§fFailed to find the mysql.yml file. Generating...");
+				DeluxeVouchers.printConsole("§fFailed to find the mysql.yml file. Generating...");
 			}
 			if (!messagesfile.exists()) {
 				DeluxeVouchers.getInstance().saveResource("messages.yml", true);
-				console.sendMessage("§fFailed to find the messages.yml file. Generating...");
+				DeluxeVouchers.printConsole("§fFailed to find the messages.yml file. Generating...");
 			}
 			config = YamlConfiguration.loadConfiguration(configfile);
 			vouchers = YamlConfiguration.loadConfiguration(vouchersfile);
@@ -251,8 +248,8 @@ public class DataHandler {
 			mysqldata = getString(mysql, "mysqldata");
 			additions = getString(mysql, "additions");
 		} catch (Exception error) {
-			console.sendMessage("§cFailed to copy the configuration options to the cache memory.");
-			console.sendMessage("§cMake sure to update your configuration options or reset it.");
+			DeluxeVouchers.printConsole("§cFailed to copy the configuration options to the cache memory.");
+			DeluxeVouchers.printConsole("§cMake sure to update your configuration options or reset it.");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
@@ -263,7 +260,7 @@ public class DataHandler {
 		try {
 			return datafile.getString(path) != null;
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to find the path " + path + ".");
+			DeluxeVouchers.printConsole("§cFailed to find the path " + path + ".");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
@@ -275,7 +272,7 @@ public class DataHandler {
 		try {
 			return datafile.getBoolean(path);
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to find the path " + path + ".");
+			DeluxeVouchers.printConsole("§cFailed to find the path " + path + ".");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
@@ -287,7 +284,7 @@ public class DataHandler {
 		try {
 			return datafile.getInt(path);
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to find the path " + path + ".");
+			DeluxeVouchers.printConsole("§cFailed to find the path " + path + ".");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
@@ -297,9 +294,9 @@ public class DataHandler {
 
 	public static String getString(FileConfiguration datafile, String path) {
 		try {
-			return ChatColor.translateAlternateColorCodes('&', datafile.getString(path));
+			return DeluxeVouchers.applyColor(datafile.getString(path));
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to find the path " + path + ".");
+			DeluxeVouchers.printConsole("§cFailed to find the path " + path + ".");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
@@ -311,7 +308,7 @@ public class DataHandler {
 		try {
 			return datafile.getConfigurationSection(path).getKeys(false);
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to find the path " + path + ".");
+			DeluxeVouchers.printConsole("§cFailed to find the path " + path + ".");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
@@ -323,11 +320,11 @@ public class DataHandler {
 		try {
 			ArrayList<String> stringlist = new ArrayList<String>();
 			for (String line : datafile.getStringList(path)) {
-				stringlist.add(ChatColor.translateAlternateColorCodes('&', line));
+				stringlist.add(DeluxeVouchers.applyColor(line));
 			}
 			return stringlist;
 		} catch (Exception error) {
-			DeluxeVouchers.getConsole().sendMessage("§cFailed to find the path " + path + ".");
+			DeluxeVouchers.printConsole("§cFailed to find the path " + path + ".");
 			if (debugerrors) {
 				error.printStackTrace();
 			}
