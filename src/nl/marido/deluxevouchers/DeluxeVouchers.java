@@ -25,6 +25,7 @@ public class DeluxeVouchers extends JavaPlugin {
 
 	public void onEnable() {
 		instance = this;
+		console = getServer().getConsoleSender();
 		DeluxeVouchers.enable();
 		DeluxeVouchers.events();
 		DataHandler.cacheData();
