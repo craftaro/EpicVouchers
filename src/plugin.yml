@@ -7,4 +7,4 @@ description: Enhance your server with awesome customizable vouchers with a lot o
 commands:
  deluxevouchers:
   description: Administrator commands for the DeluxeVouchers resource.
-  aliases: [dv, deluxev, dvouchers, deluxevoucher]     
+  aliases: [dv, deluxev, dvouchers, deluxevoucher]
