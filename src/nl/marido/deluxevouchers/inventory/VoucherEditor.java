@@ -107,7 +107,6 @@ public class VoucherEditor implements Listener {
 		ItemMeta renameitemmeta = renameitem.getItemMeta();
 		renameitemmeta.setDisplayName(DataHandler.editorrenameitemname);
 		renameitemmeta.setLore(DataHandler.editorrenameitemlore);
-
 		if (DataHandler.editorrenameitemglow) {
 			renameitemmeta.addEnchant(Enchantment.DURABILITY, 1, false);
 			renameitemmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);

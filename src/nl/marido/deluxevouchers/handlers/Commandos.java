@@ -1,6 +1,8 @@
 package nl.marido.deluxevouchers.handlers;
 
 import java.io.File;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -58,7 +60,10 @@ public class Commandos implements CommandExecutor {
 					}
 					if (args[0].equalsIgnoreCase("backup")) {
 						try {
-							String folder = String.valueOf(DeluxeVouchers.getInstance().getDataFolder()) + "/" + System.currentTimeMillis();
+							Timestamp stamp = new Timestamp(System.currentTimeMillis());
+							Date date = new Date(stamp.getTime());
+							String time = date.toString();
+							String folder = String.valueOf(DeluxeVouchers.getInstance().getDataFolder()) + "/" + time;
 							new File(folder).mkdir();
 							File configfile = new File(folder, "config.yml");
 							File vouchersfile = new File(folder, "vouchers.yml");

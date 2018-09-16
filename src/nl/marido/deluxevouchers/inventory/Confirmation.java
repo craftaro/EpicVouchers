@@ -105,6 +105,9 @@ public class Confirmation implements Listener {
 						}
 						if (clicked.getItemMeta().hasDisplayName()) {
 							if (clicked.getItemMeta().getDisplayName().equals(DataHandler.cancelitemname)) {
+								UUID uuid = player.getUniqueId();
+								vouchercache.remove(uuid);
+								itemcache.remove(uuid);
 								SoundHandler.playSound(player, DataHandler.cancelitemsound, DataHandler.cancelitempitch);
 								player.closeInventory();
 							}
