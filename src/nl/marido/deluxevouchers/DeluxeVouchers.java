@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import nl.marido.deluxevouchers.handlers.Commandos;
 import nl.marido.deluxevouchers.handlers.Connections;
 import nl.marido.deluxevouchers.handlers.DataHandler;
+import nl.marido.deluxevouchers.handlers.PreventHacks;
 import nl.marido.deluxevouchers.handlers.UpdateHandler;
 import nl.marido.deluxevouchers.inventory.Confirmation;
 import nl.marido.deluxevouchers.inventory.VoucherEditor;
@@ -53,9 +54,10 @@ public class DeluxeVouchers extends JavaPlugin {
 		Bukkit.getServer().getPluginCommand("deluxevouchers").setExecutor(new Commandos());
 		PluginManager manager = Bukkit.getServer().getPluginManager();
 		manager.registerEvents(new ClickListener(), DeluxeVouchers.getInstance());
-		manager.registerEvents(new Confirmation(), DeluxeVouchers.getInstance());
 		manager.registerEvents(new VoucherEditor(), DeluxeVouchers.getInstance());
 		manager.registerEvents(new UpdateHandler(), DeluxeVouchers.getInstance());
+		manager.registerEvents(new Confirmation(), DeluxeVouchers.getInstance());
+		manager.registerEvents(new PreventHacks(), DeluxeVouchers.getInstance());
 	}
 
 	public static DeluxeVouchers getInstance() {

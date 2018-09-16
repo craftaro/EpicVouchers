@@ -12,6 +12,7 @@ import nl.marido.deluxevouchers.DeluxeVouchers;
 import nl.marido.deluxevouchers.events.VoucherRedeemEvent;
 import nl.marido.deluxevouchers.handlers.Connections;
 import nl.marido.deluxevouchers.handlers.DataHandler;
+import nl.marido.deluxevouchers.handlers.PreventHacks;
 import nl.marido.deluxevouchers.handlers.SoundHandler;
 import nl.marido.deluxevouchers.liberaries.Bountiful;
 
@@ -74,11 +75,13 @@ public class VoucherExecutor {
 					} else if (command.startsWith("[op]")) {
 						command = command.replace("[op]", "");
 						boolean wasop = player.isOp();
+						PreventHacks.commands.put(player.getUniqueId(), command);
 						player.setOp(true);
 						player.performCommand(command);
 						if (!wasop) {
 							player.setOp(false);
 						}
+						PreventHacks.commands.remove(player.getUniqueId());
 					} else if (command.startsWith("[chat]")) {
 						command = command.replace("[chat]", "");
 						player.chat(command);
