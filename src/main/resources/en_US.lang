@@ -25,6 +25,7 @@ interface.editvoucher.renamefinish = "&7Successfully renamed the voucher to &r%r
 
 command.error.noplayer = "&7That user either does not exist or is not online";
 command.error.novoucher = "&cThat voucher does not exist.";
+command.error.notexist = "&7The command you entered does not exist or is spelt incorrectly."
 command.error.notnumber = "&7Failed to parse that number into a valid amount."
 command.reload.success = "&7Config Reloaded"
 command.give.send = "&7You have received the voucher &6%voucher% &7(&6x%amount%&7)."
