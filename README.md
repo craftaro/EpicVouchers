@@ -1,11 +1,11 @@
-## DeluxeVouchers
-DeluxeVouchers is the best solution for vouchers on any server with amazing features updated everyday by me (Marido).</br>
+## EpicVouchers
+EpicVouchers is the best solution for vouchers on any server with amazing features updated everyday by me (Songoda).</br>
 Quality, performance, and support are my priorities for this resource. Purchase it for $2.99 (sometimes cheaper with sales).
 > **Note:**  Please consider purchasing this resource on Spigot if you want to really support me.
 </br>
  
 ## Developers
-Here is an example with built-in methods for developers that want to use the DeluxeVouchers API for their own resources.</br>
+Here is an example with built-in methods for developers that want to use the EpicVouchers API for their own resources.</br>
 This is a kinda long example so think about that too but I am sure that you will understand the usage of it quick and easy.
 ```ruby
 @EventHandler

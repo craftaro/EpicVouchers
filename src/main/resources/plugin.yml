@@ -1,0 +1,11 @@
+name: EpicVouchers
+main: com.songoda.epicvouchers.EpicVouchers
+version: 1
+author: Songoda
+website: https://songoda.host/epicvouchers
+description: Enhance your server with awesome customizable vouchers with a lot of features.
+api-version: 1.13
+commands:
+ epicvouchers:
+  description: Administrator commands for the EpicVouchers resource.
+  aliases: [dv, deluxev, dvouchers, deluxevoucher]
