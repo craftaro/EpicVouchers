@@ -2,12 +2,11 @@ package com.songoda.epicvouchers.voucher;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
-import com.songoda.epicvouchers.handlers.Connections;
 import com.songoda.epicvouchers.handlers.PreventHacks;
-import com.songoda.epicvouchers.utils.Debugger;
-import com.songoda.epicvouchers.utils.SoundUtils;
 import com.songoda.epicvouchers.liberaries.Bountiful;
+import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.utils.Methods;
+import com.songoda.epicvouchers.utils.SoundUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;

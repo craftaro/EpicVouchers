@@ -1,14 +1,11 @@
 package com.songoda.epicvouchers.inventory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
-
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.utils.Methods;
+import com.songoda.epicvouchers.utils.SoundUtils;
 import com.songoda.epicvouchers.voucher.Voucher;
+import com.songoda.epicvouchers.voucher.VoucherExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -22,8 +19,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.songoda.epicvouchers.utils.SoundUtils;
-import com.songoda.epicvouchers.voucher.VoucherExecutor;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Confirmation implements Listener {
 

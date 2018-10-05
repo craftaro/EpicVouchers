@@ -2,7 +2,6 @@ package com.songoda.epicvouchers.command.commands;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.command.AbstractCommand;
-import com.songoda.epicvouchers.inventory.VoucherEditor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

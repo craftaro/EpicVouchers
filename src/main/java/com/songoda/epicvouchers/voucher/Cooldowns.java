@@ -1,15 +1,13 @@
 package com.songoda.epicvouchers.voucher;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.UUID;
-
+import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.songoda.epicvouchers.EpicVouchers;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Cooldowns {
 

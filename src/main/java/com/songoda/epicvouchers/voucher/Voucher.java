@@ -1,7 +1,6 @@
 package com.songoda.epicvouchers.voucher;
 
 import com.songoda.epicvouchers.utils.Methods;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
