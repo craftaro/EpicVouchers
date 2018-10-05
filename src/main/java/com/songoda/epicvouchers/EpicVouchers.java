@@ -159,8 +159,8 @@ public class EpicVouchers extends JavaPlugin {
             cs.set("heal-player", voucher.isHealPlayer());
             cs.set("smite-effect", voucher.isSmiteEffect());
             cs.set("cooldown", voucher.getCooldown());
-            cs.set("broadcasts", voucher.getBroadcasts());
-            cs.set("messages", voucher.getMessages());
+            cs.set("broadcasts", voucher.getBroadcasts(false));
+            cs.set("messages", voucher.getMessages(false));
             cs.set("commands", voucher.getCommands());
             cs.set("actionbar", voucher.getActionBar());
             cs.set("titles.title", voucher.getTitle());
@@ -180,6 +180,7 @@ public class EpicVouchers extends JavaPlugin {
     }
 
     public void reload() {
+        this.vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
         loadVouchersFromFile();
         locale.reloadMessages();
         references = new References();

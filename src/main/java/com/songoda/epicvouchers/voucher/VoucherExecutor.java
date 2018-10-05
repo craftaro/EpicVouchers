@@ -54,14 +54,14 @@ public class VoucherExecutor {
                     player.getWorld().strikeLightningEffect(player.getLocation());
                 }
                 String name = player.getName();
-                for (String broadcast : voucher.getBroadcasts()) {
+                for (String broadcast : voucher.getBroadcasts(true)) {
                     broadcast = broadcast.replaceAll("%player%", name);
                     broadcast = broadcast.replaceAll("%voucher%", voucher.getName());
                     for (Player everyone : Bukkit.getOnlinePlayers()) {
                         everyone.sendMessage(broadcast);
                     }
                 }
-                for (String message : voucher.getMessages()) {
+                for (String message : voucher.getMessages(true)) {
                     message = message.replaceAll("%player%", name);
                     message = message.replaceAll("%voucher%", voucher.getName());
                     player.sendMessage(message);

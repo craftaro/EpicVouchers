@@ -193,7 +193,8 @@ public class Voucher {
         this.smiteEffect = smiteEffect;
     }
 
-    public List<String> getBroadcasts() {
+    public List<String> getBroadcasts(boolean applyFormatting) {
+        if (!applyFormatting) return broadcasts;
         List<String> itemBroadcasts = new ArrayList<>();
         for (String line : broadcasts) {
             itemBroadcasts.add(Methods.formatText(line));
@@ -213,7 +214,8 @@ public class Voucher {
         this.cooldown = cooldown;
     }
 
-    public List<String> getMessages() {
+    public List<String> getMessages(boolean applyFormatting) {
+        if (!applyFormatting) return lore;
         List<String> itemMessages = new ArrayList<>();
         for (String line : lore) {
             itemMessages.add(Methods.formatText(line));
