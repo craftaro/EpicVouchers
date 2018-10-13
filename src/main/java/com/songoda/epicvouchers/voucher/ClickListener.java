@@ -28,16 +28,16 @@ public class ClickListener implements Listener {
         for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             Player player = event.getPlayer();
             if (!player.hasPermission(voucher.getPermission())) {
-                return;
+                continue;
             }
             ItemStack item = event.getPlayer().getItemInHand();
             if (item.getType() != voucher.getMaterial() || item.getDurability() != voucher.getData()) {
-                return;
+                continue;
             }
 
             ItemMeta meta = item.getItemMeta();
             if (!meta.hasDisplayName() || !meta.getDisplayName().equals(voucher.getName()) || !meta.getLore().equals(voucher.getLore())) {
-                return;
+                continue;
             }
             UUID uuid = player.getUniqueId();
             if (!instance.getCooldowns().getEntries().containsKey(uuid)) {
