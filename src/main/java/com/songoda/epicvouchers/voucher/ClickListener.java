@@ -36,7 +36,7 @@ public class ClickListener implements Listener {
             }
 
             ItemMeta meta = item.getItemMeta();
-            if (!meta.hasDisplayName() || !meta.getDisplayName().equals(voucher.getName()) || !meta.getLore().equals(voucher.getLore())) {
+            if (!meta.hasDisplayName() || !meta.getDisplayName().equals(voucher.getName(true)) || !meta.getLore().equals(voucher.getLore(true))) {
                 continue;
             }
             UUID uuid = player.getUniqueId();
@@ -48,7 +48,7 @@ public class ClickListener implements Listener {
                 }
                 event.setCancelled(true);
             } else {
-                String message = instance.getLocale().getMessage("event.general.cooldown", String.valueOf(instance.getCooldowns().getEntries().get(uuid) + 1), voucher.getName());
+                String message = instance.getLocale().getMessage("event.general.cooldown", String.valueOf(instance.getCooldowns().getEntries().get(uuid) + 1), voucher.getName(true));
                 player.sendMessage(message);
             }
         }

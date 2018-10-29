@@ -149,8 +149,8 @@ public class EpicVouchers extends JavaPlugin {
             cs.set("permission", voucher.getPermission());
             cs.set("material", voucher.getMaterial().name());
             cs.set("data", voucher.getData());
-            cs.set("name", voucher.getName());
-            cs.set("lore", voucher.getLore());
+            cs.set("name", voucher.getName(false));
+            cs.set("lore", voucher.getLore(false));
             cs.set("glow", voucher.isGlow());
             cs.set("confirm", voucher.isConfirm());
             cs.set("unbreakable", voucher.isUnbreakable());

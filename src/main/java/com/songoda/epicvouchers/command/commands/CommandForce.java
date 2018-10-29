@@ -36,7 +36,7 @@ public class CommandForce extends AbstractCommand {
                 output = "everyone";
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player != sender) {
-                        ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(), amount, sender);
+                        ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(true), amount, sender);
                         Bukkit.getServer().getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return ReturnType.FAILURE;
@@ -48,7 +48,7 @@ public class CommandForce extends AbstractCommand {
                 }
             } else {
                 Player player = Bukkit.getPlayer(args[1]);
-                ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(), amount, sender);
+                ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(true), amount, sender);
                 Bukkit.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) {
                     return ReturnType.FAILURE;
@@ -58,7 +58,7 @@ public class CommandForce extends AbstractCommand {
                     VoucherExecutor.redeemVoucher(player, voucher, player.getItemInHand(), false);
                 }
             }
-            String message = instance.getLocale().getMessage("command.force.send", output, voucher.getName(), String.valueOf(amount));
+            String message = instance.getLocale().getMessage("command.force.send", output, voucher.getName(true), String.valueOf(amount));
             sender.sendMessage(message);
         } catch (Exception error) {
             sender.sendMessage(instance.getLocale().getMessage("command.error.notnumber"));

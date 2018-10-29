@@ -63,7 +63,7 @@ public class Voucher {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(Methods.formatText(name));
         if (lore != null) {
-            meta.setLore(getLore());
+            meta.setLore(getLore(true));
         }
         if (glow) {
             meta.addEnchant(Enchantment.DURABILITY, 1, false);
@@ -108,7 +108,8 @@ public class Voucher {
         this.data = data;
     }
 
-    public String getName() {
+    public String getName(boolean applyFormatting) {
+        if (!applyFormatting) return name;
         return Methods.formatText(name);
     }
 
@@ -116,7 +117,8 @@ public class Voucher {
         this.name = name;
     }
 
-    public List<String> getLore() {
+    public List<String> getLore(boolean applyFormatting) {
+        if (!applyFormatting) return lore;
         List<String> itemLore = new ArrayList<>();
         for (String line : lore) {
             itemLore.add(Methods.formatText(line));
@@ -214,9 +216,9 @@ public class Voucher {
     }
 
     public List<String> getMessages(boolean applyFormatting) {
-        if (!applyFormatting) return lore;
+        if (!applyFormatting) return messages;
         List<String> itemMessages = new ArrayList<>();
-        for (String line : lore) {
+        for (String line : messages) {
             itemMessages.add(Methods.formatText(line));
         }
         return itemMessages;

@@ -71,7 +71,7 @@ public class VoucherEditor implements Listener {
 		title = title.replaceAll("%voucher%", voucher.getKey());
 		Inventory editormenu = Bukkit.createInventory(null, 27, title);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(Methods.formatText(voucher.getName()));
+		meta.setDisplayName(Methods.formatText(voucher.getName(true)));
 		item.setItemMeta(meta);
 		editormenu.setItem(13, item);
 
@@ -137,7 +137,7 @@ public class VoucherEditor implements Listener {
                     continue;
                 }
 				ItemMeta meta = item.getItemMeta();
-				if (!meta.hasLore() || !meta.getLore().equals(voucher.getLore())) {
+				if (!meta.hasLore() || !meta.getLore().equals(voucher.getLore(true))) {
                     continue;
                 }
 				Player player = (Player) event.getWhoClicked();
@@ -171,7 +171,7 @@ public class VoucherEditor implements Listener {
 				player.getInventory().addItem(editor.get(player.getUniqueId()).toItemStack());
 				player.updateInventory();
 				String message = instance.getLocale().getMessage("interface.editvoucher.recivemessage");
-				message = message.replaceAll("%voucher%", editor.get(player.getUniqueId()).getName());
+				message = message.replaceAll("%voucher%", editor.get(player.getUniqueId()).getName(true));
 				player.sendMessage(message);
 			} else if (meta.getDisplayName().equals(instance.getLocale().getMessage("interface.editvoucher.backtitle"))) {
 				openMenu(player);

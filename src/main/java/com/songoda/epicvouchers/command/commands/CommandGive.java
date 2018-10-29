@@ -33,12 +33,12 @@ public class CommandGive extends AbstractCommand {
             int amount = Integer.parseInt(args[3]);
             ItemStack item = voucher.toItemStack(amount);
             String output;
-            receivemessage = receivemessage.replaceAll("%voucher%", voucher.getName());
+            receivemessage = receivemessage.replaceAll("%voucher%", voucher.getName(true));
             receivemessage = receivemessage.replaceAll("%amount%", String.valueOf(amount));
             if (args[1].equalsIgnoreCase("everyone")) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player != sender) {
-                        VoucherReceiveEvent event = new VoucherReceiveEvent(player, voucher.getName(), item, amount, sender);
+                        VoucherReceiveEvent event = new VoucherReceiveEvent(player, voucher.getName(true), item, amount, sender);
                         Bukkit.getServer().getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return ReturnType.FAILURE;
@@ -52,7 +52,7 @@ public class CommandGive extends AbstractCommand {
             } else {
                 Player player = Bukkit.getPlayer(args[1]);
                 receivemessage = receivemessage.replaceAll("%player%", player.getName());
-                VoucherReceiveEvent event = new VoucherReceiveEvent(player, voucher.getName(), item, amount, sender);
+                VoucherReceiveEvent event = new VoucherReceiveEvent(player, voucher.getName(true), item, amount, sender);
                 Bukkit.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) {
                     return ReturnType.FAILURE;
@@ -63,7 +63,7 @@ public class CommandGive extends AbstractCommand {
                 output = player.getName();
             }
             givemessage = givemessage.replaceAll("%player%", output);
-            givemessage = givemessage.replaceAll("%voucher%", voucher.getName());
+            givemessage = givemessage.replaceAll("%voucher%", voucher.getName(true));
             givemessage = givemessage.replaceAll("%amount%", String.valueOf(amount));
             sender.sendMessage(givemessage);
         } catch (Exception error) {
