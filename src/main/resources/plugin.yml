@@ -1,6 +1,6 @@
 name: EpicVouchers
 main: com.songoda.epicvouchers.EpicVouchers
-version: 1
+version: 1.0.6
 author: Songoda
 website: https://songoda.host/epicvouchers
 description: Enhance your server with awesome customizable vouchers with a lot of features.
