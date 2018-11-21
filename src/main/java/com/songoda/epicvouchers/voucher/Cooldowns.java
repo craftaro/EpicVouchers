@@ -13,7 +13,7 @@ public class Cooldowns {
 
 	private HashMap<UUID, Integer> entries = new HashMap<UUID, Integer>();
 
-	public void addCooldown(final UUID uuid, Voucher voucher) {
+	void addCooldown(final UUID uuid, Voucher voucher) {
 		try {
 			if (Bukkit.getPlayer(uuid).hasPermission("epicvouchers.bypass")) {
 				return;
@@ -25,7 +25,7 @@ public class Cooldowns {
 			}
 			new BukkitRunnable() {
 				public void run() {
-					if (entries.get(uuid) <= 0) {
+					if (entries.get(uuid) <= 0 && entries.containsKey(uuid)) {
 						entries.remove(uuid);
 						cancel();
 					} else {
@@ -34,12 +34,12 @@ public class Cooldowns {
 				}
 			}.runTaskTimer(EpicVouchers.getInstance(), 0, 20);
 		} catch (Exception error) {
-			System.out.println(Methods.formatText("�cFailed to add cooldown to the UUID " + uuid + "."));
+			System.out.println(Methods.formatText("&cFailed to add cooldown to the UUID " + uuid + "."));
 			Debugger.runReport(error);
 		}
 	}
 
-    public HashMap<UUID, Integer> getEntries() {
+    HashMap<UUID, Integer> getEntries() {
         return new HashMap<>(entries);
     }
 }
