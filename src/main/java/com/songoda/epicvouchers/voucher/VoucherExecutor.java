@@ -67,7 +67,7 @@ public class VoucherExecutor {
                 }
                 for (String command : voucher.getCommands()) {
                     command = command.replaceAll("%player%", name);
-                    command = command.replaceAll("%voucher%", voucher.getName(true));
+                    command = command.replaceAll("%voucher%", voucher.getName(false));
                     if (command.startsWith("[player]")) {
                         command = command.replace("[player]", "");
                         player.performCommand(command);
