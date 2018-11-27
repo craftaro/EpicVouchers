@@ -2,7 +2,7 @@
     <groupId>com.songoda</groupId>
     <artifactId>EpicVouchers</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
