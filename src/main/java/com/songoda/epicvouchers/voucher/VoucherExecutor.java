@@ -46,7 +46,7 @@ public class VoucherExecutor {
                 if (voucher.isFeedPlayer()) {
                     player.setFoodLevel(20);
                 }
-                if (voucher.isFeedPlayer()) {
+                if (voucher.isHealPlayer()) {
                     player.setHealth(player.getMaxHealth());
                 }
                 if (voucher.isSmiteEffect()) {
