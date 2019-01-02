@@ -1,5 +1,7 @@
 package com.songoda.epicvouchers.utils;
 
+import org.apache.commons.lang.ArrayUtils;
+
 public enum ServerVersion {
 
     UNKNOWN("unknown_server_version"),
@@ -14,7 +16,7 @@ public enum ServerVersion {
 
     private final String packagePrefix;
 
-    private ServerVersion(String packagePrefix) {
+    ServerVersion(String packagePrefix) {
         this.packagePrefix = packagePrefix;
     }
 
@@ -22,5 +24,17 @@ public enum ServerVersion {
         for (ServerVersion version : values())
             if (packageName.startsWith(version.packagePrefix)) return version;
         return ServerVersion.UNKNOWN;
+    }
+
+    public boolean isServerVersion(ServerVersion version) {
+        return this == version;
+    }
+
+    public boolean isServerVersion(ServerVersion... versions) {
+        return ArrayUtils.contains(versions, this);
+    }
+
+    public boolean isServerVersionAtLeast(ServerVersion version) {
+        return this.ordinal() >= version.ordinal();
     }
 }

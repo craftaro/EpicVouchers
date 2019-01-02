@@ -1,20 +1,13 @@
 package com.songoda.epicvouchers.voucher;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VoucherManager {
 
     private final Map<String, Voucher> registeredVouchers = new HashMap<>();
 
-    public Voucher addVoucher(String name, Voucher voucher) {
-        return registeredVouchers.put(name, voucher);
-    }
-
-    public Voucher removeVoucher(Voucher voucher) {
-        return registeredVouchers.remove(voucher);
+    public void addVoucher(String name, Voucher voucher) {
+        registeredVouchers.put(name, voucher);
     }
 
     public Voucher getVoucher(String name) {

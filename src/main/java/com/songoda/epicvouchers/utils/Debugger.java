@@ -6,7 +6,11 @@ import com.songoda.epicvouchers.EpicVouchers;
  * Created by songoda on 3/21/2017.
  */
 public class Debugger {
+    private static EpicVouchers instance;
 
+    public static void init(EpicVouchers plugin) {
+        instance = plugin;
+    }
 
     public static void runReport(Exception e) {
         if (isDebug()) {
@@ -24,8 +28,7 @@ public class Debugger {
     }
 
     public static boolean isDebug() {
-        EpicVouchers plugin = EpicVouchers.getInstance();
-        return plugin.getConfig().getBoolean("System.Debugger Enabled");
+        return instance.getConfig().getBoolean("System.Debugger Enabled");
     }
 
 }

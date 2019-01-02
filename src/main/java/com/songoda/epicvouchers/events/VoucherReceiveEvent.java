@@ -11,11 +11,11 @@ public class VoucherReceiveEvent extends Event implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	private Player player;
-	private String voucher;
-	private ItemStack item;
-	private int amount;
-	private CommandSender sender;
+	private final Player player;
+	private final String voucher;
+	private final ItemStack item;
+	private final int amount;
+	private final CommandSender sender;
 	private boolean cancelled;
 
 	public VoucherReceiveEvent(Player player, String voucher, ItemStack item, int amount, CommandSender sender) {

@@ -35,8 +35,8 @@ public class SettingsManager implements Listener {
 
         DEBUGGER_ENABLED("System.Debugger Enabled", false);
 
-        private String setting;
-        private Object option;
+        private final String setting;
+        private final Object option;
 
         settings(String setting, Object option) {
             this.setting = setting;

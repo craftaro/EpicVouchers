@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.handlers;
+package com.songoda.epicvouchers.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -7,9 +7,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class PreventHacks implements Listener {
+public class PlayerCommandListener implements Listener {
 
-    private static HashMap<UUID, String> commands = new HashMap<UUID, String>();
+    private static final HashMap<UUID, String> commands = new HashMap<>();
 
     @EventHandler
     public static void preventCommands(PlayerCommandPreprocessEvent event) {
@@ -26,6 +26,5 @@ public class PreventHacks implements Listener {
     public static void removeCommand(UUID uuid) {
         commands.remove(uuid);
     }
-
 
 }

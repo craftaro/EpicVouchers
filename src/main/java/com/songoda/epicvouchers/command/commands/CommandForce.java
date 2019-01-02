@@ -5,7 +5,6 @@ import com.songoda.epicvouchers.command.AbstractCommand;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
 import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.voucher.Voucher;
-import com.songoda.epicvouchers.voucher.VoucherExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -42,7 +41,7 @@ public class CommandForce extends AbstractCommand {
                             return ReturnType.FAILURE;
                         }
                         for (int times = 0; times < amount; times++) {
-                            VoucherExecutor.redeemVoucher(player, voucher, player.getItemInHand(), false);
+                            instance.getVoucherExecutor().redeemVoucher(player, voucher, player.getItemInHand(), false);
                         }
                     }
                 }
@@ -55,7 +54,7 @@ public class CommandForce extends AbstractCommand {
                 }
                 output = player.getName();
                 for (int times = 0; times < amount; times++) {
-                    VoucherExecutor.redeemVoucher(player, voucher, player.getItemInHand(), false);
+                    instance.getVoucherExecutor().redeemVoucher(player, voucher, player.getItemInHand(), false);
                 }
             }
             String message = instance.getLocale().getMessage("command.force.send", output, voucher.getName(true), String.valueOf(amount));

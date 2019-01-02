@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class Connections {
 
-    private EpicVouchers instance;
+    private final EpicVouchers instance;
     private Connection connection;
 
     public Connections(EpicVouchers instance) {

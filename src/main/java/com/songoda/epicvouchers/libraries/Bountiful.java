@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.liberaries;
+package com.songoda.epicvouchers.libraries;
 
 import com.songoda.epicvouchers.utils.Debugger;
 import org.bukkit.Bukkit;
@@ -19,14 +19,14 @@ public class Bountiful {
 	}
 
 	public static Integer getPlayerProtocol(Player player) {
-		return Integer.valueOf(47);
+		return 47;
 	}
 
 	public static void sendPacket(Player player, Object packet) {
 		try {
-			Object handle = player.getClass().getMethod("getHandle", new Class[0]).invoke(player, new Object[0]);
+			Object handle = player.getClass().getMethod("getHandle", new Class[0]).invoke(player);
 			Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-			playerConnection.getClass().getMethod("sendPacket", new Class[] { getNMSClass("Packet") }).invoke(playerConnection, new Object[] { packet });
+			playerConnection.getClass().getMethod("sendPacket", new Class[] { getNMSClass("Packet") }).invoke(playerConnection, packet);
 		} catch (Exception error) {
 			Debugger.runReport(error);
 		}
@@ -46,26 +46,26 @@ public class Bountiful {
 		try {
 			if (title != null) {
 				Object field = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
-				Object chattitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, new Object[] { "{\"text\":\"" + title + "\"}" });
-				Constructor<?> subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(new Class[] { getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE });
-				Object titlepacket = subtitleconstructor.newInstance(new Object[] { field, chattitle, fadein, stay, fadeout });
+				Object chattitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, "{\"text\":\"" + title + "\"}");
+				Constructor<?> subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
+				Object titlepacket = subtitleconstructor.newInstance(field, chattitle, fadein, stay, fadeout);
 				sendPacket(player, titlepacket);
 				field = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
-				chattitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, new Object[] { "{\"text\":\"" + title + "\"}" });
-				subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(new Class[] { getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent") });
-				titlepacket = subtitleconstructor.newInstance(new Object[] { field, chattitle });
+				chattitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, "{\"text\":\"" + title + "\"}");
+				subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"));
+				titlepacket = subtitleconstructor.newInstance(field, chattitle);
 				sendPacket(player, titlepacket);
 			}
 			if (subtitle != null) {
 				Object field = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
-				Object chatsubtitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, new Object[] { "{\"text\":\"" + title + "\"}" });
-				Constructor<?> subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(new Class[] { getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE });
-				Object subtitlepacket = subtitleconstructor.newInstance(new Object[] { field, chatsubtitle, fadein, stay, fadeout });
+				Object chatsubtitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, "{\"text\":\"" + title + "\"}");
+				Constructor<?> subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
+				Object subtitlepacket = subtitleconstructor.newInstance(field, chatsubtitle, fadein, stay, fadeout);
 				sendPacket(player, subtitlepacket);
 				field = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
-				chatsubtitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, new Object[] { "{\"text\":\"" + subtitle + "\"}" });
-				subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(new Class[] { getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE });
-				subtitlepacket = subtitleconstructor.newInstance(new Object[] { field, chatsubtitle, fadein, stay, fadeout });
+				chatsubtitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, "{\"text\":\"" + subtitle + "\"}");
+				subtitleconstructor = getNMSClass("PacketPlayOutTitle").getConstructor(getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
+				subtitlepacket = subtitleconstructor.newInstance(field, chatsubtitle, fadein, stay, fadeout);
 				sendPacket(player, subtitlepacket);
 			}
 		} catch (Exception error) {
@@ -97,14 +97,14 @@ public class Bountiful {
 					chatmessagetype = object;
 				}
 			}
-			Object object = chatcomponent.getConstructor(new Class[] { String.class }).newInstance(new Object[] { message });
-			Object customobject = playoutchat.getConstructor(new Class[] { basecomponent, chatmessagetypeclass }).newInstance(new Object[] { object, chatmessagetype });
-			Method method = craftplayerclass.getDeclaredMethod("getHandle", new Class[0]);
-			Object invokedmethod = method.invoke(craftplayer, new Object[0]);
+			Object object = chatcomponent.getConstructor(new Class[] { String.class }).newInstance(message);
+			Object customobject = playoutchat.getConstructor(new Class[] { basecomponent, chatmessagetypeclass }).newInstance(object, chatmessagetype);
+			Method method = craftplayerclass.getDeclaredMethod("getHandle");
+			Object invokedmethod = method.invoke(craftplayer);
 			Field field = invokedmethod.getClass().getDeclaredField("playerConnection");
 			Object packetchat = field.get(invokedmethod);
-			Method methodclass = packetchat.getClass().getDeclaredMethod("sendPacket", new Class[] { simplepacket });
-			methodclass.invoke(packetchat, new Object[] { customobject });
+			Method methodclass = packetchat.getClass().getDeclaredMethod("sendPacket", simplepacket);
+			methodclass.invoke(packetchat, customobject);
 		} catch (Exception error) {
 			Debugger.runReport(error);
 		}
@@ -120,21 +120,21 @@ public class Bountiful {
 			if (oldmethod) {
 				Class<?> chatserializer = Class.forName("net.minecraft.server." + nmsversion + ".ChatSerializer");
 				Class<?> basecomponent = Class.forName("net.minecraft.server." + nmsversion + ".IChatBaseComponent");
-				Method method = chatserializer.getDeclaredMethod("a", new Class[] { String.class });
-				Object baseinvoke = basecomponent.cast(method.invoke(chatserializer, new Object[] { "{\"text\": \"" + message + "\"}" }));
-				customobject = playoutchat.getConstructor(new Class[] { basecomponent, Byte.TYPE }).newInstance(new Object[] { baseinvoke, Byte.valueOf((byte) 2) });
+				Method method = chatserializer.getDeclaredMethod("a", String.class);
+				Object baseinvoke = basecomponent.cast(method.invoke(chatserializer, "{\"text\": \"" + message + "\"}"));
+				customobject = playoutchat.getConstructor(new Class[] { basecomponent, Byte.TYPE }).newInstance(baseinvoke, (byte) 2);
 			} else {
 				Class<?> componenttext = Class.forName("net.minecraft.server." + nmsversion + ".ChatComponentText");
 				Class<?> chatbase = Class.forName("net.minecraft.server." + nmsversion + ".IChatBaseComponent");
-				Object object = componenttext.getConstructor(new Class[] { String.class }).newInstance(new Object[] { message });
-				customobject = playoutchat.getConstructor(new Class[] { chatbase, Byte.TYPE }).newInstance(new Object[] { object, Byte.valueOf((byte) 2) });
+				Object object = componenttext.getConstructor(new Class[] { String.class }).newInstance(message);
+				customobject = playoutchat.getConstructor(new Class[] { chatbase, Byte.TYPE }).newInstance(object, (byte) 2);
 			}
-			Method handlemethod = craftplayerclass.getDeclaredMethod("getHandle", new Class[0]);
-			Object objectinvoked = handlemethod.invoke(craftplayer, new Object[0]);
+			Method handlemethod = craftplayerclass.getDeclaredMethod("getHandle");
+			Object objectinvoked = handlemethod.invoke(craftplayer);
 			Field field = objectinvoked.getClass().getDeclaredField("playerConnection");
 			Object fieldinvoked = field.get(objectinvoked);
-			Method methodclass = fieldinvoked.getClass().getDeclaredMethod("sendPacket", new Class[] { simplepacket });
-			methodclass.invoke(fieldinvoked, new Object[] { customobject });
+			Method methodclass = fieldinvoked.getClass().getDeclaredMethod("sendPacket", simplepacket);
+			methodclass.invoke(fieldinvoked, customobject);
 		} catch (Exception error) {
 			Debugger.runReport(error);
 		}

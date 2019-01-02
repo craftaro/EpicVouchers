@@ -10,10 +10,10 @@ public class ForceRedeemEvent extends Event implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	private Player player;
-	private String voucher;
-	private int amount;
-	private CommandSender sender;
+	private final Player player;
+	private final String voucher;
+	private final int amount;
+	private final CommandSender sender;
 	private boolean cancelled;
 
 	public ForceRedeemEvent(Player player, String voucher, int amount, CommandSender sender) {

@@ -10,10 +10,10 @@ public class VoucherRedeemEvent extends Event implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	private Player player;
-	private String voucher;
-	private ItemStack item;
-	private boolean manual;
+	private final Player player;
+	private final String voucher;
+	private final ItemStack item;
+	private final boolean manual;
 	private boolean cancelled;
 
 	public VoucherRedeemEvent(Player player, String voucher, ItemStack item, boolean manual) {

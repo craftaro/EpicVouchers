@@ -2,6 +2,7 @@ package com.songoda.epicvouchers.command.commands;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.command.AbstractCommand;
+import com.songoda.epicvouchers.menus.VoucherMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,7 +17,7 @@ public class CommandEditor extends AbstractCommand {
         if (args.length != 1) return ReturnType.SYNTAX_ERROR;
 
         instance.reload();
-        instance.getVoucherEditor().openMenu((Player) sender);
+        new VoucherMenu(instance).open((Player) sender);
         return ReturnType.SUCCESS;
     }
 

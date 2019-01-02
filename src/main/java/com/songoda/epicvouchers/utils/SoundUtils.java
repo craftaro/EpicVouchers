@@ -200,7 +200,7 @@ public enum SoundUtils {
 	VILLAGER_NO("VILLAGER_NO", "ENTITY_VILLAGER_NO"),
 	VILLAGER_YES("VILLAGER_YES", "ENTITY_VILLAGER_YES");
 
-	private String[] versionname;
+	private final String[] versionname;
 	private Sound cached = null;
 
 	SoundUtils(String... versionname) {
@@ -213,7 +213,7 @@ public enum SoundUtils {
 		for (String name : versionname) {
 			try {
 				return cached = Sound.valueOf(name);
-			} catch (Exception error) {
+			} catch (Exception ignore) {
 			}
 		}
 		System.out.println(Methods.formatText("&cFailed to find the sound enum called " + cached + "."));

@@ -2,19 +2,14 @@ package com.songoda.epicvouchers;
 
 import com.songoda.epicvouchers.command.CommandManager;
 import com.songoda.epicvouchers.handlers.Connections;
-import com.songoda.epicvouchers.handlers.PreventHacks;
-import com.songoda.epicvouchers.inventory.Confirmation;
-import com.songoda.epicvouchers.inventory.VoucherEditor;
-import com.songoda.epicvouchers.liberaries.Bountiful;
-import com.songoda.epicvouchers.utils.ConfigWrapper;
-import com.songoda.epicvouchers.utils.Methods;
-import com.songoda.epicvouchers.utils.ServerVersion;
-import com.songoda.epicvouchers.utils.SettingsManager;
-import com.songoda.epicvouchers.voucher.ClickListener;
-import com.songoda.epicvouchers.voucher.Cooldowns;
-import com.songoda.epicvouchers.voucher.Voucher;
-import com.songoda.epicvouchers.voucher.VoucherManager;
-import org.apache.commons.lang.ArrayUtils;
+import com.songoda.epicvouchers.libraries.Bountiful;
+import com.songoda.epicvouchers.libraries.FastInv;
+import com.songoda.epicvouchers.listeners.ChatListener;
+import com.songoda.epicvouchers.listeners.PlayerCommandListener;
+import com.songoda.epicvouchers.listeners.PlayerInteractListener;
+import com.songoda.epicvouchers.utils.*;
+import com.songoda.epicvouchers.voucher.*;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
@@ -26,29 +21,21 @@ import java.io.File;
 
 public class EpicVouchers extends JavaPlugin {
 
-    private static EpicVouchers INSTANCE;
     private ConsoleCommandSender console;
-    private CommandManager commandManager;
-    private References references;
-    private Locale locale;
-    private VoucherEditor voucherEditor;
-    private Confirmation confirmation;
-    private VoucherManager voucherManager;
-    private Connections connections;
-    private Cooldowns cooldowns;
+    @Getter private CommandManager commandManager;
+    @Getter private Locale locale;
+    @Getter private VoucherManager voucherManager;
+    @Getter private Connections connections;
+    @Getter private CoolDownManager cooldowns;
+    @Getter private VoucherExecutor voucherExecutor;
     private SettingsManager settingsManager;
 
     private ConfigWrapper vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
 
-    private ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
-
-    public static EpicVouchers getInstance() {
-        return INSTANCE;
-    }
+    @Getter private final ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
 
     @Override
     public void onEnable() {
-        INSTANCE = this;
         console = this.getServer().getConsoleSender();
         console.sendMessage(Methods.formatText("&a============================="));
         console.sendMessage(Methods.formatText("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Brianna <3&7!"));
@@ -60,29 +47,29 @@ public class EpicVouchers extends JavaPlugin {
         Locale.saveDefaultLocale("en_US");
         this.locale = Locale.getLocale(getConfig().getString("Locale", "en_US"));
 
+        FastInv.init(this);
+        Debugger.init(this);
+
 
         this.settingsManager = new SettingsManager(this);
         this.settingsManager.updateSettings();
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        this.references = new References();
-        this.voucherEditor = new VoucherEditor(this);
         this.commandManager = new CommandManager(this);
-        this.confirmation = new Confirmation(this);
         this.voucherManager = new VoucherManager();
         this.connections = new Connections(this);
-        this.cooldowns = new Cooldowns();
+        this.cooldowns = new CoolDownManager(this);
+        this.voucherExecutor = new VoucherExecutor(this);
 
         PluginManager manager = Bukkit.getServer().getPluginManager();
-        manager.registerEvents(new ClickListener(this), EpicVouchers.getInstance());
-        manager.registerEvents(voucherEditor, EpicVouchers.getInstance());
-        manager.registerEvents(new Confirmation(this), EpicVouchers.getInstance());
-        manager.registerEvents(new PreventHacks(), EpicVouchers.getInstance());
+        manager.registerEvents(new PlayerInteractListener(this), this);
+        manager.registerEvents(new PlayerCommandListener(), this);
+        manager.registerEvents(new ChatListener(this), this);
 
         File folder = getDataFolder();
-        File voucherfile = new File(folder, "vouchers.yml");
-        if (!voucherfile.exists()) {
+        File voucherFile = new File(folder, "vouchers.yml");
+        if (!voucherFile.exists()) {
             saveResource("vouchers.yml", true);
         }
 
@@ -183,7 +170,6 @@ public class EpicVouchers extends JavaPlugin {
         this.vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
         loadVouchersFromFile();
         locale.reloadMessages();
-        references = new References();
         reloadConfig();
         saveConfig();
     }
@@ -198,54 +184,6 @@ public class EpicVouchers extends JavaPlugin {
         console.sendMessage(Methods.formatText("&7Action: &cDisabling&7..."));
         console.sendMessage(Methods.formatText("&a============================="));
 
-    }
-
-    public ServerVersion getServerVersion() {
-        return serverVersion;
-    }
-
-    public boolean isServerVersion(ServerVersion version) {
-        return serverVersion == version;
-    }
-
-    public boolean isServerVersion(ServerVersion... versions) {
-        return ArrayUtils.contains(versions, serverVersion);
-    }
-
-    public boolean isServerVersionAtLeast(ServerVersion version) {
-        return serverVersion.ordinal() >= version.ordinal();
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public References getReferences() {
-        return references;
-    }
-
-    public Confirmation getConfirmation() {
-        return confirmation;
-    }
-
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public VoucherEditor getVoucherEditor() {
-        return voucherEditor;
-    }
-
-    public VoucherManager getVoucherManager() {
-        return voucherManager;
-    }
-
-    public Cooldowns getCooldowns() {
-        return cooldowns;
-    }
-
-    public Connections getConnections() {
-        return connections;
     }
 
 }
