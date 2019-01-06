@@ -109,22 +109,27 @@ public class VoucherExecutor {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
                 }
+                if(voucher.getActionBar() != null &&!voucher.getActionBar().isEmpty()) {
+                    String actionbar = voucher.getActionBar().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
+                    Bountiful.sendActionBar(player, actionbar);
+                }
 
-                String actionbar = voucher.getActionBar().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
-                Bountiful.sendActionBar(player, actionbar);
+                if(voucher.getTitle() != null &&!voucher.getTitle().isEmpty()) {
+                    String title = voucher.getTitle().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
+                    String subtitle = voucher.getSubTitle().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
 
-                String title = voucher.getTitle().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
-                String subtitle = voucher.getSubTitle().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
+                    int fadein = voucher.getTitleFadeIn();
+                    int stay = voucher.getTitleStay();
+                    int fadeout = voucher.getTitleFadeOut();
 
-                int fadein = voucher.getTitleFadeIn();
-                int stay = voucher.getTitleStay();
-                int fadeout = voucher.getTitleFadeOut();
+                    Bountiful.sendTitle(player, fadein, stay, fadeout, title, subtitle);
+                }
 
-                Bountiful.sendTitle(player, fadein, stay, fadeout, title, subtitle);
-
-                String sound = voucher.getSound();
-                int pitch = voucher.getSoundPitch();
-                SoundUtils.playSound(player, sound, pitch);
+                if(voucher.getSound() != null && !voucher.getSound().isEmpty()) {
+                    String sound = voucher.getSound();
+                    int pitch = voucher.getSoundPitch();
+                    SoundUtils.playSound(player, sound, pitch);
+                }
 
                 String particle = voucher.getParticle();
 
@@ -135,7 +140,7 @@ public class VoucherExecutor {
 
                 String effect = voucher.getEffect();
 
-                if (!effect.isEmpty()) {
+                if (effect != null && !effect.isEmpty()) {
                     int amplifier = voucher.getEffectAmplifer();
                     int duration = voucher.getEffectDuration() * 20;
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));

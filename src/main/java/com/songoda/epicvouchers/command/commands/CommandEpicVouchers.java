@@ -14,7 +14,7 @@ public class CommandEpicVouchers extends AbstractCommand {
     @Override
     protected ReturnType runCommand(EpicVouchers instance, CommandSender sender, String... args) {
         sender.sendMessage("");
-        sender.sendMessage(Methods.formatText(instance.getLocale().getPrefix() + "&7Version " + instance.getDescription().getVersion() + " Created with <3 by &5&l&oBrianna"));
+        sender.sendMessage(Methods.formatText(instance.getLocale().getMessage("general.nametag.prefix") + "&7Version " + instance.getDescription().getVersion() + " Created with <3 by &5&l&oBrianna"));
 
         for (AbstractCommand command : instance.getCommandManager().getCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {

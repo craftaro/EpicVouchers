@@ -24,7 +24,7 @@ import java.util.*;
 public class FastInv implements InventoryHolder {
 
     private static Plugin plugin = null;
-    private boolean cancelTasksOnClose = true;
+    private boolean cancelTasksOnClose = true, cancelled = true;
     private Set<FastInvCloseListener> closeListeners = new HashSet<>();
     private Set<FastInvClickListener> clickListeners = new HashSet<>();
     private Map<Integer, FastInvClickListener> itemListeners = new HashMap<>();
@@ -230,15 +230,19 @@ public class FastInv implements InventoryHolder {
         return this;
     }
 
-    public FastInv fill(ItemStack itemStack) {
+    public FastInv fill(ItemStack itemStack, FastInvClickListener listener) {
         runSync(() -> {
             for (int i = 0; i < inventory.getSize(); i++) {
                 if (inventory.getItem(i) == null) {
-                    addItem(i, itemStack);
+                    addItem(i, itemStack, listener);
                 }
             }
         });
         return this;
+    }
+
+    public  FastInv fill(ItemStack itemStack) {
+        return fill(itemStack, null);
     }
 
     /**
@@ -261,6 +265,15 @@ public class FastInv implements InventoryHolder {
     public FastInv onClick(FastInvClickListener listener) {
         clickListeners.add(listener);
         return this;
+    }
+
+    public FastInv setDefaultCancel(boolean value) {
+        cancelled = value;
+        return this;
+    }
+
+    public boolean getDefaultCancel() {
+        return cancelled;
     }
 
     /**
@@ -466,7 +479,7 @@ public class FastInv implements InventoryHolder {
                     FastInv inv = (FastInv) event.getInventory().getHolder();
 
                     FastInvClickEvent clickEvent = new FastInvClickEvent((Player) event.getWhoClicked(), inv, slot,
-                            event.getCurrentItem(), true, event.getAction(), event.getClick());
+                            event.getCurrentItem(), inv.cancelled, event.getAction(), event.getClick());
 
                     if (inv.itemListeners.containsKey(slot)) {
                         inv.itemListeners.get(slot).onClick(clickEvent);

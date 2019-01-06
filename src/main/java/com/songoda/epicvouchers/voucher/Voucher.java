@@ -1,9 +1,12 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.utils.Methods;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+@Accessors(chain = true)
 public class Voucher {
 
     @Getter private final String key;
@@ -112,6 +116,12 @@ public class Voucher {
             itemMessages.add(Methods.formatText(line));
         }
         return itemMessages;
+    }
+
+    public void saveSetting(String key, Object value) {
+        ConfigurationSection cs = EpicVouchers.getInstance().getVouchersFile().getConfig().getConfigurationSection("vouchers." + getKey());
+        cs.set(key, value);
+        EpicVouchers.getInstance().getVouchersFile().saveConfig();
     }
 
     @Override

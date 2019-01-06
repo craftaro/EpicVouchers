@@ -34,7 +34,6 @@ public class Locale {
 
     private final File file;
     private final String name, region;
-    private final String prefix;
 
     private Locale(String name, String region) {
         if (plugin == null)
@@ -45,7 +44,6 @@ public class Locale {
 
         String fileName = name + "_" + region + FILE_EXTENSION;
         this.file = new File(localeFolder, fileName);
-        this.prefix = getMessage("general.nametag.prefix") + " ";
 
         if (this.reloadMessages()) return;
 
@@ -374,7 +372,4 @@ public class Locale {
         return true;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
 }
