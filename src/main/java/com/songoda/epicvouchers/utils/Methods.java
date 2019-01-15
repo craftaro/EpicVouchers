@@ -2,20 +2,18 @@ package com.songoda.epicvouchers.utils;
 
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nullable;
+
 public class Methods {
 
-    public static String formatText(String text) {
+    public static String format(String text) {
         if (text == null || text.equals(""))
             return "";
-        return formatText(text, false);
+        return format(text, "", null);
     }
 
-    public static String formatText(String text, boolean cap) {
-        if (text == null || text.equals(""))
-            return "";
-        if (cap)
-            text = text.substring(0, 1).toUpperCase() + text.substring(1);
-        return ChatColor.translateAlternateColorCodes('&', text);
+    public static String format(String text, String toReplace, @Nullable Object object) {
+        return ChatColor.translateAlternateColorCodes('&', text).replace(toReplace, object == null ? "" : object.toString());
     }
 
 }

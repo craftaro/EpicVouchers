@@ -3,7 +3,8 @@ package com.songoda.epicvouchers;
 import com.songoda.epicvouchers.command.CommandManager;
 import com.songoda.epicvouchers.handlers.Connections;
 import com.songoda.epicvouchers.libraries.Bountiful;
-import com.songoda.epicvouchers.libraries.FastInv;
+import com.songoda.epicvouchers.libraries.inventory.FastInv;
+import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
 import com.songoda.epicvouchers.listeners.PlayerInteractListener;
 import com.songoda.epicvouchers.utils.*;
@@ -17,6 +18,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.LinkedHashMap;
 
 public class EpicVouchers extends JavaPlugin {
 
@@ -24,21 +26,19 @@ public class EpicVouchers extends JavaPlugin {
     @Getter private final ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
     @Getter private CommandManager commandManager;
     @Getter private Connections connections;
-    private ConsoleCommandSender console;
     @Getter private CoolDownManager cooldowns;
     @Getter private Locale locale;
     private SettingsManager settingsManager;
     @Getter private VoucherExecutor voucherExecutor;
-    @Getter private VoucherManager voucherManager;
     @Getter private ConfigWrapper vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
+    @Getter private LinkedHashMap<String, Voucher> vouchers;
 
     @Override
     public void onEnable() {
         instance = this;
-        console = getServer().getConsoleSender();
-        console.sendMessage(Methods.formatText("&a============================="));
-        console.sendMessage(Methods.formatText("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Brianna <3&7!"));
-        console.sendMessage(Methods.formatText("&7Action: &aEnabling&7..."));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &aEnabling&7..."));
 
         // Locales
         Locale.init(this);
@@ -46,15 +46,16 @@ public class EpicVouchers extends JavaPlugin {
         this.locale = Locale.getLocale(getConfig().getString("Locale", "en_US"));
 
         FastInv.init(this);
+        IconInv.init(this);
         Debugger.init(this);
 
         this.settingsManager = new SettingsManager(this);
         this.settingsManager.updateSettings();
+        this.vouchers = new LinkedHashMap<>();
         getConfig().options().copyDefaults(true);
         saveConfig();
 
         this.commandManager = new CommandManager(this);
-        this.voucherManager = new VoucherManager();
         this.connections = new Connections(this);
         this.cooldowns = new CoolDownManager(this);
         this.voucherExecutor = new VoucherExecutor(this);
@@ -71,14 +72,13 @@ public class EpicVouchers extends JavaPlugin {
 
         loadVouchersFromFile();
 
-//        Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::saveToFile, 6000, 6000);
-
         Bountiful.findVersion();
         connections.openMySQL();
-        console.sendMessage(Methods.formatText("&a============================="));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
     }
 
     private void loadVouchersFromFile() {
+        vouchers.clear();
         /*
          * Register Vouchers into VoucherManger from configuration
          */
@@ -87,9 +87,11 @@ public class EpicVouchers extends JavaPlugin {
 
                 Voucher voucher = new Voucher(key);
                 ConfigurationSection cs = vouchersFile.getConfig().getConfigurationSection("vouchers." + key);
+                Material material = cs.getString("material") == null || cs.getString("material").equals("") ? Material.PAPER :
+                        Material.matchMaterial(cs.getString("material")) == null ? Material.PAPER : Material.matchMaterial(cs.getString("material"));
 
                 voucher.setPermission(cs.getString("permission", ""));
-                voucher.setMaterial(Material.valueOf(cs.getString("material", "PAPER")));
+                voucher.setMaterial(material);
                 voucher.setData((short) cs.getInt("data", 0));
                 voucher.setName(cs.getString("name", "default"));
                 voucher.setLore(cs.getStringList("lore"));
@@ -115,29 +117,16 @@ public class EpicVouchers extends JavaPlugin {
                 voucher.setParticle(cs.getString("particles.particle"));
                 voucher.setParticleAmount(cs.getInt("particles.amount", 0));
                 voucher.setEffect(cs.getString("effects.effect"));
-                voucher.setEffectAmplifer(cs.getInt("effects.amplifier"));
+                voucher.setEffectAmplifier(cs.getInt("effects.amplifier"));
+                voucher.setItemStack(cs.getItemStack("itemstack", null));
 
-                voucherManager.addVoucher(key, voucher);
+                vouchers.put(key, voucher);
             }
         }
     }
 
-    public void saveToFile(Voucher voucher) {
-        ConfigurationSection cs = vouchersFile.getConfig().getConfigurationSection("vouchers." + voucher.getKey());
-
-        cs.set("material", voucher.getMaterial().name());
-        cs.set("name", voucher.getName(false));
-        cs.set("lore", voucher.getLore(false));
-
-        if (voucher.getData() != 0)
-            cs.set("data", voucher.getData());
-
-        vouchersFile.saveConfig();
-    }
-
     public void reload() {
         vouchersFile.reloadConfig();
-        getVoucherManager().getVouchers().forEach(this::saveToFile);
         loadVouchersFromFile();
 
         reloadConfig();
@@ -147,12 +136,11 @@ public class EpicVouchers extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getVoucherManager().getVouchers().forEach(this::saveToFile);
         connections.closeMySQL();
-        console.sendMessage(Methods.formatText("&a============================="));
-        console.sendMessage(Methods.formatText("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Brianna <3&7!"));
-        console.sendMessage(Methods.formatText("&7Action: &cDisabling&7..."));
-        console.sendMessage(Methods.formatText("&a============================="));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &cDisabling&7..."));
+        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
     }
 
 }

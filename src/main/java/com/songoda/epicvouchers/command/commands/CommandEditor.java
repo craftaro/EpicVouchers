@@ -29,11 +29,11 @@ public class CommandEditor extends AbstractCommand {
 
     @Override
     public String getSyntax() {
-        return "/epicvouchers editor";
+        return "/vouchers editor";
     }
 
     @Override
     public String getDescription() {
-        return "Edit vouchers in a gui.";
+        return "Edit vouchers in a GUI.";
     }
 }

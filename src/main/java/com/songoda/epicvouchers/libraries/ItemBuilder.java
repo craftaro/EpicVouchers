@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.*;
 
 /**
- * A complete {@link ItemStack} builder for FastInv (only works on 1.8+).
+ * A complete {@link ItemStack} inventory for FastInv (only works on 1.8+).
  *
  * The project is on <a href="https://github.com/MrMicky-FR/FastInv">GitHub</a>
  *
@@ -128,6 +128,10 @@ public class ItemBuilder {
     public ItemBuilder removeEnchant(Enchantment enchantment) {
         meta.removeEnchant(enchantment);
         return this;
+    }
+
+    public ItemBuilder addGlow() {
+        return enchant(Enchantment.DURABILITY, 1).addFlags(ItemFlag.HIDE_ENCHANTS);
     }
 
     /*

@@ -53,7 +53,7 @@ public class CommandManager implements CommandExecutor {
                 }
             }
         }
-        commandSender.sendMessage(instance.getLocale().getMessage("general.nametag.prefix") + Methods.formatText(instance.getLocale().getMessage("command.error.notexist")));
+        commandSender.sendMessage(instance.getLocale().getMessage("general.nametag.prefix") + Methods.format(instance.getLocale().getMessage("command.error.notexist")));
         return true;
     }
 
@@ -69,8 +69,8 @@ public class CommandManager implements CommandExecutor {
                 return;
             }
              if (returnType == AbstractCommand.ReturnType.SYNTAX_ERROR) {
-                 sender.sendMessage(instance.getLocale().getMessage("general.nametag.prefix") + Methods.formatText("&cInvalid Syntax!"));
-                 sender.sendMessage(instance.getLocale().getMessage("general.nametag.prefix") + Methods.formatText("&7The valid syntax is: &6" + command.getSyntax() + "&7."));
+                 sender.sendMessage(instance.getLocale().getMessage("general.nametag.prefix") + Methods.format("&cInvalid Syntax!"));
+                 sender.sendMessage(instance.getLocale().getMessage("general.nametag.prefix") + Methods.format("&7The valid syntax is: &6" + command.getSyntax() + "&7."));
              }
             return;
         }

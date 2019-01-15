@@ -29,8 +29,6 @@ public class AbstractAnvilGUI {
     private static Class<?> ChatMessage;
     private static Class<?> EntityHuman;
     private static boolean loadedClasses = false;
-    private Sound closeSound = Sound.ENTITY_PLAYER_LEVELUP;
-    @SuppressWarnings("unused")
     private AnvilClickEventHandler handler;
     private Inventory inv;
     private Map<AnvilSlot, ItemStack> items = new HashMap<>();
@@ -85,7 +83,6 @@ public class AbstractAnvilGUI {
                 if (!inv.equals(AbstractAnvilGUI.this.inv)) return;
                 inv.clear();
                 OnClose onClose = getOnClose();
-                player.playSound(player.getLocation(), closeSound, 1F, 1F);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
                     if (onClose != null) onClose.OnClose(player, inv);
                     destroy();
@@ -117,8 +114,9 @@ public class AbstractAnvilGUI {
         return player;
     }
 
-    public void setSlot(AnvilSlot slot, ItemStack item) {
+    public AbstractAnvilGUI setSlot(AnvilSlot slot, ItemStack item) {
         items.put(slot, item);
+        return this;
     }
 
     public void open() {
@@ -191,12 +189,9 @@ public class AbstractAnvilGUI {
         return onClose;
     }
 
-    public void setOnClose(OnClose onClose) {
+    public AbstractAnvilGUI setOnClose(OnClose onClose) {
         this.onClose = onClose;
-    }
-
-    public void setCloseSound(Sound sound) {
-        closeSound = sound;
+        return this;
     }
 
     public enum AnvilSlot {
@@ -206,7 +201,7 @@ public class AbstractAnvilGUI {
 
         private int slot;
 
-        private AnvilSlot(int slot) {
+        AnvilSlot(int slot) {
             this.slot = slot;
         }
 

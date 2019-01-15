@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.libraries;
+package com.songoda.epicvouchers.libraries.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -138,13 +138,12 @@ public class FastInv implements InventoryHolder {
      * Add an {@link ItemStack} to the menus on specific slot with a {@link FastInvClickListener} to handle clicks.
      *
      * @param slot     The slot of the item.
-     * @param item     The item to add.
-     * @param listener The FastInvClickListener for the item.
+     * @param itemStack     The icon to add.
      * @return This FastInv instance, for chaining.
      */
-    public FastInv addItem(int slot, ItemStack item, FastInvClickListener listener) {
+    public FastInv addItem(int slot, ItemStack itemStack, FastInvClickListener listener) {
         runSync(() -> {
-            inventory.setItem(slot, item);
+            inventory.setItem(slot, itemStack);
 
             if (listener != null) {
                 itemListeners.put(slot, listener);
@@ -174,7 +173,7 @@ public class FastInv implements InventoryHolder {
      * @param slotFrom Starting slot to put the item in.
      * @param slotTo   Ending slot to put the item in.
      * @param item     The item to add.
-     * @param listener The FastInvClickListener for the item.
+     * @param listener The IconClickListener for the item.
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int slotFrom, int slotTo, ItemStack item, FastInvClickListener listener) {
@@ -220,7 +219,7 @@ public class FastInv implements InventoryHolder {
      *
      * @param slots    The slots to place the item.
      * @param item     The item to add.
-     * @param listener The FastInvClickListener for the item.
+     * @param listener The IconClickListener for the item.
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int[] slots, ItemStack item, FastInvClickListener listener) {

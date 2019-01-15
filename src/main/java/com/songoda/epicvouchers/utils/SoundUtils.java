@@ -216,7 +216,7 @@ public enum SoundUtils {
 			} catch (Exception ignore) {
 			}
 		}
-		System.out.println(Methods.formatText("&cFailed to find the sound enum called " + cached + "."));
+		System.out.println(Methods.format("&cFailed to find the sound enum called " + cached + "."));
 		return null;
 	}
 

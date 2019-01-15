@@ -28,7 +28,7 @@ public class CommandReload extends AbstractCommand {
 
     @Override
     public String getSyntax() {
-        return "/epicvouchers reload";
+        return "/vouchers reload";
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
 import com.songoda.epicvouchers.libraries.Bountiful;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
+import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.utils.Methods;
 import com.songoda.epicvouchers.utils.SoundUtils;
 import org.bukkit.Bukkit;
@@ -109,12 +110,12 @@ public class VoucherExecutor {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
                 }
-                if(voucher.getActionBar() != null &&!voucher.getActionBar().isEmpty()) {
+                if (voucher.getActionBar() != null && !voucher.getActionBar().isEmpty()) {
                     String actionbar = voucher.getActionBar().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
                     Bountiful.sendActionBar(player, actionbar);
                 }
 
-                if(voucher.getTitle() != null &&!voucher.getTitle().isEmpty()) {
+                if (voucher.getTitle() != null && !voucher.getTitle().isEmpty()) {
                     String title = voucher.getTitle().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
                     String subtitle = voucher.getSubTitle().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
 
@@ -125,7 +126,7 @@ public class VoucherExecutor {
                     Bountiful.sendTitle(player, fadein, stay, fadeout, title, subtitle);
                 }
 
-                if(voucher.getSound() != null && !voucher.getSound().isEmpty()) {
+                if (voucher.getSound() != null && !voucher.getSound().isEmpty()) {
                     String sound = voucher.getSound();
                     int pitch = voucher.getSoundPitch();
                     SoundUtils.playSound(player, sound, pitch);
@@ -141,20 +142,20 @@ public class VoucherExecutor {
                 String effect = voucher.getEffect();
 
                 if (effect != null && !effect.isEmpty()) {
-                    int amplifier = voucher.getEffectAmplifer();
+                    int amplifier = voucher.getEffectAmplifier();
                     int duration = voucher.getEffectDuration() * 20;
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));
                 }
 
-                instance.getLogger().log(Level.INFO, Methods.formatText("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.INFO, Methods.format("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
                 instance.getConnections().saveRedeem(player, voucher.getName(true));
             } else {
-                instance.getLogger().log(Level.WARNING, Methods.formatText("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.WARNING, Methods.format("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
             }
         } catch (Exception error) {
             error.printStackTrace();
-            instance.getLogger().log(Level.SEVERE, Methods.formatText("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
-//            Debugger.runReport(error);
+            instance.getLogger().log(Level.SEVERE, Methods.format("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
+            Debugger.runReport(error);
         }
     }
 

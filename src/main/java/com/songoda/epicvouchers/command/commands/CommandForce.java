@@ -3,11 +3,15 @@ package com.songoda.epicvouchers.command.commands;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.command.AbstractCommand;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
-import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.voucher.Voucher;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class CommandForce extends AbstractCommand {
 
@@ -23,46 +27,43 @@ public class CommandForce extends AbstractCommand {
             sender.sendMessage(instance.getLocale().getMessage("command.error.noplayer"));
             return ReturnType.FAILURE;
         }
-        Voucher voucher = instance.getVoucherManager().getVoucher(args[2]);
-        if (voucher == null) {
+
+        if (!instance.getVouchers().containsKey(args[2])) {
             sender.sendMessage(instance.getLocale().getMessage("command.error.novoucher"));
             return ReturnType.FAILURE;
         }
-        try {
-            int amount = Integer.parseInt(args[3]);
-            String output;
-            if (args[1].equalsIgnoreCase("everyone")) {
-                output = "everyone";
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player != sender) {
-                        ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(true), amount, sender);
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-                        if (event.isCancelled()) {
-                            return ReturnType.FAILURE;
-                        }
-                        for (int times = 0; times < amount; times++) {
-                            instance.getVoucherExecutor().redeemVoucher(player, voucher, player.getItemInHand(), false);
-                        }
-                    }
-                }
-            } else {
-                Player player = Bukkit.getPlayer(args[1]);
-                ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(true), amount, sender);
-                Bukkit.getServer().getPluginManager().callEvent(event);
-                if (event.isCancelled()) {
-                    return ReturnType.FAILURE;
-                }
-                output = player.getName();
-                for (int times = 0; times < amount; times++) {
-                    instance.getVoucherExecutor().redeemVoucher(player, voucher, player.getItemInHand(), false);
-                }
-            }
-            String message = instance.getLocale().getMessage("command.force.send", output, voucher.getName(true), String.valueOf(amount));
-            sender.sendMessage(message);
-        } catch (Exception error) {
+
+        Voucher voucher = instance.getVouchers().get(args[2]);
+
+        if (!StringUtils.isNumeric(args[3])) {
             sender.sendMessage(instance.getLocale().getMessage("command.error.notnumber"));
-            Debugger.runReport(error);
+            return ReturnType.SUCCESS;
         }
+
+        Collection<Player> players;
+        String output;
+        int amount = Integer.parseInt(args[3]);
+
+        if(args[1].equalsIgnoreCase("everyone")) {
+            players = (Collection<Player>) Bukkit.getOnlinePlayers();
+            output = "everyone";
+        } else {
+            players = Collections.singletonList(Bukkit.getPlayer(args[1]));
+            output = Bukkit.getPlayer(args[1]).getName();
+        }
+
+        players.forEach(player -> {
+            ForceRedeemEvent event = new ForceRedeemEvent(player, voucher.getName(true), amount, sender);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                return;
+            }
+            for (int times = 0; times < amount; times++) {
+                instance.getVoucherExecutor().redeemVoucher(player, voucher, player.getItemInHand(), false);
+            }
+        });
+        String message = instance.getLocale().getMessage("command.force.send", output, voucher.getName(true), String.valueOf(amount));
+        sender.sendMessage(message);
         return ReturnType.SUCCESS;
     }
 

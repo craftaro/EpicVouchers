@@ -27,7 +27,7 @@ public class PlayerInteractListener implements Listener {
             return;
         }
 
-        for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+        for (Voucher voucher : instance.getVouchers().values()) {
             Player player = event.getPlayer();
             if (!player.hasPermission(voucher.getPermission())) {
                 continue;
@@ -35,15 +35,22 @@ public class PlayerInteractListener implements Listener {
 
             ItemStack item = event.getPlayer().getItemInHand();
 
-            if (item.getType() != voucher.getMaterial() || item.getDurability() != voucher.getData()) {
-                continue;
+            if (voucher.getItemStack() != null) {
+                if(!voucher.getItemStack().isSimilar(item)) {
+                    continue;
+                }
+            } else {
+                if (item.getType() != voucher.getMaterial() || item.getDurability() != voucher.getData()) {
+                    continue;
+                }
+
+                ItemMeta meta = item.getItemMeta();
+
+                if (!item.hasItemMeta() || !meta.hasDisplayName() || !meta.getDisplayName().equals(voucher.getName(true)) || !meta.getLore().equals(voucher.getLore(true))) {
+                    continue;
+                }
             }
 
-            ItemMeta meta = item.getItemMeta();
-
-            if (!meta.hasDisplayName() || !meta.getDisplayName().equals(voucher.getName(true)) || !meta.getLore().equals(voucher.getLore(true))) {
-                continue;
-            }
 
             UUID uuid = player.getUniqueId();
 

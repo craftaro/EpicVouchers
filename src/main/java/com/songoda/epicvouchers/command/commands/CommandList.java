@@ -4,6 +4,8 @@ import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.command.AbstractCommand;
 import org.bukkit.command.CommandSender;
 
+import java.util.stream.Collectors;
+
 public class CommandList extends AbstractCommand {
 
     public CommandList(AbstractCommand parent) {
@@ -12,12 +14,12 @@ public class CommandList extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(EpicVouchers instance, CommandSender sender, String... args) {
-        if (args.length != 1) return ReturnType.SYNTAX_ERROR;
+        if (args.length != 1) {
+            return ReturnType.SYNTAX_ERROR;
+        }
 
-        String message = instance.getLocale().getMessage("command.list.list");
-        String list = instance.getVoucherManager().getVouchers().toString();
-        list = list.replaceAll("[()\\[\\]]", "");
-        message = message.replaceAll("%list%", list);
+        String list = String.join(", ", instance.getVouchers().keySet());
+        String message = instance.getLocale().getMessage("command.list.list").replaceAll("%list%", list);
         sender.sendMessage(message);
 
         return ReturnType.SUCCESS;
@@ -31,11 +33,11 @@ public class CommandList extends AbstractCommand {
 
     @Override
     public String getSyntax() {
-        return "/epicvouchers list";
+        return "/vouchers list";
     }
 
     @Override
     public String getDescription() {
-        return "Displays a list of all vouchers from the vouchers file.";
+        return "Displays all vouchers";
     }
 }

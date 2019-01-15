@@ -14,11 +14,11 @@ public class CommandEpicVouchers extends AbstractCommand {
     @Override
     protected ReturnType runCommand(EpicVouchers instance, CommandSender sender, String... args) {
         sender.sendMessage("");
-        sender.sendMessage(Methods.formatText(instance.getLocale().getMessage("general.nametag.prefix") + "&7Version " + instance.getDescription().getVersion() + " Created with <3 by &5&l&oBrianna"));
+        sender.sendMessage(Methods.format(instance.getLocale().getMessage("general.nametag.prefix") + "&7Version " + instance.getDescription().getVersion() + " Created with <3 by &5&l&oSongoda"));
 
         for (AbstractCommand command : instance.getCommandManager().getCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {
-                sender.sendMessage(Methods.formatText("&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
+                sender.sendMessage(Methods.format("&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
             }
         }
         sender.sendMessage("");

@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.menus;
 
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.libraries.FastInv;
+import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.utils.ServerVersion;
 import com.songoda.epicvouchers.utils.SoundUtils;
@@ -20,10 +20,7 @@ public class ConfirmMenu extends FastInv {
         addItem(11, new ItemBuilder(Material.EMERALD)
                 .name(instance.getLocale().getMessage("interface.confirmsettings.confirmitemname"))
                 .lore(instance.getLocale().getMessage("interface.confirmsettings.confirmitemlore"))
-                .enchant(DURABILITY, 1)
-                .addFlags(HIDE_ENCHANTS)
-                .build(), event -> {
-            SoundUtils.playSound(event.getPlayer(), "LEVEL_UP", 1);
+                .addGlow().build(), event -> {
             event.getPlayer().closeInventory();
             instance.getVoucherExecutor().redeemVoucher(event.getPlayer(), voucher, event.getPlayer().getItemInHand(), true);
         });

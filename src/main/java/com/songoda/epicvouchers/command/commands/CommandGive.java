@@ -17,16 +17,22 @@ public class CommandGive extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(EpicVouchers instance, CommandSender sender, String... args) {
-        if (args.length != 4) return ReturnType.SYNTAX_ERROR;
+        if (args.length != 4) {
+            return ReturnType.SYNTAX_ERROR;
+        }
+
         if (!args[1].equalsIgnoreCase("everyone") && Bukkit.getPlayer(args[1]) == null) {
             sender.sendMessage(instance.getLocale().getMessage("command.error.noplayer"));
             return ReturnType.FAILURE;
         }
-        Voucher voucher = instance.getVoucherManager().getVoucher(args[2]);
-        if (voucher == null) {
+
+        if (!instance.getVouchers().containsKey(args[2])) {
             sender.sendMessage(instance.getLocale().getMessage("command.error.novoucher"));
             return ReturnType.FAILURE;
         }
+
+        Voucher voucher = instance.getVouchers().get(args[2]);
+
         try {
             String givemessage = instance.getLocale().getMessage("command.give.send");
             String receivemessage = instance.getLocale().getMessage("command.give.receive");

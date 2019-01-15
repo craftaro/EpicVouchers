@@ -9,25 +9,6 @@ interface.confirmsettings.confirmitemname= "&2&lREDEEM"
 interface.confirmsettings.confirmitemlore= "&aClick here if you want to confirm your redeem."
 interface.confirmsettings.cancelitemname= "&4&lCANCEL"
 interface.confirmsettings.cancelitemlore= "&cClick here if you want to cancel your redeem."
-interface.setitem.title= "&6Set item"
-interface.boolean.title= "&6Edit booleans"
-interface.editor.title= "&6Editor"
-interface.editvoucher.title= "&6Editor [&e%voucher%&6]";
-interface.editvoucher.backtitle= "&4Return";
-interface.editvoucher.backlore= "&cReturn to the main menu of the editor."
-interface.editvoucher.recivetitle= "&2Receive"
-interface.editvoucher.recivelore= "&aReceive a clone item of this voucher."
-interface.editvoucher.recivemessage= "&7You have received the voucher &6%voucher%&7."
-interface.editvoucher.renametitle= "&6Rename"
-interface.editvoucher.renamelore= "&eRename the display name of the voucher."
-interface.editvoucher.renamemessage= "&7Please enter the name that this voucher should be renamed to."
-interface.editvoucher.renamefinish= "&7Successfully renamed the voucher to &r%renamed%&7."
-
-interface.editvoucher.itemtitle= "&6Set item"
-interface.editvoucher.itemlore= "&eSet the item of your voucher."
-
-interface.boolean.itemlore= "&eSet boolean values."
-interface.boolean.itemtitle= "&eEdit the boolean values of your voucher."
 
 #Command Messages
 
@@ -35,7 +16,7 @@ command.error.noplayer= "&7That user either does not exist or is not online";
 command.error.novoucher= "&cThat voucher does not exist.";
 command.error.notexist= "&7The command you entered does not exist or is spelt incorrectly."
 command.error.notnumber= "&7Failed to parse that number into a valid amount."
-command.reload.success= "&7Config Reloaded"
+command.reload.success= "&7Reloaded all config files and vouchers."
 command.give.send= "&7You have received the voucher &6%voucher% &7(&6x%amount%&7)."
 command.give.receive= "&7You have given &6%player% &7the voucher &6%voucher% &7(&6x%amount%&7)."
 command.force.send= "&7You have forced &6%player% &7to redeem the voucher &6%voucher% &7(&6x%amount%&7).";
