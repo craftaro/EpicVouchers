@@ -12,6 +12,7 @@ import com.songoda.epicvouchers.menus.sub.ParticlesMenu;
 import com.songoda.epicvouchers.menus.sub.SoundsMenu;
 import com.songoda.epicvouchers.menus.sub.TitlesMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -60,9 +61,26 @@ public class VoucherEditorMenu extends IconInv {
         }));
 
         addIcon(11, new StringIcon(instance, "Material", voucher.getMaterial().toString(), (player, editString) -> {
-            voucher.setMaterial(Material.valueOf(editString)).saveSetting("material", editString);
+            if(editString.contains(":")) {
+                voucher.setData(Short.parseShort(editString.split(":")[1]));
+                voucher.setMaterial(Material.valueOf(editString.split(":")[0]));
+            } else {
+                voucher.setMaterial(Material.valueOf(editString)).saveSetting("material", editString);
+            }
+
             reopen(player);
-        }, string -> !string.isEmpty() && Material.matchMaterial(string) != null, true));
+        }, string -> {
+            if (string.isEmpty())  {
+                return false;
+            }
+
+            if(string.contains(":") && string.split(":").length == 2) {
+                String[] split = string.split(":");
+                return Material.matchMaterial(split[0]) != null && StringUtils.isNumeric(split[1]);
+            }
+
+            return Material.matchMaterial(string) != null;
+        }, true));
 
         addIcon(12, new StringIcon(instance, "Name", voucher.getName(false), (player, editString) -> {
             voucher.setName(editString).saveSetting("name", editString);
