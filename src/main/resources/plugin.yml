@@ -8,4 +8,4 @@ api-version: 1.13
 commands:
  epicvouchers:
   description: Administrator commands for the EpicVouchers resource.
-  aliases: [dv, deluxev, dvouchers, deluxevoucher, ed, vouchers, voucher]
+  aliases: [dv, deluxev, dvouchers, deluxevoucher, ev, vouchers, voucher]
