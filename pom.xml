@@ -7,7 +7,7 @@
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
-                <version>3.6.1</version>
+                <version>3.6.2</version>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
