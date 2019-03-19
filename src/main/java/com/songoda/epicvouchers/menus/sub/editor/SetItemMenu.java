@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.menus.sub;
+package com.songoda.epicvouchers.menus.sub.editor;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
@@ -11,11 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-
-import static com.songoda.epicvouchers.utils.Methods.format;
-import static org.bukkit.ChatColor.GRAY;
-import static org.bukkit.ChatColor.YELLOW;
+import static org.bukkit.ChatColor.*;
 
 public class SetItemMenu extends FastInv {
 

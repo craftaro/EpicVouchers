@@ -2,7 +2,7 @@ package com.songoda.epicvouchers.libraries.inventory.icons;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
-import com.songoda.epicvouchers.menus.sub.StringListMenu;
+import com.songoda.epicvouchers.menus.sub.editor.StringListMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

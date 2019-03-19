@@ -1,7 +1,6 @@
 package com.songoda.epicvouchers.handlers;
 
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.utils.Methods;
 import org.bukkit.entity.Player;
 
@@ -32,7 +31,7 @@ public class Connections {
             System.out.println(Methods.format("&fSuccessfully created a connection with MySQL."));
         } catch (Exception error) {
             System.out.println(Methods.format("&cFailed to create a connection with MySQL."));
-            Debugger.runReport(error);
+            error.printStackTrace();
         }
     }
 
@@ -45,7 +44,7 @@ public class Connections {
             System.out.println(Methods.format("&fSuccessfully closed the MySQL connection."));
         } catch (Exception error) {
             System.out.println(Methods.format("&cFailed to close the MySQL connection."));
-            Debugger.runReport(error);
+            error.printStackTrace();
         }
     }
 
@@ -64,7 +63,7 @@ public class Connections {
             System.out.println(Methods.format("&fSuccessfully saved the redeem in the MySQL database."));
         } catch (Exception error) {
             System.out.println(Methods.format("&cFailed to save the redeem data in the MySQL database."));
-            Debugger.runReport(error);
+            error.printStackTrace();
         }
     }
 

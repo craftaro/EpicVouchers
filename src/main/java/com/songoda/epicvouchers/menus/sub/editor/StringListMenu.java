@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.menus.sub;
+package com.songoda.epicvouchers.menus.sub.editor;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.AbstractAnvilGUI;
@@ -51,7 +51,7 @@ public class StringListMenu extends IconInv {
                 voucher.saveSetting(key.toLowerCase(), list);
                 new StringListMenu(instance, key, list, toEdit, voucher).open(player);
             }, (player, tuple) -> {
-                list.set(list.indexOf(tuple.x), tuple.y);
+                list.set(list.indexOf(tuple.getKey()), tuple.getValue());
                 voucher.saveSetting(key.toLowerCase(), list);
                 new StringListMenu(instance, key, list, toEdit, voucher).open(player);
             }));

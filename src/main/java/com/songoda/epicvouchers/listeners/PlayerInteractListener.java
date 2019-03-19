@@ -23,7 +23,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void voucherListener(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK || !event.hasItem()) {
             return;
         }
 
@@ -33,10 +33,10 @@ public class PlayerInteractListener implements Listener {
                 continue;
             }
 
-            ItemStack item = event.getPlayer().getItemInHand();
+            ItemStack item = event.getItem();
 
             if (voucher.getItemStack() != null) {
-                if(!voucher.getItemStack().isSimilar(item)) {
+                if (!voucher.getItemStack().isSimilar(item)) {
                     continue;
                 }
             } else {
@@ -54,19 +54,21 @@ public class PlayerInteractListener implements Listener {
 
             UUID uuid = player.getUniqueId();
 
-            if (instance.getCooldowns().isOnCoolDown(uuid)) {
-                player.sendMessage(instance.getLocale().getMessage("event.general.cooldown", instance.getCooldowns().getTime(uuid), voucher.getName(true)));
+            if (instance.getCoolDowns().isOnCoolDown(uuid)) {
+                player.sendMessage(instance.getLocale().getMessage("event.general.coolDown", instance.getCoolDowns().getTime(uuid), voucher.getName(true)));
                 return;
             }
 
             event.setCancelled(true);
 
             if (voucher.isConfirm()) {
-                new ConfirmMenu(instance, voucher).open(player);
+                new ConfirmMenu(instance,
+                        () -> instance.getVoucherExecutor().redeemVoucher(player, voucher, item, true, event),
+                        () -> {
+                        })
+                        .open(player);
                 return;
             }
-
-            instance.getVoucherExecutor().redeemVoucher(player, voucher, item, true);
         }
     }
 }

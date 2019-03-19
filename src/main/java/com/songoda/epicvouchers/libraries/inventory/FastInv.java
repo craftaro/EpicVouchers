@@ -535,4 +535,14 @@ public class FastInv implements InventoryHolder {
         this.cancelTasksOnClose = cancelTasksOnClose;
         return this;
     }
+
+    public void reOpen(Player player) {
+        player.closeInventory();
+        refresh();
+        player.openInventory(inventory);
+    }
+
+    public void refresh() {
+
+    }
 }

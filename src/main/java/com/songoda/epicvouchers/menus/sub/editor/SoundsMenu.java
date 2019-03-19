@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.menus.sub;
+package com.songoda.epicvouchers.menus.sub.editor;
 
 import com.google.common.base.Enums;
 import com.songoda.epicvouchers.EpicVouchers;
@@ -7,13 +7,11 @@ import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.libraries.inventory.icons.IntegerIcon;
 import com.songoda.epicvouchers.libraries.inventory.icons.StringIcon;
 import com.songoda.epicvouchers.menus.VoucherEditorMenu;
-import com.songoda.epicvouchers.utils.SoundUtils;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 
-import static org.bukkit.ChatColor.GRAY;
-import static org.bukkit.ChatColor.YELLOW;
+import static org.bukkit.ChatColor.*;
 
 public class SoundsMenu extends IconInv {
     public SoundsMenu(EpicVouchers instance, Voucher voucher) {
@@ -22,7 +20,7 @@ public class SoundsMenu extends IconInv {
         addIcon(1, new StringIcon(instance, "Sound", voucher.getSound(), (player, editString) -> {
             voucher.setSound(editString).saveSetting("sounds.sound", editString);
             new SoundsMenu(instance, voucher).open(player);
-        }, string -> Enums.getIfPresent(SoundUtils.class, string).isPresent()));
+        }, string -> Enums.getIfPresent(Sound.class, string).isPresent()));
 
         addIcon(2, new IntegerIcon(instance, "Pitch", voucher.getSoundPitch(), (player, number) -> {
             voucher.setSoundPitch(number).saveSetting("sounds.pitch", number);

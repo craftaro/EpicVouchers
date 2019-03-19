@@ -16,12 +16,12 @@ public class SettingsManager implements Listener {
     }
 
     public void updateSettings() {
-        for (settings s : settings.values()) {
+        for (Settings s : Settings.values()) {
             instance.getConfig().addDefault(s.setting, s.option);
         }
     }
 
-    public enum settings {
+    public enum Settings {
 
         CONFIRM_FILL_GLASS("Interface.Fill Interfaces With Glass", true),
         COOLDOWN_DELAY("Main.Cooldown Delay", 10),
@@ -38,7 +38,7 @@ public class SettingsManager implements Listener {
         private final String setting;
         private final Object option;
 
-        settings(String setting, Object option) {
+        Settings(String setting, Object option) {
             this.setting = setting;
             this.option = option;
         }

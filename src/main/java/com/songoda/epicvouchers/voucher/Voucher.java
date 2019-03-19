@@ -1,14 +1,18 @@
 package com.songoda.epicvouchers.voucher;
 
 import com.songoda.epicvouchers.EpicVouchers;
+import com.songoda.epicvouchers.events.ForceRedeemEvent;
+import com.songoda.epicvouchers.events.VoucherReceiveEvent;
 import com.songoda.epicvouchers.utils.Methods;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,51 +24,55 @@ import java.util.stream.Collectors;
 import static com.songoda.epicvouchers.utils.Methods.format;
 import static org.bukkit.Material.PAPER;
 
+@Getter
+@Setter
 @Accessors(chain = true)
 public class Voucher {
 
-    @Getter private final String key;
-    @Getter @Setter private String permission = "";
-    @Getter @Setter private Material material = PAPER;
-    @Getter @Setter private short data = 0;
-    @Getter @Setter private int cooldown = 0;
-    @Setter private String name;
-    @Setter private List<String> lore = new ArrayList<>();
-    @Getter @Setter private boolean glow = true;
-    @Getter @Setter private boolean confirm = true;
-    @Getter @Setter private boolean unbreakable = false;
-    @Getter @Setter private boolean hideAttributes = false;
-    @Getter @Setter private boolean removeItem = true;
-    @Getter @Setter private boolean feedPlayer = false;
-    @Getter @Setter private boolean healPlayer = false;
-    @Getter @Setter private boolean smiteEffect = false;
+    private final String key;
+    private final EpicVouchers instance;
+    private String permission = "";
+    private Material material = PAPER;
+    private short data = 0;
+    private int coolDown = 0;
+    private String name;
+    private List<String> lore = new ArrayList<>();
+    private boolean glow = true;
+    private boolean confirm = true;
+    private boolean unbreakable = false;
+    private boolean hideAttributes = false;
+    private boolean removeItem = true;
+    private boolean feedPlayer = false;
+    private boolean healPlayer = false;
+    private boolean smiteEffect = false;
 
-    @Setter private List<String> broadcasts = new ArrayList<>();
-    @Setter private List<String> messages = new ArrayList<>();
-    @Setter @Getter private List<String> commands = new ArrayList<>();
+    private List<String> broadcasts = new ArrayList<>();
+    private List<String> messages = new ArrayList<>();
+    private List<String> commands = new ArrayList<>();
 
-    @Setter private String actionBar;
+    private String actionBar;
 
-    @Setter private String title = "";
-    @Setter private String subTitle = "";
-    @Getter @Setter private int titleFadeIn = 0;
-    @Getter @Setter private int titleStay = 0;
-    @Getter @Setter private int titleFadeOut = 0;
+    private String title = "";
+    private String subTitle = "";
+    private int titleFadeIn = 0;
+    private int titleStay = 0;
+    private int titleFadeOut = 0;
 
-    @Getter @Setter private String sound = "";
-    @Getter @Setter private int soundPitch = 0;
+    private String sound = "";
+    private int soundPitch = 0;
 
-    @Getter @Setter private String particle = "";
-    @Getter @Setter private int particleAmount = 0;
+    private String particle = "";
+    private int particleAmount = 0;
 
-    @Getter @Setter private String effect = "";
-    @Getter @Setter private int effectAmplifier = 0;
-    @Getter @Setter private int effectDuration = 0;
+    private String effect = "";
+    private int effectAmplifier = 0;
+    private int effectDuration = 0;
 
-    @Getter @Setter private ItemStack itemStack;
+    private ItemStack itemStack;
 
-    public Voucher(String key) {
+    public Voucher(String key, EpicVouchers instance) {
         this.key = key;
+        this.instance = instance;
     }
 
     public ItemStack toItemStack() {
@@ -75,11 +83,11 @@ public class Voucher {
         ItemStack item = itemStack == null ? new ItemStack(material, amount, data) : itemStack;
         ItemMeta meta = item.getItemMeta();
 
-        if(meta == null) {
+        if (meta == null) {
             meta = Bukkit.getItemFactory().getItemMeta(material);
         }
 
-        if(!name.isEmpty()) {
+        if (!name.isEmpty()) {
             meta.setDisplayName(format(name));
         }
 
@@ -121,14 +129,60 @@ public class Voucher {
     }
 
     public void saveSetting(String key, Object value) {
-        ConfigurationSection cs = EpicVouchers.getInstance().getVouchersFile().getConfig().getConfigurationSection("vouchers." + getKey());
+        ConfigurationSection cs = instance.getVouchersFile().getConfig().getConfigurationSection("vouchers." + getKey());
         cs.set(key, value);
-        EpicVouchers.getInstance().getVouchersFile().saveConfig();
+        instance.getVouchersFile().saveConfig();
     }
 
     @Override
     public String toString() {
         return key;
+    }
+
+    public void giveAll(CommandSender sender, int amount) {
+        give(sender, new ArrayList<>(Bukkit.getOnlinePlayers()), amount);
+    }
+
+    public void give(CommandSender sender, List<Player> players, int amount) {
+        String giveMessage = instance.getLocale().getMessage("command.give.send")
+                .replaceAll("%player%", players.size() == 1 ? players.get(0).getName() : "everyone")
+                .replaceAll("%voucher%", getName(true))
+                .replaceAll("%amount%", String.valueOf(amount));
+
+        for (Player player : players) {
+            String receiveMessage = instance.getLocale().getMessage("command.give.receive")
+                    .replaceAll("%voucher%", getName(true))
+                    .replaceAll("%player%", player.getName())
+                    .replaceAll("%amount%", String.valueOf(amount));
+
+            VoucherReceiveEvent event = new VoucherReceiveEvent(player, getName(true), toItemStack(amount), amount, sender);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) {
+                sender.sendMessage(instance.getLocale().getMessage("command.give.cancelled"));
+                continue;
+            }
+
+            player.sendMessage(receiveMessage);
+            player.getInventory().addItem(toItemStack(amount));
+        }
+
+        sender.sendMessage(giveMessage);
+    }
+
+    public void forceRedeem(CommandSender sender, List<Player> players, int amount) {
+        for (Player player : players) {
+            ForceRedeemEvent event = new ForceRedeemEvent(player, getName(true), amount, sender);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled() || player.equals(sender)) {
+                continue;
+            }
+
+            for (int i = 0; i < amount; i++) {
+                instance.getVoucherExecutor().redeemVoucher(player, this, player.getItemInHand(), false, null);
+            }
+        }
     }
 
     public String getActionBar() {

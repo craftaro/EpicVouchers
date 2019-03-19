@@ -2,17 +2,19 @@ package com.songoda.epicvouchers;
 
 import com.songoda.epicvouchers.command.CommandManager;
 import com.songoda.epicvouchers.handlers.Connections;
-import com.songoda.epicvouchers.libraries.Bountiful;
+import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
 import com.songoda.epicvouchers.listeners.PlayerInteractListener;
 import com.songoda.epicvouchers.utils.*;
-import com.songoda.epicvouchers.voucher.*;
+import com.songoda.epicvouchers.voucher.CoolDownManager;
+import com.songoda.epicvouchers.voucher.Voucher;
+import com.songoda.epicvouchers.voucher.VoucherExecutor;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,22 +22,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.LinkedHashMap;
 
+@Getter
 public class EpicVouchers extends JavaPlugin {
 
-    @Getter private static EpicVouchers instance;
-    @Getter private final ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
-    @Getter private CommandManager commandManager;
-    @Getter private Connections connections;
-    @Getter private CoolDownManager cooldowns;
-    @Getter private Locale locale;
+    private final ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
+    private CommandManager commandManager;
+    private Connections connections;
+    private CoolDownManager coolDowns;
+    private Locale locale;
     private SettingsManager settingsManager;
-    @Getter private VoucherExecutor voucherExecutor;
-    @Getter private ConfigWrapper vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
-    @Getter private LinkedHashMap<String, Voucher> vouchers;
+    private VoucherExecutor voucherExecutor;
+    private ConfigWrapper vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
+    private LinkedHashMap<String, Voucher> vouchers;
 
     @Override
     public void onEnable() {
-        instance = this;
         Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
         Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
         Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &aEnabling&7..."));
@@ -47,17 +48,18 @@ public class EpicVouchers extends JavaPlugin {
 
         FastInv.init(this);
         IconInv.init(this);
-        Debugger.init(this);
+        BountifulAPI.init(this);
 
         this.settingsManager = new SettingsManager(this);
         this.settingsManager.updateSettings();
         this.vouchers = new LinkedHashMap<>();
+
         getConfig().options().copyDefaults(true);
         saveConfig();
 
         this.commandManager = new CommandManager(this);
         this.connections = new Connections(this);
-        this.cooldowns = new CoolDownManager(this);
+        this.coolDowns = new CoolDownManager(this);
         this.voucherExecutor = new VoucherExecutor(this);
 
         PluginManager manager = Bukkit.getServer().getPluginManager();
@@ -66,26 +68,27 @@ public class EpicVouchers extends JavaPlugin {
 
         File folder = getDataFolder();
         File voucherFile = new File(folder, "vouchers.yml");
+
         if (!voucherFile.exists()) {
             saveResource("vouchers.yml", true);
         }
 
         loadVouchersFromFile();
 
-        Bountiful.findVersion();
         connections.openMySQL();
+
+        new Metrics(this);
+
         Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
     }
 
     private void loadVouchersFromFile() {
         vouchers.clear();
-        /*
-         * Register Vouchers into VoucherManger from configuration
-         */
+
         if (vouchersFile.getConfig().contains("vouchers")) {
             for (String key : vouchersFile.getConfig().getConfigurationSection("vouchers").getKeys(false)) {
-
-                Voucher voucher = new Voucher(key);
+                key = key.toLowerCase();
+                Voucher voucher = new Voucher(key, this);
                 ConfigurationSection cs = vouchersFile.getConfig().getConfigurationSection("vouchers." + key);
                 Material material = cs.getString("material") == null || cs.getString("material").equals("") ? Material.PAPER :
                         Material.matchMaterial(cs.getString("material")) == null ? Material.PAPER : Material.matchMaterial(cs.getString("material"));
@@ -102,7 +105,7 @@ public class EpicVouchers extends JavaPlugin {
                 voucher.setRemoveItem(cs.getBoolean("remove-item", true));
                 voucher.setHealPlayer(cs.getBoolean("heal-player", false));
                 voucher.setSmiteEffect(cs.getBoolean("smite-effect", false));
-                voucher.setCooldown(cs.getInt("cooldown", 0));
+                voucher.setCoolDown(cs.getInt("coolDown", 0));
                 voucher.setBroadcasts(cs.getStringList("broadcasts"));
                 voucher.setMessages(cs.getStringList("messages"));
                 voucher.setCommands(cs.getStringList("commands"));
@@ -128,7 +131,6 @@ public class EpicVouchers extends JavaPlugin {
     public void reload() {
         vouchersFile.reloadConfig();
         loadVouchersFromFile();
-
         reloadConfig();
         saveConfig();
         locale.reloadMessages();

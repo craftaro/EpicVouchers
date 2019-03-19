@@ -15,13 +15,13 @@ public class CoolDownManager {
         this.instance = instance;
     }
 
-    void addCooldown(final UUID uuid, Voucher voucher) {
+    void addCoolDown(final UUID uuid, Voucher voucher) {
         if (Bukkit.getPlayer(uuid).hasPermission("epicvouchers.bypass")) {
             return;
         }
 
-        if (voucher.getCooldown() != 0) {
-            entries.put(uuid, System.currentTimeMillis() + voucher.getCooldown() * 1000);
+        if (voucher.getCoolDown() != 0) {
+            entries.put(uuid, System.currentTimeMillis() + voucher.getCoolDown() * 1000);
         } else {
             entries.put(uuid, System.currentTimeMillis() + instance.getConfig().getInt("Main.Cooldown Delay") * 1000);
         }

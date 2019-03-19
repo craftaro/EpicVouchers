@@ -1,4 +1,4 @@
-package com.songoda.epicvouchers.menus.sub;
+package com.songoda.epicvouchers.menus.sub.editor;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
@@ -9,8 +9,7 @@ import com.songoda.epicvouchers.menus.VoucherEditorMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.Material;
 
-import static org.bukkit.ChatColor.GRAY;
-import static org.bukkit.ChatColor.YELLOW;
+import static org.bukkit.ChatColor.*;
 
 public class ParticlesMenu extends IconInv {
     public ParticlesMenu(EpicVouchers instance, Voucher voucher) {

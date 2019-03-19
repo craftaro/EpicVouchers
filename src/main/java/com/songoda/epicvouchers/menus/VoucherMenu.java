@@ -36,7 +36,7 @@ public class VoucherMenu extends IconInv {
                     return;
                 }
 
-                Voucher voucher = new Voucher(anvilEvent.getName());
+                Voucher voucher = new Voucher(anvilEvent.getName(), instance);
                 voucher.setMaterial(PAPER);
                 voucher.setName("&f" + anvilEvent.getName());
 

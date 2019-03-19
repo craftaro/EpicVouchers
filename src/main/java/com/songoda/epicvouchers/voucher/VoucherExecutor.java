@@ -2,18 +2,19 @@ package com.songoda.epicvouchers.voucher;
 
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
-import com.songoda.epicvouchers.libraries.Bountiful;
+import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
-import com.songoda.epicvouchers.utils.Debugger;
 import com.songoda.epicvouchers.utils.Methods;
-import com.songoda.epicvouchers.utils.SoundUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
 
@@ -24,32 +25,42 @@ public class VoucherExecutor {
         this.instance = instance;
     }
 
-    public void redeemVoucher(Player player, Voucher voucher, ItemStack item, boolean manual) {
+    public void redeemVoucher(Player player, Voucher voucher, ItemStack item, boolean manual, @Nullable PlayerInteractEvent event) {
         try {
-            VoucherRedeemEvent event = new VoucherRedeemEvent(player, voucher.getName(true), item, manual);
-            Bukkit.getServer().getPluginManager().callEvent(event);
+            VoucherRedeemEvent redeemEvent = new VoucherRedeemEvent(player, voucher.getName(true), item, manual);
+            Bukkit.getServer().getPluginManager().callEvent(redeemEvent);
 
-            if (event.isCancelled()) {
+            if (redeemEvent.isCancelled()) {
                 return;
             }
 
             boolean duplication = false;
+            int slot = player.getInventory().getHeldItemSlot();
 
-            if (!player.getItemInHand().isSimilar(item)) {
-                duplication = true;
+            if (event != null) {
+                slot = event.getPlayer().getInventory().getHeldItemSlot();
+
+                try {
+                    if (event.getHand() == EquipmentSlot.OFF_HAND) slot = 40;
+                } catch (Exception | Error ignore) {
+                }
+
+                if (player.getInventory().getItem(slot) != null && !player.getInventory().getItem(slot).isSimilar(item)) {
+                    duplication = true;
+                }
             }
 
             if (!duplication) {
                 if (manual) {
-                    instance.getCooldowns().addCooldown(player.getUniqueId(), voucher);
+                    instance.getCoolDowns().addCoolDown(player.getUniqueId(), voucher);
                     if (voucher.isRemoveItem()) {
-                        ItemStack clone = player.getItemInHand().clone();
+                        ItemStack clone = item.clone();
                         if (clone.getAmount() <= 1) {
-                            clone.setType(Material.AIR);
+                            clone = null;
                         } else {
                             clone.setAmount(clone.getAmount() - 1);
                         }
-                        player.setItemInHand(clone);
+                        player.getInventory().setItem(slot, clone);
                         player.updateInventory();
                     }
                 }
@@ -112,7 +123,7 @@ public class VoucherExecutor {
                 }
                 if (voucher.getActionBar() != null && !voucher.getActionBar().isEmpty()) {
                     String actionbar = voucher.getActionBar().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
-                    Bountiful.sendActionBar(player, actionbar);
+                    BountifulAPI.sendActionBar(player, actionbar);
                 }
 
                 if (voucher.getTitle() != null && !voucher.getTitle().isEmpty()) {
@@ -123,20 +134,17 @@ public class VoucherExecutor {
                     int stay = voucher.getTitleStay();
                     int fadeout = voucher.getTitleFadeOut();
 
-                    Bountiful.sendTitle(player, fadein, stay, fadeout, title, subtitle);
+                    BountifulAPI.sendTitle(player, fadein, stay, fadeout, title, subtitle);
                 }
 
                 if (voucher.getSound() != null && !voucher.getSound().isEmpty()) {
-                    String sound = voucher.getSound();
-                    int pitch = voucher.getSoundPitch();
-                    SoundUtils.playSound(player, sound, pitch);
+                    player.getWorld().playSound(player.getLocation(), Sound.valueOf(voucher.getSound()), Integer.MAX_VALUE, voucher.getSoundPitch());
                 }
 
                 String particle = voucher.getParticle();
 
                 if (particle != null && !particle.isEmpty()) {
-                    int amount = voucher.getParticleAmount();
-                    player.getWorld().playEffect(player.getLocation(), Effect.valueOf(particle), amount);
+                    player.getWorld().playEffect(player.getLocation(), Effect.valueOf(particle), voucher.getParticleAmount());
                 }
 
                 String effect = voucher.getEffect();
@@ -153,9 +161,8 @@ public class VoucherExecutor {
                 instance.getLogger().log(Level.WARNING, Methods.format("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
             }
         } catch (Exception error) {
-            error.printStackTrace();
             instance.getLogger().log(Level.SEVERE, Methods.format("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
-            Debugger.runReport(error);
+            instance.getLogger().log(Level.SEVERE, error.getMessage());
         }
     }
 

@@ -3,7 +3,6 @@ package com.songoda.epicvouchers.libraries;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.utils.NMSUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -84,7 +83,7 @@ public class AbstractAnvilGUI {
                 inv.clear();
                 OnClose onClose = getOnClose();
                 Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
-                    if (onClose != null) onClose.OnClose(player, inv);
+                    if (onClose != null) onClose.onClose(player, inv);
                     destroy();
                 }, 1L);
             }
@@ -258,6 +257,12 @@ public class AbstractAnvilGUI {
         public void setWillDestroy(boolean destroy) {
             this.destroy = destroy;
         }
+    }
+
+    public static interface OnClose {
+
+        void onClose(Player player, Inventory inventory);
+
     }
 }
 

@@ -3,22 +3,15 @@ package com.songoda.epicvouchers.menus;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
-import com.songoda.epicvouchers.libraries.inventory.icons.Icon;
-import com.songoda.epicvouchers.libraries.inventory.icons.StringIcon;
-import com.songoda.epicvouchers.libraries.inventory.icons.StringListIcon;
-import com.songoda.epicvouchers.libraries.inventory.icons.ToggleableIcon;
-import com.songoda.epicvouchers.menus.sub.EffectsMenu;
-import com.songoda.epicvouchers.menus.sub.ParticlesMenu;
-import com.songoda.epicvouchers.menus.sub.SoundsMenu;
-import com.songoda.epicvouchers.menus.sub.TitlesMenu;
+import com.songoda.epicvouchers.libraries.inventory.icons.*;
+import com.songoda.epicvouchers.menus.sub.editor.*;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
-import static org.bukkit.ChatColor.GRAY;
-import static org.bukkit.ChatColor.YELLOW;
+import static org.bukkit.ChatColor.*;
 import static org.bukkit.Material.BOOK;
 
 public class VoucherEditorMenu extends IconInv {
