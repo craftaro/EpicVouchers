@@ -21,7 +21,7 @@ public class TitlesMenu extends IconInv {
         }));
 
         addIcon(2, new StringIcon(instance, "Subtitle", voucher.getSubTitle(), (player, editString) -> {
-            voucher.setTitle(editString).saveSetting("titles.title", editString);
+            voucher.setSubTitle(editString).saveSetting("titles.subtitle", editString);
             new TitlesMenu(instance, voucher).open(player);
         }));
 
