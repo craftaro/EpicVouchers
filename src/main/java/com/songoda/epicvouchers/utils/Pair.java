@@ -1,7 +1,6 @@
 package com.songoda.epicvouchers.utils;
 
 import java.io.Serializable;
-import javafx.beans.NamedArg;
 
 /**
  * <p>A convenience class to represent name-value pairs.</p>
@@ -12,31 +11,31 @@ public class Pair<K,V> implements Serializable{
     /**
      * Key of this <code>Pair</code>.
      */
-    private K key;
+    private String key;
 
     /**
      * Gets the key for this pair.
      * @return key for this pair
      */
-    public K getKey() { return key; }
+    public String getKey() { return key; }
 
     /**
      * Value of this this <code>Pair</code>.
      */
-    private V value;
+    private String value;
 
     /**
      * Gets the value for this pair.
      * @return value for this pair
      */
-    public V getValue() { return value; }
+    public String getValue() { return value; }
 
     /**
      * Creates a new pair
      * @param key The key for this pair
      * @param value The value to use for this pair
      */
-    public Pair(@NamedArg("key") K key, @NamedArg("value") V value) {
+    public Pair(String key, String value) {
         this.key = key;
         this.value = value;
     }
