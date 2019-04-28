@@ -33,6 +33,7 @@ public class SettingsManager implements Listener {
         DATABASE_USERNAME("Database.Username", "PUT_USERNAME_HERE"),
         DATABASE_PASSWORD("Database.Password", "PUT_PASSWORD_HERE"),
 
+        LANGUGE_MODE("System.Language Mode", "en_US"),
         DEBUGGER_ENABLED("System.Debugger Enabled", false);
 
         private final String setting;
