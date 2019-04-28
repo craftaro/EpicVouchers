@@ -1,6 +1,6 @@
 name: EpicVouchers
 main: com.songoda.epicvouchers.EpicVouchers
-version: ${project.version}
+version: maven-version-number
 author: Songoda
 website: https://songoda.host/epicvouchers
 description: Enhance your server with awesome customizable vouchers with a lot of features.

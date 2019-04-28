@@ -3,7 +3,7 @@ package com.songoda.epicvouchers.libraries.inventory.icons;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.AbstractAnvilGUI;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
-import javafx.util.Pair;
+import com.songoda.epicvouchers.utils.Pair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 

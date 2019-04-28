@@ -8,9 +8,12 @@ import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
 import com.songoda.epicvouchers.listeners.PlayerInteractListener;
 import com.songoda.epicvouchers.utils.*;
+import com.songoda.epicvouchers.utils.updateModules.LocaleModule;
 import com.songoda.epicvouchers.voucher.CoolDownManager;
 import com.songoda.epicvouchers.voucher.Voucher;
 import com.songoda.epicvouchers.voucher.VoucherExecutor;
+import com.songoda.update.Plugin;
+import com.songoda.update.SongodaUpdate;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -25,6 +28,8 @@ import java.util.LinkedHashMap;
 @Getter
 public class EpicVouchers extends JavaPlugin {
 
+    private static EpicVouchers INSTANCE;
+
     private final ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
     private CommandManager commandManager;
     private Connections connections;
@@ -35,8 +40,13 @@ public class EpicVouchers extends JavaPlugin {
     private ConfigWrapper vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
     private LinkedHashMap<String, Voucher> vouchers;
 
+    public static EpicVouchers getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void onEnable() {
+        INSTANCE = this;
         Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
         Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
         Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &aEnabling&7..."));
@@ -45,6 +55,11 @@ public class EpicVouchers extends JavaPlugin {
         Locale.init(this);
         Locale.saveDefaultLocale("en_US");
         this.locale = Locale.getLocale(getConfig().getString("Locale", "en_US"));
+
+        //Running Songoda Updater
+        Plugin plugin = new Plugin(this, 25);
+        plugin.addModule(new LocaleModule());
+        SongodaUpdate.load(plugin);
 
         FastInv.init(this);
         IconInv.init(this);
