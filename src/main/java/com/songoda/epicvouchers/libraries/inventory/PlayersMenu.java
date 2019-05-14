@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.YELLOW;
 import static org.bukkit.Material.*;
 
 public abstract class PlayersMenu extends FastInv {

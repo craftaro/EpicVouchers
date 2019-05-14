@@ -7,14 +7,16 @@ import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
 import com.songoda.epicvouchers.listeners.PlayerInteractListener;
-import com.songoda.epicvouchers.utils.*;
+import com.songoda.epicvouchers.utils.ConfigWrapper;
+import com.songoda.epicvouchers.utils.Methods;
+import com.songoda.epicvouchers.utils.ServerVersion;
+import com.songoda.epicvouchers.utils.SettingsManager;
 import com.songoda.epicvouchers.utils.updateModules.LocaleModule;
 import com.songoda.epicvouchers.voucher.CoolDownManager;
 import com.songoda.epicvouchers.voucher.Voucher;
 import com.songoda.epicvouchers.voucher.VoucherExecutor;
 import com.songoda.update.Plugin;
 import com.songoda.update.SongodaUpdate;
-import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,7 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.LinkedHashMap;
 
-@Getter
 public class EpicVouchers extends JavaPlugin {
 
     private static EpicVouchers INSTANCE;
@@ -160,4 +161,39 @@ public class EpicVouchers extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
     }
 
+    public ServerVersion getServerVersion() {
+        return this.serverVersion;
+    }
+
+    public CommandManager getCommandManager() {
+        return this.commandManager;
+    }
+
+    public Connections getConnections() {
+        return this.connections;
+    }
+
+    public CoolDownManager getCoolDowns() {
+        return this.coolDowns;
+    }
+
+    public Locale getLocale() {
+        return this.locale;
+    }
+
+    public SettingsManager getSettingsManager() {
+        return this.settingsManager;
+    }
+
+    public VoucherExecutor getVoucherExecutor() {
+        return this.voucherExecutor;
+    }
+
+    public ConfigWrapper getVouchersFile() {
+        return this.vouchersFile;
+    }
+
+    public LinkedHashMap<String, Voucher> getVouchers() {
+        return this.vouchers;
+    }
 }
