@@ -11,7 +11,8 @@ import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.YELLOW;
 
 public class SoundsMenu extends IconInv {
     public SoundsMenu(EpicVouchers instance, Voucher voucher) {

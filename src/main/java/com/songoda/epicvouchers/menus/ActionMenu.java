@@ -15,7 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 
 import static com.songoda.epicvouchers.utils.Methods.format;
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.YELLOW;
 import static org.bukkit.Material.BARRIER;
 
 public class ActionMenu extends FastInv {

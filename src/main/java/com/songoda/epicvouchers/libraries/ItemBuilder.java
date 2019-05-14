@@ -11,7 +11,10 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A complete {@link ItemStack} inventory for FastInv (only works on 1.8+).

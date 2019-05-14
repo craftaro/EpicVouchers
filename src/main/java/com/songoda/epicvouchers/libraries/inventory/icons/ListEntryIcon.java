@@ -10,7 +10,8 @@ import org.bukkit.event.inventory.ClickType;
 import java.util.function.BiConsumer;
 
 import static com.songoda.epicvouchers.libraries.AbstractAnvilGUI.AnvilSlot.INPUT_LEFT;
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.YELLOW;
 import static org.bukkit.Material.PAPER;
 
 public class ListEntryIcon extends Icon {

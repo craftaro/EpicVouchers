@@ -3,20 +3,17 @@
     <artifactId>EpicVouchers</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <version>maven-version-number</version>
-
     <build>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
+        <finalName>EpicLevels-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

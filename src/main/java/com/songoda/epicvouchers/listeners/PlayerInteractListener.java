@@ -55,7 +55,7 @@ public class PlayerInteractListener implements Listener {
             UUID uuid = player.getUniqueId();
 
             if (instance.getCoolDowns().isOnCoolDown(uuid)) {
-                player.sendMessage(instance.getLocale().getMessage("event.general.coolDown", instance.getCoolDowns().getTime(uuid), voucher.getName(true)));
+                player.sendMessage(instance.getLocale().getMessage("event.general.cooldown", instance.getCoolDowns().getTime(uuid), voucher.getName(true)));
                 return;
             }
 
@@ -67,7 +67,8 @@ public class PlayerInteractListener implements Listener {
                         () -> {
                         })
                         .open(player);
-                return;
+            } else {
+                instance.getVoucherExecutor().redeemVoucher(player, voucher, item, true, event);
             }
         }
     }

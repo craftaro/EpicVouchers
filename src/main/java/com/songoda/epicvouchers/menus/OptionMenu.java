@@ -10,8 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import static com.songoda.epicvouchers.utils.Methods.format;
-import static org.bukkit.ChatColor.*;
-import static org.bukkit.Material.valueOf;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.YELLOW;
 import static org.bukkit.Material.*;
 
 public class OptionMenu extends FastInv {

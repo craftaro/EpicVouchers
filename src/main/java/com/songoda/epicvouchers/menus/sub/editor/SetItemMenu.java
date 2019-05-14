@@ -11,7 +11,8 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.YELLOW;
 
 public class SetItemMenu extends FastInv {
 

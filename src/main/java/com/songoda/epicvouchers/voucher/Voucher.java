@@ -4,8 +4,6 @@ import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
 import com.songoda.epicvouchers.events.VoucherReceiveEvent;
 import com.songoda.epicvouchers.utils.Methods;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,13 +17,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 import static com.songoda.epicvouchers.utils.Methods.format;
 import static org.bukkit.Material.PAPER;
 
-@Getter
-@Setter
 @Accessors(chain = true)
 public class Voucher {
 
@@ -146,7 +143,7 @@ public class Voucher {
     public void give(CommandSender sender, List<Player> players, int amount) {
         String giveMessage = instance.getLocale().getMessage("command.give.send")
                 .replaceAll("%player%", players.size() == 1 ? players.get(0).getName() : "everyone")
-                .replaceAll("%voucher%", getName(true))
+                .replaceAll("%voucher%", Matcher.quoteReplacement(getName(true)))
                 .replaceAll("%amount%", String.valueOf(amount));
 
         for (Player player : players) {
@@ -197,4 +194,278 @@ public class Voucher {
         return format(title);
     }
 
+    public String getKey() {
+        return this.key;
+    }
+
+    public EpicVouchers getInstance() {
+        return this.instance;
+    }
+
+    public String getPermission() {
+        return this.permission;
+    }
+
+    public Material getMaterial() {
+        return this.material;
+    }
+
+    public short getData() {
+        return this.data;
+    }
+
+    public int getCoolDown() {
+        return this.coolDown;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public List<String> getLore() {
+        return this.lore;
+    }
+
+    public boolean isGlow() {
+        return this.glow;
+    }
+
+    public boolean isConfirm() {
+        return this.confirm;
+    }
+
+    public boolean isUnbreakable() {
+        return this.unbreakable;
+    }
+
+    public boolean isHideAttributes() {
+        return this.hideAttributes;
+    }
+
+    public boolean isRemoveItem() {
+        return this.removeItem;
+    }
+
+    public boolean isFeedPlayer() {
+        return this.feedPlayer;
+    }
+
+    public boolean isHealPlayer() {
+        return this.healPlayer;
+    }
+
+    public boolean isSmiteEffect() {
+        return this.smiteEffect;
+    }
+
+    public List<String> getBroadcasts() {
+        return this.broadcasts;
+    }
+
+    public List<String> getMessages() {
+        return this.messages;
+    }
+
+    public List<String> getCommands() {
+        return this.commands;
+    }
+
+    public int getTitleFadeIn() {
+        return this.titleFadeIn;
+    }
+
+    public int getTitleStay() {
+        return this.titleStay;
+    }
+
+    public int getTitleFadeOut() {
+        return this.titleFadeOut;
+    }
+
+    public String getSound() {
+        return this.sound;
+    }
+
+    public int getSoundPitch() {
+        return this.soundPitch;
+    }
+
+    public String getParticle() {
+        return this.particle;
+    }
+
+    public int getParticleAmount() {
+        return this.particleAmount;
+    }
+
+    public String getEffect() {
+        return this.effect;
+    }
+
+    public int getEffectAmplifier() {
+        return this.effectAmplifier;
+    }
+
+    public int getEffectDuration() {
+        return this.effectDuration;
+    }
+
+    public ItemStack getItemStack() {
+        return this.itemStack;
+    }
+
+    public Voucher setPermission(String permission) {
+        this.permission = permission;
+        return this;
+    }
+
+    public Voucher setMaterial(Material material) {
+        this.material = material;
+        return this;
+    }
+
+    public Voucher setData(short data) {
+        this.data = data;
+        return this;
+    }
+
+    public Voucher setCoolDown(int coolDown) {
+        this.coolDown = coolDown;
+        return this;
+    }
+
+    public Voucher setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Voucher setLore(List<String> lore) {
+        this.lore = lore;
+        return this;
+    }
+
+    public Voucher setGlow(boolean glow) {
+        this.glow = glow;
+        return this;
+    }
+
+    public Voucher setConfirm(boolean confirm) {
+        this.confirm = confirm;
+        return this;
+    }
+
+    public Voucher setUnbreakable(boolean unbreakable) {
+        this.unbreakable = unbreakable;
+        return this;
+    }
+
+    public Voucher setHideAttributes(boolean hideAttributes) {
+        this.hideAttributes = hideAttributes;
+        return this;
+    }
+
+    public Voucher setRemoveItem(boolean removeItem) {
+        this.removeItem = removeItem;
+        return this;
+    }
+
+    public Voucher setFeedPlayer(boolean feedPlayer) {
+        this.feedPlayer = feedPlayer;
+        return this;
+    }
+
+    public Voucher setHealPlayer(boolean healPlayer) {
+        this.healPlayer = healPlayer;
+        return this;
+    }
+
+    public Voucher setSmiteEffect(boolean smiteEffect) {
+        this.smiteEffect = smiteEffect;
+        return this;
+    }
+
+    public Voucher setBroadcasts(List<String> broadcasts) {
+        this.broadcasts = broadcasts;
+        return this;
+    }
+
+    public Voucher setMessages(List<String> messages) {
+        this.messages = messages;
+        return this;
+    }
+
+    public Voucher setCommands(List<String> commands) {
+        this.commands = commands;
+        return this;
+    }
+
+    public Voucher setActionBar(String actionBar) {
+        this.actionBar = actionBar;
+        return this;
+    }
+
+    public Voucher setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Voucher setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+        return this;
+    }
+
+    public Voucher setTitleFadeIn(int titleFadeIn) {
+        this.titleFadeIn = titleFadeIn;
+        return this;
+    }
+
+    public Voucher setTitleStay(int titleStay) {
+        this.titleStay = titleStay;
+        return this;
+    }
+
+    public Voucher setTitleFadeOut(int titleFadeOut) {
+        this.titleFadeOut = titleFadeOut;
+        return this;
+    }
+
+    public Voucher setSound(String sound) {
+        this.sound = sound;
+        return this;
+    }
+
+    public Voucher setSoundPitch(int soundPitch) {
+        this.soundPitch = soundPitch;
+        return this;
+    }
+
+    public Voucher setParticle(String particle) {
+        this.particle = particle;
+        return this;
+    }
+
+    public Voucher setParticleAmount(int particleAmount) {
+        this.particleAmount = particleAmount;
+        return this;
+    }
+
+    public Voucher setEffect(String effect) {
+        this.effect = effect;
+        return this;
+    }
+
+    public Voucher setEffectAmplifier(int effectAmplifier) {
+        this.effectAmplifier = effectAmplifier;
+        return this;
+    }
+
+    public Voucher setEffectDuration(int effectDuration) {
+        this.effectDuration = effectDuration;
+        return this;
+    }
+
+    public Voucher setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+        return this;
+    }
 }

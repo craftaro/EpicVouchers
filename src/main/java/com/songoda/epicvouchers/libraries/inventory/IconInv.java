@@ -1,6 +1,5 @@
 package com.songoda.epicvouchers.libraries.inventory;
 
-import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.icons.Icon;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
