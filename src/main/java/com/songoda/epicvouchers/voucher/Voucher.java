@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 import static com.songoda.epicvouchers.utils.Methods.format;
@@ -142,7 +143,7 @@ public class Voucher {
     public void give(CommandSender sender, List<Player> players, int amount) {
         String giveMessage = instance.getLocale().getMessage("command.give.send")
                 .replaceAll("%player%", players.size() == 1 ? players.get(0).getName() : "everyone")
-                .replaceAll("%voucher%", getName(true))
+                .replaceAll("%voucher%", Matcher.quoteReplacement(getName(true)))
                 .replaceAll("%amount%", String.valueOf(amount));
 
         for (Player player : players) {
