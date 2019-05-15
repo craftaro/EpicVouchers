@@ -5,7 +5,7 @@
     <version>maven-version-number</version>
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <finalName>EpicLevels-${project.version}</finalName>
+        <finalName>EpicVouchers-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
