@@ -91,3 +91,5 @@ target/classes/en_US\.lang
 target/classes/plugin\.yml
 
 target/classes/vouchers\.yml
+
+dependency-reduced-pom\.xml

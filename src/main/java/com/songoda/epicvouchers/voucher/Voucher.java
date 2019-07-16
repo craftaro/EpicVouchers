@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.songoda.epicvouchers.utils.Methods.format;
@@ -141,16 +142,17 @@ public class Voucher {
     }
 
     public void give(CommandSender sender, List<Player> players, int amount) {
+
         String giveMessage = instance.getLocale().getMessage("command.give.send")
-                .replaceAll("%player%", players.size() == 1 ? players.get(0).getName() : "everyone")
-                .replaceAll("%voucher%", Matcher.quoteReplacement(getName(true)))
-                .replaceAll("%amount%", String.valueOf(amount));
+                .replaceAll(Pattern.quote("%player%"), players.size() == 1 ? players.get(0).getName() : "everyone")
+                .replaceAll(Pattern.quote("%voucher%"), Matcher.quoteReplacement(getName(true)))
+                .replaceAll(Pattern.quote("%amount%"), String.valueOf(amount));
 
         for (Player player : players) {
             String receiveMessage = instance.getLocale().getMessage("command.give.receive")
-                    .replaceAll("%voucher%", getName(true))
-                    .replaceAll("%player%", player.getName())
-                    .replaceAll("%amount%", String.valueOf(amount));
+                    .replaceAll(Pattern.quote("%voucher%"), getName(true))
+                    .replaceAll(Pattern.quote("%player%"), player.getName())
+                    .replaceAll(Pattern.quote("%amount%"), String.valueOf(amount));
 
             VoucherReceiveEvent event = new VoucherReceiveEvent(player, getName(true), toItemStack(amount), amount, sender);
             Bukkit.getServer().getPluginManager().callEvent(event);
