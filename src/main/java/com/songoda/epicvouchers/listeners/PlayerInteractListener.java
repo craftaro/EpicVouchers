@@ -29,7 +29,7 @@ public class PlayerInteractListener implements Listener {
 
         for (Voucher voucher : instance.getVouchers().values()) {
             Player player = event.getPlayer();
-            if (!player.hasPermission(voucher.getPermission())) {
+            if (!player.hasPermission(voucher.getPermission()) && !voucher.getPermission().isEmpty()) {
                 continue;
             }
 
