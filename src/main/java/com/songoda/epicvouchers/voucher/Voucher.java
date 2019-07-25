@@ -149,7 +149,7 @@ public class Voucher {
 
         for (Player player : players) {
             String receiveMessage = instance.getLocale().getMessage("command.give.receive")
-                    .processPlaceholder("%voucher%", Matcher.quoteReplacement(getName(true))
+                    .processPlaceholder("%voucher%", Matcher.quoteReplacement(getName(true)))
                     .processPlaceholder("%player%", player.getName())
                     .processPlaceholder("%amount%", String.valueOf(amount)).getPrefixedMessage();
 
