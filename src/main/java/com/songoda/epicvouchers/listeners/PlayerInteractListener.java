@@ -56,7 +56,10 @@ public class PlayerInteractListener implements Listener {
             event.setCancelled(true);
 
             if (instance.getCoolDowns().isOnCoolDown(uuid)) {
-                player.sendMessage(instance.getLocale().getMessage("event.general.cooldown", instance.getCoolDowns().getTime(uuid), voucher.getName(true)));
+                instance.getLocale().getMessage("event.general.cooldown")
+                        .processPlaceholder("time", instance.getCoolDowns().getTime(uuid))
+                        .processPlaceholder("voucher", voucher.getName(true))
+                        .sendPrefixedMessage(player);
                 return;
             }
 

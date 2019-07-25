@@ -24,15 +24,16 @@ public class EfCommand extends BaseCommand {
     @Description("Reload all configuration files.")
     public void onReload(CommandSender sender) {
         instance.reload();
-        sender.sendMessage(instance.getLocale().getMessage("command.reload.success"));
+        instance.getLocale().getMessage("command.reload.success").sendPrefixedMessage(sender);
     }
 
     @Subcommand("list")
     @CommandPermission("epicvouchers.admin")
     @Description("List all available vouchers.")
     public void onList(CommandSender sender) {
-        String message = instance.getLocale().getMessage("command.list.list").replaceAll("%list%", String.join(", ", instance.getVouchers().keySet()));
-        sender.sendMessage(message);
+        instance.getLocale().getMessage("command.list.list")
+                .processPlaceholder("%list%", String.join(", ", instance.getVouchers().keySet()))
+                .sendPrefixedMessage(sender);
     }
 
     @Subcommand("give")
@@ -57,7 +58,11 @@ public class EfCommand extends BaseCommand {
     @Description("Force user to redeem voucher.")
     public void onForce(CommandSender sender, @Flags("other") Player player, Voucher voucher, int amount) {
         voucher.forceRedeem(sender, Collections.singletonList(player), amount);
-        sender.sendMessage(instance.getLocale().getMessage("command.force.send", player.getName(), voucher.getName(true), String.valueOf(amount)));
+        instance.getLocale().getMessage("command.force.send")
+                .processPlaceholder("player", player.getName())
+                .processPlaceholder("voucher", voucher.getName(true))
+                .processPlaceholder("amount", String.valueOf(amount))
+                .sendPrefixedMessage(sender);
     }
 
     @Subcommand("forceall")
@@ -66,7 +71,11 @@ public class EfCommand extends BaseCommand {
     @Description("Force all online users to redeem voucher.")
     public void onForceAll(CommandSender sender, Voucher voucher, int amount) {
         voucher.forceRedeem(sender, new ArrayList<>(Bukkit.getOnlinePlayers()), amount);
-        sender.sendMessage(instance.getLocale().getMessage("command.force.send", "everyone", voucher.getName(true), String.valueOf(amount)));
+        instance.getLocale().getMessage("command.force.send")
+                .processPlaceholder("player", "everyone")
+                .processPlaceholder("voucher", voucher.getName(true))
+                .processPlaceholder("amount", String.valueOf(amount))
+                .sendPrefixedMessage(sender);
     }
 
     @Subcommand("editor")

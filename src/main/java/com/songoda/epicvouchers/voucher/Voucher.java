@@ -142,21 +142,21 @@ public class Voucher {
 
     public void give(CommandSender sender, List<Player> players, int amount) {
         String giveMessage = instance.getLocale().getMessage("command.give.send")
-                .replaceAll("%player%", players.size() == 1 ? players.get(0).getName() : "everyone")
-                .replaceAll("%voucher%", Matcher.quoteReplacement(getName(true)))
-                .replaceAll("%amount%", String.valueOf(amount));
+                .processPlaceholder("%player%", players.size() == 1 ? players.get(0).getName() : "everyone")
+                .processPlaceholder("%voucher%", Matcher.quoteReplacement(getName(true)))
+                .processPlaceholder("%amount%", String.valueOf(amount)).getPrefixedMessage();
 
         for (Player player : players) {
             String receiveMessage = instance.getLocale().getMessage("command.give.receive")
-                    .replaceAll("%voucher%", getName(true))
-                    .replaceAll("%player%", player.getName())
-                    .replaceAll("%amount%", String.valueOf(amount));
+                    .processPlaceholder("%voucher%", getName(true))
+                    .processPlaceholder("%player%", player.getName())
+                    .processPlaceholder("%amount%", String.valueOf(amount)).getPrefixedMessage();
 
             VoucherReceiveEvent event = new VoucherReceiveEvent(player, getName(true), toItemStack(amount), amount, sender);
             Bukkit.getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) {
-                sender.sendMessage(instance.getLocale().getMessage("command.give.cancelled"));
+                instance.getLocale().getMessage("command.give.cancelled").sendPrefixedMessage(sender);
                 continue;
             }
 
