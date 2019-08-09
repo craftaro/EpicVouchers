@@ -13,19 +13,19 @@ import static org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS;
 
 public class ConfirmMenu extends FastInv {
     public ConfirmMenu(EpicVouchers instance, Runnable success, Runnable failure) {
-        super(27, instance.getLocale().getMessage("interface.confirmsettings.title"));
+        super(27, instance.getLocale().getMessage("interface.confirmsettings.title").getMessage());
 
         addItem(11, new ItemBuilder(Material.EMERALD)
-                .name(instance.getLocale().getMessage("interface.confirmsettings.confirmitemname"))
-                .lore(instance.getLocale().getMessage("interface.confirmsettings.confirmitemlore"))
+                .name(instance.getLocale().getMessage("interface.confirmsettings.confirmitemname").getMessage())
+                .lore(instance.getLocale().getMessage("interface.confirmsettings.confirmitemlore").getMessage())
                 .addGlow().build(), event -> {
             event.getPlayer().closeInventory();
             success.run();
         });
 
         addItem(15, new ItemBuilder(Material.REDSTONE_BLOCK)
-                .name(instance.getLocale().getMessage("interface.confirmsettings.cancelitemname"))
-                .lore(instance.getLocale().getMessage("interface.confirmsettings.cancelitemlore"))
+                .name(instance.getLocale().getMessage("interface.confirmsettings.cancelitemname").getMessage())
+                .lore(instance.getLocale().getMessage("interface.confirmsettings.cancelitemlore").getMessage())
                 .enchant(DURABILITY, 1)
                 .addFlags(HIDE_ENCHANTS)
                 .build(), event -> {

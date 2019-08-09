@@ -11,6 +11,7 @@ import com.songoda.epicvouchers.utils.ConfigWrapper;
 import com.songoda.epicvouchers.utils.Methods;
 import com.songoda.epicvouchers.utils.ServerVersion;
 import com.songoda.epicvouchers.utils.SettingsManager;
+import com.songoda.epicvouchers.utils.locale.Locale;
 import com.songoda.epicvouchers.utils.updateModules.LocaleModule;
 import com.songoda.epicvouchers.voucher.CoolDownManager;
 import com.songoda.epicvouchers.voucher.Voucher;
@@ -52,10 +53,9 @@ public class EpicVouchers extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
         Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &aEnabling&7..."));
 
-        // Locales
-        Locale.init(this);
-        Locale.saveDefaultLocale("en_US");
-        this.locale = Locale.getLocale(getConfig().getString("Locale", "en_US"));
+        // Setup language
+        new Locale(this, "en_US");
+        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
 
         //Running Songoda Updater
         Plugin plugin = new Plugin(this, 25);
@@ -149,7 +149,8 @@ public class EpicVouchers extends JavaPlugin {
         loadVouchersFromFile();
         reloadConfig();
         saveConfig();
-        locale.reloadMessages();
+        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
+        this.locale.reloadMessages();
     }
 
     @Override
