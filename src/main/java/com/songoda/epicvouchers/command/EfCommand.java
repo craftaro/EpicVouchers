@@ -32,7 +32,7 @@ public class EfCommand extends BaseCommand {
     @Description("List all available vouchers.")
     public void onList(CommandSender sender) {
         instance.getLocale().getMessage("command.list.list")
-                .processPlaceholder("%list%", String.join(", ", instance.getVouchers().keySet()))
+                .processPlaceholder("list", String.join(", ", instance.getVouchers().keySet()))
                 .sendPrefixedMessage(sender);
     }
 
