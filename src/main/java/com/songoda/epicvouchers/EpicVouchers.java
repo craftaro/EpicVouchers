@@ -149,7 +149,7 @@ public class EpicVouchers extends JavaPlugin {
         loadVouchersFromFile();
         reloadConfig();
         settingsManager.updateSettings();
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
+        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", "en_US"));
         this.locale.reloadMessages();
     }
 
