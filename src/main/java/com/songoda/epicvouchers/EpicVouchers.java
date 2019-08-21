@@ -148,7 +148,7 @@ public class EpicVouchers extends JavaPlugin {
         vouchersFile.reloadConfig();
         loadVouchersFromFile();
         reloadConfig();
-        saveConfig();
+        settingsManager.updateSettings();
         this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
         this.locale.reloadMessages();
     }
