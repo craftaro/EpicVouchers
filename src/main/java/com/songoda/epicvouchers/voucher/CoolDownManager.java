@@ -28,11 +28,14 @@ public class CoolDownManager {
     }
 
     public boolean isOnCoolDown(UUID uuid) {
-        if(!entries.containsKey(uuid)) {
+
+        Long time = entries.get(uuid);
+
+        if (time == null) {
             return false;
         }
 
-        if(entries.get(uuid) >= System.currentTimeMillis()) {
+        if (time >= System.currentTimeMillis()) {
             return true;
         }
 
@@ -41,10 +44,12 @@ public class CoolDownManager {
     }
 
     public long getTime(UUID uuid) {
-        if(!entries.containsKey(uuid)) {
+        final Long time = entries.get(uuid);
+
+        if (time == null) {
             return 0L;
         }
 
-        return (entries.get(uuid) - System.currentTimeMillis()) / 1000;
+        return (time - System.currentTimeMillis()) / 1000;
     }
 }
