@@ -45,7 +45,7 @@ public class VoucherExecutor {
                 } catch (Exception | Error ignore) {
                 }
 
-                if (player.getInventory().getItem(slot) != null && !player.getInventory().getItem(slot).isSimilar(item)) {
+                if(!item.isSimilar(player.getInventory().getItem(slot))) {
                     duplication = true;
                 }
             }
@@ -54,13 +54,12 @@ public class VoucherExecutor {
                 if (manual) {
                     instance.getCoolDowns().addCoolDown(player.getUniqueId(), voucher);
                     if (voucher.isRemoveItem()) {
-                        ItemStack clone = item.clone();
-                        if (clone.getAmount() <= 1) {
-                            clone = null;
+                        if (item.getAmount() <= 1) {
+                            item = null;
                         } else {
-                            clone.setAmount(clone.getAmount() - 1);
+                            item.setAmount(item.getAmount() - 1);
                         }
-                        player.getInventory().setItem(slot, clone);
+                        player.getInventory().setItem(slot, item);
                         player.updateInventory();
                     }
                 }
