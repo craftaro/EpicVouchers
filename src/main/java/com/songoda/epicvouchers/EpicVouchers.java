@@ -106,9 +106,17 @@ public class EpicVouchers extends JavaPlugin {
                 key = key.toLowerCase();
                 Voucher voucher = new Voucher(key, this);
                 ConfigurationSection cs = vouchersFile.getConfig().getConfigurationSection("vouchers." + key);
-                Material material = cs.getString("material") == null || cs.getString("material").equals("") ? Material.PAPER :
-                        Material.matchMaterial(cs.getString("material")) == null ? Material.PAPER : Material.matchMaterial(cs.getString("material"));
 
+                Material material;
+                String stringMaterial = cs.getString("material");
+                
+                if (stringMaterial == null || stringMaterial.isEmpty()) {
+                    material = Material.PAPER;
+                } else {
+                    material = Material.matchMaterial(stringMaterial);
+                    if(material == null) material = Material.PAPER;
+                }
+                
                 voucher.setPermission(cs.getString("permission", ""));
                 voucher.setMaterial(material);
                 voucher.setData((short) cs.getInt("data", 0));

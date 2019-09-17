@@ -28,7 +28,6 @@ public class CoolDownManager {
     }
 
     public boolean isOnCoolDown(UUID uuid) {
-
         Long time = entries.get(uuid);
 
         if (time == null) {
@@ -44,7 +43,7 @@ public class CoolDownManager {
     }
 
     public long getTime(UUID uuid) {
-        final Long time = entries.get(uuid);
+        Long time = entries.get(uuid);
 
         if (time == null) {
             return 0L;
