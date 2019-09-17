@@ -141,7 +141,6 @@ public class Voucher {
     }
 
     public void give(CommandSender sender, List<Player> players, int amount) {
-
         String giveMessage = instance.getLocale().getMessage("command.give.send")
                 .processPlaceholder("player", players.size() == 1 ? players.get(0).getName() : "everyone")
                 .processPlaceholder("voucher", Matcher.quoteReplacement(getName(true)))
