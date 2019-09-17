@@ -55,7 +55,7 @@ public class EpicVouchers extends JavaPlugin {
 
         // Setup language
         new Locale(this, "en_US");
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
+        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", "en_US"));
 
         //Running Songoda Updater
         Plugin plugin = new Plugin(this, 25);
