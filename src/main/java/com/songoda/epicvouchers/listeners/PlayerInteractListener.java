@@ -3,6 +3,8 @@ package com.songoda.epicvouchers.listeners;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.menus.ConfirmMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,7 +41,9 @@ public class PlayerInteractListener implements Listener {
             else {
                 // material matches - verify the name + lore
                 final ItemMeta meta = item.getItemMeta();
-                if (meta == null || !meta.hasDisplayName() || !meta.hasLore() || !meta.getDisplayName().equals(voucher.getName(true)) || !meta.getLore().equals(voucher.getLore(true)))
+                if (meta == null || !meta.hasDisplayName() || !meta.hasLore()
+                        || !ChatColor.stripColor(meta.getDisplayName()).equals(ChatColor.stripColor(voucher.getName(true)))
+                        || !meta.getLore().equals(voucher.getLore(true)))
                     continue;
             }
 
