@@ -31,19 +31,17 @@ public class PlayerInteractListener implements Listener {
         final Player player = event.getPlayer();
 
         for (Voucher voucher : instance.getVouchers().values()) {
-            final ItemStack voucherItem = voucher.getItemStack();
-
+            final ItemStack voucherItem = voucher.toItemStack();
             // does the item they're holding match this voucher?
-            if (voucherItem != null && !voucher.getItemStack().isSimilar(item))
-                continue;
-            else if (item.getType() != voucher.getMaterial() || item.getDurability() != voucher.getData())
-                continue;
+
+            if (voucherItem != null && !voucherItem.isSimilar(item)) continue;
+            else if (item.getType() != voucher.getMaterial() || item.getDurability() != voucher.getData()) continue;
             else {
                 // material matches - verify the name + lore
                 final ItemMeta meta = item.getItemMeta();
-                if (meta == null || !meta.hasDisplayName() || !meta.hasLore()
+                if (meta == null || !meta.hasDisplayName()
                         || !ChatColor.stripColor(meta.getDisplayName()).equals(ChatColor.stripColor(voucher.getName(true)))
-                        || !meta.getLore().equals(voucher.getLore(true)))
+                        || (meta.hasLore() && !meta.getLore().equals(voucher.getLore(true))))
                     continue;
             }
 

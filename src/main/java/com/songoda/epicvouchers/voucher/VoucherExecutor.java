@@ -8,6 +8,7 @@ import com.songoda.epicvouchers.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -113,9 +114,14 @@ public class VoucherExecutor {
                     } else if (command.startsWith("[chat]")) {
                         command = command.replace("[chat]", "");
                         player.chat(command);
-                    } else if (command.startsWith("[delay]")) {
-                        //command = command.replace("[delay]", "");
-                        throw new UnsupportedOperationException("delay is not supported yet");
+                    } else if (command.startsWith("[delay")) {
+                        String delayCommand = StringUtils.substringBetween(command, "[", "]");
+                        int delay = Integer.parseInt(delayCommand.split("-", 2)[1]);
+                        final String finalCommand = command.replace("[" + delayCommand + "]", "");
+                        final ItemStack heldItem = item;
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
+                            runCommand(finalCommand, player);
+                        }, 20*delay);
                     } else {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
@@ -162,7 +168,31 @@ public class VoucherExecutor {
         } catch (Exception error) {
             instance.getLogger().log(Level.SEVERE, Methods.format("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
             instance.getLogger().log(Level.SEVERE, error.getMessage());
+            error.printStackTrace();
         }
     }
 
+    private void runCommand(String command, Player player) {
+        if (command.startsWith("[player]")) {
+            command = command.replace("[player]", "");
+            player.performCommand(command);
+        } else if (command.startsWith("[op]")) {
+            command = command.replace("[op]", "");
+            boolean wasOp = player.isOp();
+            PlayerCommandListener.addCommand(player.getUniqueId(), command);
+            player.setOp(true);
+            player.performCommand(command);
+
+            if (!wasOp) {
+                player.setOp(false);
+            }
+
+            PlayerCommandListener.removeCommand(player.getUniqueId());
+        } else if (command.startsWith("[chat]")) {
+            command = command.replace("[chat]", "");
+            player.chat(command);
+        } else {
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+    }
 }
