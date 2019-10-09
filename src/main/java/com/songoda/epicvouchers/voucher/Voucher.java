@@ -1,9 +1,9 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
 import com.songoda.epicvouchers.events.VoucherReceiveEvent;
-import com.songoda.epicvouchers.utils.Methods;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,10 +17,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
-import static com.songoda.epicvouchers.utils.Methods.format;
 import static org.bukkit.Material.PAPER;
 
 @Accessors(chain = true)
@@ -85,7 +83,7 @@ public class Voucher {
         }
 
         if (!name.isEmpty()) {
-            meta.setDisplayName(format(name));
+            meta.setDisplayName(TextUtils.formatText(name));
         }
 
         if (lore != null) {
@@ -110,25 +108,25 @@ public class Voucher {
     }
 
     public String getName(boolean applyFormatting) {
-        return applyFormatting ? format(name) : name;
+        return applyFormatting ? TextUtils.formatText(name) : name;
     }
 
     public List<String> getLore(boolean applyFormatting) {
-        return applyFormatting ? lore.stream().map(Methods::format).collect(Collectors.toList()) : lore;
+        return applyFormatting ? lore.stream().map(TextUtils::formatText).collect(Collectors.toList()) : lore;
     }
 
     public List<String> getBroadcasts(boolean applyFormatting) {
-        return applyFormatting ? broadcasts.stream().map(Methods::format).collect(Collectors.toList()) : broadcasts;
+        return applyFormatting ? broadcasts.stream().map(TextUtils::formatText).collect(Collectors.toList()) : broadcasts;
     }
 
     public List<String> getMessages(boolean applyFormatting) {
-        return applyFormatting ? messages.stream().map(Methods::format).collect(Collectors.toList()) : messages;
+        return applyFormatting ? messages.stream().map(TextUtils::formatText).collect(Collectors.toList()) : messages;
     }
 
     public void saveSetting(String key, Object value) {
-        ConfigurationSection cs = instance.getVouchersFile().getConfig().getConfigurationSection("vouchers." + getKey());
+        ConfigurationSection cs = instance.getConfig().getConfigurationSection("vouchers." + getKey());
         cs.set(key, value);
-        instance.getVouchersFile().saveConfig();
+        instance.getVouchersConfig().save();
     }
 
     @Override
@@ -183,15 +181,15 @@ public class Voucher {
     }
 
     public String getActionBar() {
-        return format(actionBar);
+        return TextUtils.formatText(actionBar);
     }
 
     public String getSubTitle() {
-        return format(subTitle);
+        return TextUtils.formatText(subTitle);
     }
 
     public String getTitle() {
-        return format(title);
+        return TextUtils.formatText(title);
     }
 
     public String getKey() {

@@ -5,3 +5,9 @@ author: Songoda
 website: https://songoda.host/epicvouchers
 description: Enhance your server with awesome customizable vouchers with a lot of features.
 api-version: 1.13
+commands:
+  epicvouchers:
+    description: View information on this plugin.
+    default: true
+    aliases: [ev]
+    usage: /ev

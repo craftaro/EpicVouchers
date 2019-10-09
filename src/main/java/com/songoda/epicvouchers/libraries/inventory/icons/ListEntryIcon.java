@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.libraries.inventory.icons;
 
+import com.songoda.core.gui.AnvilGui;
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.libraries.AbstractAnvilGUI;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.utils.Pair;
 import org.bukkit.entity.Player;
@@ -9,7 +9,6 @@ import org.bukkit.event.inventory.ClickType;
 
 import java.util.function.BiConsumer;
 
-import static com.songoda.epicvouchers.libraries.AbstractAnvilGUI.AnvilSlot.INPUT_LEFT;
 import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.YELLOW;
 import static org.bukkit.Material.PAPER;
@@ -23,12 +22,12 @@ public class ListEntryIcon extends Icon {
                 return;
             }
 
-            AbstractAnvilGUI anvilGUI = new AbstractAnvilGUI(instance, event.getPlayer(), anvilEvent -> onEdit.accept(event.getPlayer(), new Pair<String, String>(entry, anvilEvent.getName())));
+            AnvilGui gui = new AnvilGui(event.getPlayer());
+            gui.setTitle("Current: " + entry);
+            gui.setAction(aevent -> onEdit.accept(event.getPlayer(), new Pair<>(entry, gui.getInputText().trim())));
+                instance.getGuiManager().showGUI(event.getPlayer(), gui);
+            });
 
-            anvilGUI.setSlot(INPUT_LEFT, new ItemBuilder(PAPER).name(entry).build());
-            anvilGUI.open();
-        });
 
-
+        }
     }
-}

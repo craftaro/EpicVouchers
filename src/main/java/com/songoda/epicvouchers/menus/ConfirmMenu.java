@@ -1,9 +1,10 @@
 package com.songoda.epicvouchers.menus;
 
+import com.songoda.core.compatibility.CompatibleMaterial;
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
-import com.songoda.epicvouchers.utils.ServerVersion;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +13,7 @@ import static org.bukkit.enchantments.Enchantment.DURABILITY;
 import static org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS;
 
 public class ConfirmMenu extends FastInv {
+
     public ConfirmMenu(EpicVouchers instance, Runnable success, Runnable failure) {
         super(27, instance.getLocale().getMessage("interface.confirmsettings.title").getMessage());
 
@@ -34,8 +36,7 @@ public class ConfirmMenu extends FastInv {
         });
 
         if (instance.getConfig().getBoolean("Interface.Fill Interfaces With Glass")) {
-            ItemStack fillItem = instance.getServerVersion().isServerVersionAtLeast(ServerVersion.V1_13) ? new ItemStack(Material.valueOf("GRAY_STAINED_GLASS_PANE")) :
-                    new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, (short) 7);
+            ItemStack fillItem = CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem();
 
             fill(new ItemBuilder(fillItem).name(ChatColor.RESET.toString()).build());
         }

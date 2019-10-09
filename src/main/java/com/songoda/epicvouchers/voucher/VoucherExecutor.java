@@ -1,10 +1,10 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
 import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
-import com.songoda.epicvouchers.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
@@ -15,7 +15,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
 
@@ -26,7 +25,7 @@ public class VoucherExecutor {
         this.instance = instance;
     }
 
-    public void redeemVoucher(Player player, Voucher voucher, ItemStack item, boolean manual, @Nullable PlayerInteractEvent event) {
+    public void redeemVoucher(Player player, Voucher voucher, ItemStack item, boolean manual, PlayerInteractEvent event) {
         try {
             VoucherRedeemEvent redeemEvent = new VoucherRedeemEvent(player, voucher.getName(true), item, manual);
             Bukkit.getServer().getPluginManager().callEvent(redeemEvent);
@@ -46,7 +45,7 @@ public class VoucherExecutor {
                 } catch (Exception | Error ignore) {
                 }
 
-                if(!item.isSimilar(player.getInventory().getItem(slot))) {
+                if (!item.isSimilar(player.getInventory().getItem(slot))) {
                     duplication = true;
                 }
             }
@@ -121,7 +120,7 @@ public class VoucherExecutor {
                         final ItemStack heldItem = item;
                         Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
                             runCommand(finalCommand, player);
-                        }, 20*delay);
+                        }, 20 * delay);
                     } else {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
@@ -160,13 +159,13 @@ public class VoucherExecutor {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));
                 }
 
-                instance.getLogger().log(Level.INFO, Methods.format("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.INFO, TextUtils.formatText("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
                 instance.getConnections().saveRedeem(player, voucher.getName(true));
             } else {
-                instance.getLogger().log(Level.WARNING, Methods.format("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.WARNING, TextUtils.formatText("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
             }
         } catch (Exception error) {
-            instance.getLogger().log(Level.SEVERE, Methods.format("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
+            instance.getLogger().log(Level.SEVERE, TextUtils.formatText("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
             instance.getLogger().log(Level.SEVERE, error.getMessage());
             error.printStackTrace();
         }

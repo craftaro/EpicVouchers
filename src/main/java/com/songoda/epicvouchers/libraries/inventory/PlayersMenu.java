@@ -1,13 +1,11 @@
 package com.songoda.epicvouchers.libraries.inventory;
 
+import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.menus.ActionMenu;
-import com.songoda.epicvouchers.utils.NMSUtil;
-import com.songoda.epicvouchers.utils.ServerVersion;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +17,8 @@ import java.util.stream.IntStream;
 
 import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.YELLOW;
-import static org.bukkit.Material.*;
+import static org.bukkit.Material.ARROW;
+import static org.bukkit.Material.BARRIER;
 
 public abstract class PlayersMenu extends FastInv {
     private final int SLOTS = 17;
@@ -53,7 +52,7 @@ public abstract class PlayersMenu extends FastInv {
 
             Player player = players.get(index);
 
-            ItemStack itemStack = new ItemStack(NMSUtil.getVersionNumber() > 12 ? PLAYER_HEAD : Material.valueOf("SKULL_ITEM"));
+            ItemStack itemStack = CompatibleMaterial.PLAYER_HEAD.getItem();
 
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
@@ -96,8 +95,7 @@ public abstract class PlayersMenu extends FastInv {
         }
 
         if (instance.getConfig().getBoolean("Interface.Fill Interfaces With Glass")) {
-            ItemStack fillItem = instance.getServerVersion().isServerVersionAtLeast(ServerVersion.V1_13) ? new ItemStack(Material.valueOf("GRAY_STAINED_GLASS_PANE")) :
-                    new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, (short) 7);
+            ItemStack fillItem = CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem();
 
             IntStream.rangeClosed(SLOTS + 1, 26).forEach(slot -> {
                 if (getInventory().getItem(slot) == null)

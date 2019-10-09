@@ -1,45 +1,42 @@
 package com.songoda.epicvouchers;
 
-import com.songoda.epicvouchers.command.CommandManager;
+import com.songoda.core.SongodaCore;
+import com.songoda.core.SongodaPlugin;
+import com.songoda.core.commands.CommandManager;
+import com.songoda.core.compatibility.CompatibleMaterial;
+import com.songoda.core.configuration.Config;
+import com.songoda.core.gui.GuiManager;
+import com.songoda.epicvouchers.commands.*;
 import com.songoda.epicvouchers.handlers.Connections;
 import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
 import com.songoda.epicvouchers.listeners.PlayerInteractListener;
-import com.songoda.epicvouchers.utils.ConfigWrapper;
-import com.songoda.epicvouchers.utils.Methods;
-import com.songoda.epicvouchers.utils.ServerVersion;
-import com.songoda.epicvouchers.utils.SettingsManager;
-import com.songoda.epicvouchers.utils.locale.Locale;
-import com.songoda.epicvouchers.utils.updateModules.LocaleModule;
+import com.songoda.epicvouchers.settings.Settings;
 import com.songoda.epicvouchers.voucher.CoolDownManager;
 import com.songoda.epicvouchers.voucher.Voucher;
 import com.songoda.epicvouchers.voucher.VoucherExecutor;
-import com.songoda.update.Plugin;
-import com.songoda.update.SongodaUpdate;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 
-public class EpicVouchers extends JavaPlugin {
+public class EpicVouchers extends SongodaPlugin {
 
     private static EpicVouchers INSTANCE;
 
-    private final ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
-    private CommandManager commandManager;
+    private final GuiManager guiManager = new GuiManager(this);
     private Connections connections;
     private CoolDownManager coolDowns;
-    private Locale locale;
-    private SettingsManager settingsManager;
     private VoucherExecutor voucherExecutor;
-    private ConfigWrapper vouchersFile = new ConfigWrapper(this, "", "vouchers.yml");
+    private CommandManager commandManager;
+    private Config vouchersConfig = new Config(this, "vouchers.yml");
     private LinkedHashMap<String, Voucher> vouchers;
 
     public static EpicVouchers getInstance() {
@@ -47,33 +44,43 @@ public class EpicVouchers extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public void onPluginLoad() {
         INSTANCE = this;
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &aEnabling&7..."));
+    }
 
-        // Setup language
-        new Locale(this, "en_US");
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", "en_US"));
+    @Override
+    public void onPluginDisable() {
+        connections.closeMySQL();
+    }
 
-        //Running Songoda Updater
-        Plugin plugin = new Plugin(this, 25);
-        plugin.addModule(new LocaleModule());
-        SongodaUpdate.load(plugin);
+    @Override
+    public void onPluginEnable() {
+        // Run Songoda Updater
+        SongodaCore.registerPlugin(this, 25, CompatibleMaterial.EMERALD);
+
+        // Setup Config
+        Settings.setupConfig();
+        this.setLocale(Settings.LANGUGE_MODE.getString(), false);
+
+        // Register commands
+        this.commandManager = new CommandManager(this);
+        this.commandManager.addCommand(new CommandEpicVouchers(this))
+                .addSubCommands(
+                        new CommandEditor(this),
+                        new CommandForce(this),
+                        new CommandForceAll(this),
+                        new CommandGive(this),
+                        new CommandGiveAll(this),
+                        new CommandList(this),
+                        new CommandReload(this)
+                );
 
         FastInv.init(this);
         IconInv.init(this);
         BountifulAPI.init(this);
 
-        this.settingsManager = new SettingsManager(this);
-        this.settingsManager.updateSettings();
         this.vouchers = new LinkedHashMap<>();
 
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-
-        this.commandManager = new CommandManager(this);
         this.connections = new Connections(this);
         this.coolDowns = new CoolDownManager(this);
         this.voucherExecutor = new VoucherExecutor(this);
@@ -92,31 +99,27 @@ public class EpicVouchers extends JavaPlugin {
         loadVouchersFromFile();
 
         connections.openMySQL();
-
-        new Metrics(this);
-
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
     }
 
     private void loadVouchersFromFile() {
         vouchers.clear();
 
-        if (vouchersFile.getConfig().contains("vouchers")) {
-            for (String key : vouchersFile.getConfig().getConfigurationSection("vouchers").getKeys(false)) {
+        if (vouchersConfig.contains("vouchers")) {
+            for (String key : vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
                 key = key.toLowerCase();
                 Voucher voucher = new Voucher(key, this);
-                ConfigurationSection cs = vouchersFile.getConfig().getConfigurationSection("vouchers." + key);
+                ConfigurationSection cs = vouchersConfig.getConfigurationSection("vouchers." + key);
 
                 Material material;
                 String stringMaterial = cs.getString("material");
-                
+
                 if (stringMaterial == null || stringMaterial.isEmpty()) {
                     material = Material.PAPER;
                 } else {
                     material = Material.matchMaterial(stringMaterial);
-                    if(material == null) material = Material.PAPER;
+                    if (material == null) material = Material.PAPER;
                 }
-                
+
                 voucher.setPermission(cs.getString("permission", ""));
                 voucher.setMaterial(material);
                 voucher.setData((short) cs.getInt("data", 0));
@@ -152,30 +155,17 @@ public class EpicVouchers extends JavaPlugin {
         }
     }
 
-    public void reload() {
-        vouchersFile.reloadConfig();
+    @Override
+    public void onConfigReload() {
+        vouchersConfig.load();
         loadVouchersFromFile();
-        reloadConfig();
-        settingsManager.updateSettings();
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", "en_US"));
+        this.setLocale(getConfig().getString("System.Language Mode"), true);
         this.locale.reloadMessages();
     }
 
     @Override
-    public void onDisable() {
-        connections.closeMySQL();
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&7EpicVouchers " + this.getDescription().getVersion() + " by &5Songoda <3&7!"));
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&7Action: &cDisabling&7..."));
-        Bukkit.getConsoleSender().sendMessage(Methods.format("&a============================="));
-    }
-
-    public ServerVersion getServerVersion() {
-        return this.serverVersion;
-    }
-
-    public CommandManager getCommandManager() {
-        return this.commandManager;
+    public List<Config> getExtraConfig() {
+        return Collections.singletonList(vouchersConfig);
     }
 
     public Connections getConnections() {
@@ -186,23 +176,23 @@ public class EpicVouchers extends JavaPlugin {
         return this.coolDowns;
     }
 
-    public Locale getLocale() {
-        return this.locale;
-    }
-
-    public SettingsManager getSettingsManager() {
-        return this.settingsManager;
-    }
-
     public VoucherExecutor getVoucherExecutor() {
         return this.voucherExecutor;
     }
 
-    public ConfigWrapper getVouchersFile() {
-        return this.vouchersFile;
+    public Config getVouchersConfig() {
+        return this.vouchersConfig;
     }
 
     public LinkedHashMap<String, Voucher> getVouchers() {
         return this.vouchers;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    public GuiManager getGuiManager() {
+        return guiManager;
     }
 }

@@ -1,9 +1,10 @@
 package com.songoda.epicvouchers.libraries.inventory.icons;
 
+import com.songoda.core.compatibility.ServerVersion;
+import com.songoda.core.gui.AnvilGui;
+import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.libraries.AbstractAnvilGUI;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
-import com.songoda.epicvouchers.utils.ServerVersion;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,8 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
-import static com.songoda.epicvouchers.libraries.AbstractAnvilGUI.AnvilSlot.INPUT_LEFT;
-import static com.songoda.epicvouchers.utils.Methods.format;
 import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.WHITE;
 
@@ -30,12 +29,12 @@ public class StringIcon extends Icon {
     }
 
     public StringIcon(EpicVouchers instance, String string, String current, BiConsumer<Player, String> consumer, Predicate<String> predicate) {
-        this(instance, new ItemBuilder(instance.getServerVersion().isServerVersionAtLeast(ServerVersion.V1_14) ? Material.OAK_SIGN : Material.valueOf("SIGN")).name(ChatColor.YELLOW + string)
+        this(instance, new ItemBuilder(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_14) ? Material.OAK_SIGN : Material.valueOf("SIGN")).name(ChatColor.YELLOW + string)
                 .lore(GRAY + "Current: " + WHITE + current, GRAY + "Right click to edit", GRAY + "Left click to clear").build(), current, consumer, predicate, false);
     }
 
     public StringIcon(EpicVouchers instance, String string, String current, BiConsumer<Player, String> consumer, Predicate<String> predicate, boolean noLeft) {
-        this(instance, new ItemBuilder(instance.getServerVersion().isServerVersionAtLeast(ServerVersion.V1_14) ? Material.OAK_SIGN : Material.valueOf("SIGN")).name(ChatColor.YELLOW + string)
+        this(instance, new ItemBuilder(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_14) ? Material.OAK_SIGN : Material.valueOf("SIGN")).name(ChatColor.YELLOW + string)
                 .lore(GRAY + "Current: " + WHITE + current, GRAY + "Right click to edit", GRAY + "Left click to clear").build(), current, consumer, predicate, noLeft);
     }
 
@@ -47,18 +46,20 @@ public class StringIcon extends Icon {
         super(itemStack, event -> {
             if (!noLeft && event.getClickType() == ClickType.LEFT) {
                 consumer.accept(event.getPlayer(), "");
-                event.getPlayer().sendMessage(format("&7Successfully cleared&7."));
+                event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully cleared&7."));
             } else {
-                AbstractAnvilGUI anvilGUI = new AbstractAnvilGUI(instance, event.getPlayer(), anvilEvent -> {
-                    if (!predicate.test(anvilEvent.getName())) {
-                        event.getPlayer().sendMessage(format("&cFailed to set value to: " + anvilEvent.getName()));
+                AnvilGui gui = new AnvilGui(event.getPlayer());
+                gui.setTitle("current:" + current);
+                gui.setAction(aevent -> {
+                    final String msg = gui.getInputText().trim();
+                    if (!predicate.test(msg)) {
+                        event.getPlayer().sendMessage(TextUtils.formatText("&cFailed to set value to: " + msg));
                         return;
                     }
-                    consumer.accept(event.getPlayer(), anvilEvent.getName());
-                    event.getPlayer().sendMessage(format("&7Successfully set to &r{changed}&7.", "{changed}", anvilEvent.getName()));
+                    consumer.accept(event.getPlayer(), msg);
+                    event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully set to &r" + msg + "&7."));
                 });
-                anvilGUI.setSlot(INPUT_LEFT, new ItemBuilder(instance.getServerVersion().isServerVersionAtLeast(ServerVersion.V1_14) ? Material.OAK_SIGN : Material.valueOf("SIGN")).name(current).build());
-                anvilGUI.open();
+                instance.getGuiManager().showGUI(event.getPlayer(), gui);
             }
 
         });
