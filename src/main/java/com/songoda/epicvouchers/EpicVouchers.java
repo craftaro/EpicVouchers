@@ -86,6 +86,9 @@ public class EpicVouchers extends SongodaPlugin {
         this.voucherExecutor = new VoucherExecutor(this);
 
         PluginManager manager = Bukkit.getServer().getPluginManager();
+
+        // Listeners
+        guiManager.init();
         manager.registerEvents(new PlayerInteractListener(this), this);
         manager.registerEvents(new PlayerCommandListener(), this);
 
