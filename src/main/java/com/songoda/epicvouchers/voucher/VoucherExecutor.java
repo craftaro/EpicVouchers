@@ -1,20 +1,20 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
 import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
-import com.songoda.epicvouchers.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
 
@@ -25,7 +25,7 @@ public class VoucherExecutor {
         this.instance = instance;
     }
 
-    public void redeemVoucher(Player player, Voucher voucher, ItemStack item, boolean manual, @Nullable PlayerInteractEvent event) {
+    public void redeemVoucher(Player player, Voucher voucher, ItemStack item, boolean manual, PlayerInteractEvent event) {
         try {
             VoucherRedeemEvent redeemEvent = new VoucherRedeemEvent(player, voucher.getName(true), item, manual);
             Bukkit.getServer().getPluginManager().callEvent(redeemEvent);
@@ -45,7 +45,7 @@ public class VoucherExecutor {
                 } catch (Exception | Error ignore) {
                 }
 
-                if (player.getInventory().getItem(slot) != null && !player.getInventory().getItem(slot).isSimilar(item)) {
+                if (!item.isSimilar(player.getInventory().getItem(slot))) {
                     duplication = true;
                 }
             }
@@ -54,13 +54,12 @@ public class VoucherExecutor {
                 if (manual) {
                     instance.getCoolDowns().addCoolDown(player.getUniqueId(), voucher);
                     if (voucher.isRemoveItem()) {
-                        ItemStack clone = item.clone();
-                        if (clone.getAmount() <= 1) {
-                            clone = null;
+                        if (item.getAmount() <= 1) {
+                            item = null;
                         } else {
-                            clone.setAmount(clone.getAmount() - 1);
+                            item.setAmount(item.getAmount() - 1);
                         }
-                        player.getInventory().setItem(slot, clone);
+                        player.getInventory().setItem(slot, item);
                         player.updateInventory();
                     }
                 }
@@ -114,9 +113,14 @@ public class VoucherExecutor {
                     } else if (command.startsWith("[chat]")) {
                         command = command.replace("[chat]", "");
                         player.chat(command);
-                    } else if (command.startsWith("[delay]")) {
-                        //command = command.replace("[delay]", "");
-                        throw new UnsupportedOperationException("delay is not supported yet");
+                    } else if (command.startsWith("[delay")) {
+                        String delayCommand = StringUtils.substringBetween(command, "[", "]");
+                        int delay = Integer.parseInt(delayCommand.split("-", 2)[1]);
+                        final String finalCommand = command.replace("[" + delayCommand + "]", "");
+                        final ItemStack heldItem = item;
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
+                            runCommand(finalCommand, player);
+                        }, 20 * delay);
                     } else {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
@@ -155,15 +159,39 @@ public class VoucherExecutor {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));
                 }
 
-                instance.getLogger().log(Level.INFO, Methods.format("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.INFO, TextUtils.formatText("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
                 instance.getConnections().saveRedeem(player, voucher.getName(true));
             } else {
-                instance.getLogger().log(Level.WARNING, Methods.format("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.WARNING, TextUtils.formatText("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
             }
         } catch (Exception error) {
-            instance.getLogger().log(Level.SEVERE, Methods.format("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
+            instance.getLogger().log(Level.SEVERE, TextUtils.formatText("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
             instance.getLogger().log(Level.SEVERE, error.getMessage());
+            error.printStackTrace();
         }
     }
 
+    private void runCommand(String command, Player player) {
+        if (command.startsWith("[player]")) {
+            command = command.replace("[player]", "");
+            player.performCommand(command);
+        } else if (command.startsWith("[op]")) {
+            command = command.replace("[op]", "");
+            boolean wasOp = player.isOp();
+            PlayerCommandListener.addCommand(player.getUniqueId(), command);
+            player.setOp(true);
+            player.performCommand(command);
+
+            if (!wasOp) {
+                player.setOp(false);
+            }
+
+            PlayerCommandListener.removeCommand(player.getUniqueId());
+        } else if (command.startsWith("[chat]")) {
+            command = command.replace("[chat]", "");
+            player.chat(command);
+        } else {
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+    }
 }

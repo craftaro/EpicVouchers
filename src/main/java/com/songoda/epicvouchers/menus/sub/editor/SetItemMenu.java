@@ -1,10 +1,10 @@
 package com.songoda.epicvouchers.menus.sub.editor;
 
+import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.menus.OptionMenu;
-import com.songoda.epicvouchers.utils.ServerVersion;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,9 +21,7 @@ public class SetItemMenu extends FastInv {
 
         setDefaultCancel(false);
 
-        fill(new ItemBuilder(instance.getServerVersion().isServerVersionAtLeast(ServerVersion.V1_13) ?
-                new ItemStack(Material.valueOf("GRAY_STAINED_GLASS_PANE")) :
-                new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, (short) 7))
+        fill(new ItemBuilder(CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem())
                 .name(ChatColor.RESET.toString()).build(), event -> event.setCancelled(true));
 
         addItem(13, null);
@@ -48,7 +46,7 @@ public class SetItemMenu extends FastInv {
 
             ItemStack itemStack = event.getInventory().getInventory().getItem(13);
 
-            if(event.getClickType() == ClickType.RIGHT) {
+            if (event.getClickType() == ClickType.RIGHT) {
                 new OptionMenu(instance, voucher).open(event.getPlayer());
                 voucher.setName("");
                 voucher.setLore(null);

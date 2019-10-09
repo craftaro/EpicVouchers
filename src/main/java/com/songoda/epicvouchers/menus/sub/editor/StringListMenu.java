@@ -1,19 +1,17 @@
 package com.songoda.epicvouchers.menus.sub.editor;
 
+import com.songoda.core.gui.AnvilGui;
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.libraries.AbstractAnvilGUI;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.libraries.inventory.icons.ListEntryIcon;
 import com.songoda.epicvouchers.menus.VoucherEditorMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.songoda.epicvouchers.libraries.AbstractAnvilGUI.AnvilSlot.INPUT_LEFT;
 import static org.bukkit.ChatColor.*;
 import static org.bukkit.Material.PAPER;
 
@@ -34,14 +32,13 @@ public class StringListMenu extends IconInv {
                 .build());
 
         addIcon(size - 1, new ItemBuilder(PAPER).name(GREEN + "Add to list").build(), event -> {
-            AbstractAnvilGUI anvilGUI = new AbstractAnvilGUI(instance, event.getPlayer(), anvilEvent -> {
-                list.add(anvilEvent.getName());
+            AnvilGui gui = new AnvilGui(event.getPlayer());
+            gui.setAction(aevent -> {
+                list.add(gui.getInputText().trim());
                 voucher.saveSetting(key.toLowerCase(), list);
                 new StringListMenu(instance, key, list, toEdit, voucher).open(event.getPlayer());
             });
-
-            anvilGUI.setSlot(INPUT_LEFT, new ItemStack(PAPER));
-            anvilGUI.open();
+            instance.getGuiManager().showGUI(event.getPlayer(), gui);
         });
 
         for (int i = 0; i < list.size(); i++) {
