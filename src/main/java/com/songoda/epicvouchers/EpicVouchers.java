@@ -17,14 +17,13 @@ import com.songoda.epicvouchers.settings.Settings;
 import com.songoda.epicvouchers.voucher.CoolDownManager;
 import com.songoda.epicvouchers.voucher.Voucher;
 import com.songoda.epicvouchers.voucher.VoucherExecutor;
+import com.songoda.epicvouchers.voucher.VoucherManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 
-import java.io.File;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class EpicVouchers extends SongodaPlugin {
@@ -32,12 +31,13 @@ public class EpicVouchers extends SongodaPlugin {
     private static EpicVouchers INSTANCE;
 
     private final GuiManager guiManager = new GuiManager(this);
+    private CommandManager commandManager;
+    private VoucherManager voucherManager;
+
     private Connections connections;
     private CoolDownManager coolDowns;
     private VoucherExecutor voucherExecutor;
-    private CommandManager commandManager;
     private Config vouchersConfig = new Config(this, "vouchers.yml");
-    private LinkedHashMap<String, Voucher> vouchers;
 
     public static EpicVouchers getInstance() {
         return INSTANCE;
@@ -51,6 +51,7 @@ public class EpicVouchers extends SongodaPlugin {
     @Override
     public void onPluginDisable() {
         connections.closeMySQL();
+        saveVouchers();
     }
 
     @Override
@@ -79,11 +80,10 @@ public class EpicVouchers extends SongodaPlugin {
         IconInv.init(this);
         BountifulAPI.init(this);
 
-        this.vouchers = new LinkedHashMap<>();
-
         this.connections = new Connections(this);
         this.coolDowns = new CoolDownManager(this);
         this.voucherExecutor = new VoucherExecutor(this);
+        this.voucherManager = new VoucherManager();
 
         PluginManager manager = Bukkit.getServer().getPluginManager();
 
@@ -92,21 +92,18 @@ public class EpicVouchers extends SongodaPlugin {
         manager.registerEvents(new PlayerInteractListener(this), this);
         manager.registerEvents(new PlayerCommandListener(), this);
 
-        File folder = getDataFolder();
-        File voucherFile = new File(folder, "vouchers.yml");
-
-        if (!voucherFile.exists()) {
-            saveResource("vouchers.yml", true);
-        }
+        saveResource("vouchers.yml", false);
+        vouchersConfig.load();
 
         loadVouchersFromFile();
 
         connections.openMySQL();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::saveVouchers, 6000, 6000);
     }
 
     private void loadVouchersFromFile() {
-        vouchers.clear();
-        vouchersConfig.load();
+        voucherManager.clearVouchers();
 
         if (vouchersConfig.contains("vouchers")) {
             for (String key : vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
@@ -124,39 +121,80 @@ public class EpicVouchers extends SongodaPlugin {
                     if (material == null) material = Material.PAPER;
                 }
 
-                voucher.setPermission(cs.getString("permission", ""));
-                voucher.setMaterial(material);
-                voucher.setData((short) cs.getInt("data", 0));
-                voucher.setName(cs.getString("name", "default"));
-                voucher.setLore(cs.getStringList("lore"));
-                voucher.setGlow(cs.getBoolean("glow", false));
-                voucher.setConfirm(cs.getBoolean("confirm", true));
-                voucher.setUnbreakable(cs.getBoolean("unbreakable", false));
-                voucher.setHideAttributes(cs.getBoolean("hide-attributes", false));
-                voucher.setRemoveItem(cs.getBoolean("remove-item", true));
-                voucher.setHealPlayer(cs.getBoolean("heal-player", false));
-                voucher.setSmiteEffect(cs.getBoolean("smite-effect", false));
-                voucher.setCoolDown(cs.getInt("coolDown", 0));
-                voucher.setBroadcasts(cs.getStringList("broadcasts"));
-                voucher.setMessages(cs.getStringList("messages"));
-                voucher.setCommands(cs.getStringList("commands"));
-                voucher.setActionBar(cs.getString("actionbar"));
-                voucher.setTitle(cs.getString("titles.title"));
-                voucher.setSubTitle(cs.getString("titles.subtitle"));
-                voucher.setTitleFadeIn(cs.getInt("titles.fade-in", 0));
-                voucher.setTitleStay(cs.getInt("titles.stay", 0));
-                voucher.setTitleFadeOut(cs.getInt("titles.fade-out", 0));
-                voucher.setSound(cs.getString("sounds.sound"));
-                voucher.setSoundPitch(cs.getInt("sounds.pitch", 0));
-                voucher.setParticle(cs.getString("particles.particle"));
-                voucher.setParticleAmount(cs.getInt("particles.amount", 0));
-                voucher.setEffect(cs.getString("effects.effect"));
-                voucher.setEffectAmplifier(cs.getInt("effects.amplifier"));
-                voucher.setItemStack(cs.getItemStack("itemstack", null));
+                voucher.setPermission(cs.getString("permission", ""))
+                        .setMaterial(material)
+                        .setData((short) cs.getInt("data", 0))
+                        .setName(cs.getString("name", "default"))
+                        .setLore(cs.getStringList("lore"))
+                        .setGlow(cs.getBoolean("glow", false))
+                        .setConfirm(cs.getBoolean("confirm", true))
+                        .setUnbreakable(cs.getBoolean("unbreakable", false))
+                        .setHideAttributes(cs.getBoolean("hide-attributes", false))
+                        .setRemoveItem(cs.getBoolean("remove-item", true))
+                        .setHealPlayer(cs.getBoolean("heal-player", false))
+                        .setSmiteEffect(cs.getBoolean("smite-effect", false))
+                        .setCoolDown(cs.getInt("coolDown", 0))
+                        .setBroadcasts(cs.getStringList("broadcasts"))
+                        .setMessages(cs.getStringList("messages"))
+                        .setCommands(cs.getStringList("commands"))
+                        .setActionBar(cs.getString("actionbar"))
+                        .setTitle(cs.getString("titles.title"))
+                        .setSubTitle(cs.getString("titles.subtitle"))
+                        .setTitleFadeIn(cs.getInt("titles.fade-in", 0))
+                        .setTitleStay(cs.getInt("titles.stay", 0))
+                        .setTitleFadeOut(cs.getInt("titles.fade-out", 0))
+                        .setSound(cs.getString("sounds.sound"))
+                        .setSoundPitch(cs.getInt("sounds.pitch", 0))
+                        .setParticle(cs.getString("particles.particle"))
+                        .setParticleAmount(cs.getInt("particles.amount", 0))
+                        .setEffect(cs.getString("effects.effect"))
+                        .setEffectAmplifier(cs.getInt("effects.amplifier"))
+                        .setItemStack(cs.getItemStack("itemstack", null));
 
-                vouchers.put(key, voucher);
+                voucherManager.addVoucher(voucher);
             }
         }
+    }
+
+    private void saveVouchers() {
+        for (String voucherName : vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
+            if (voucherManager.getVouchers().stream().noneMatch(voucher -> voucher.getKey().equals(voucherName)))
+                vouchersConfig.set("vouchers." + voucherName, null);
+        }
+
+        for (Voucher voucher : voucherManager.getVouchers()) {
+            String prefix = "vouchers." + voucher.getKey() + ".";
+            vouchersConfig.set(prefix + "permission", voucher.getPermission());
+            vouchersConfig.set(prefix + "material", voucher.getMaterial().name());
+            vouchersConfig.set(prefix + "data", voucher.getData());
+            vouchersConfig.set(prefix + "name", voucher.getName());
+            vouchersConfig.set(prefix + "lore", voucher.getLore());
+            vouchersConfig.set(prefix + "glow", voucher.isGlow());
+            vouchersConfig.set(prefix + "confirm", voucher.isConfirm());
+            vouchersConfig.set(prefix + "unbreakable", voucher.isUnbreakable());
+            vouchersConfig.set(prefix + "hide-attributes", voucher.isHideAttributes());
+            vouchersConfig.set(prefix + "remove-item", voucher.isRemoveItem());
+            vouchersConfig.set(prefix + "heal-player", voucher.isHealPlayer());
+            vouchersConfig.set(prefix + "smite-effect", voucher.isSmiteEffect());
+            vouchersConfig.set(prefix + "coolDown", voucher.getCoolDown());
+            vouchersConfig.set(prefix + "broadcasts", voucher.getBroadcasts());
+            vouchersConfig.set(prefix + "messages", voucher.getMessages());
+            vouchersConfig.set(prefix + "commands", voucher.getCommands());
+            vouchersConfig.set(prefix + "actionbar", voucher.getActionBar());
+            vouchersConfig.set(prefix + "titles.title", voucher.getTitle());
+            vouchersConfig.set(prefix + "titles.subtitle", voucher.getSubTitle());
+            vouchersConfig.set(prefix + "titles.fade-in", voucher.getTitleFadeIn());
+            vouchersConfig.set(prefix + "titles.stay", voucher.getTitleStay());
+            vouchersConfig.set(prefix + "titles.fade-out", voucher.getTitleFadeOut());
+            vouchersConfig.set(prefix + "sounds.sound", voucher.getSound());
+            vouchersConfig.set(prefix + "sounds.pitch", voucher.getSoundPitch());
+            vouchersConfig.set(prefix + "particles.particle", voucher.getParticle());
+            vouchersConfig.set(prefix + "particles.amount", voucher.getParticleAmount());
+            vouchersConfig.set(prefix + "effects.effect", voucher.getEffect());
+            vouchersConfig.set(prefix + "effects.amplifier", voucher.getEffectAmplifier());
+            vouchersConfig.set(prefix + "itemstack", voucher.getItemStack());
+        }
+        vouchersConfig.saveChanges();
     }
 
     @Override
@@ -188,12 +226,12 @@ public class EpicVouchers extends SongodaPlugin {
         return this.vouchersConfig;
     }
 
-    public LinkedHashMap<String, Voucher> getVouchers() {
-        return this.vouchers;
-    }
-
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public VoucherManager getVoucherManager() {
+        return voucherManager;
     }
 
     public GuiManager getGuiManager() {

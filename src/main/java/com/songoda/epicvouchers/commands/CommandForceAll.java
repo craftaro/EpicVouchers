@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandForceAll extends AbstractCommand {
 
@@ -24,7 +25,7 @@ public class CommandForceAll extends AbstractCommand {
         if (args.length != 2)
             return ReturnType.SYNTAX_ERROR;
 
-        Voucher voucher = instance.getVouchers().get(args[0]);
+        Voucher voucher = instance.getVoucherManager().getVoucher(args[0]);
         if (voucher == null) {
             sender.sendMessage("Unknown voucher...");
             return ReturnType.FAILURE;
@@ -42,7 +43,7 @@ public class CommandForceAll extends AbstractCommand {
     @Override
     protected List<String> onTab(CommandSender sender, String... args) {
         if (args.length == 1) {
-            return new ArrayList<>(instance.getVouchers().keySet());
+            return instance.getVoucherManager().getVouchers().stream().map(Voucher::getKey).collect(Collectors.toList());
         } else if (args.length == 2) {
             return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         }
