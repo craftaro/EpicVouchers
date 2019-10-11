@@ -4,7 +4,7 @@ stages:
 variables:
   name: "EpicVouchers"
   path: "/builds/$CI_PROJECT_PATH"
-  version: "2.1.11"
+  version: "2.1.12"
 
 build:
   stage: build
