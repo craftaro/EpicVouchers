@@ -19,12 +19,12 @@ public class SoundsMenu extends IconInv {
         super(9, "Sound");
 
         addIcon(1, new StringIcon(instance, "Sound", voucher.getSound(), (player, editString) -> {
-            voucher.setSound(editString).saveSetting("sounds.sound", editString);
+            voucher.setSound(editString);
             new SoundsMenu(instance, voucher).open(player);
         }, string -> Enums.getIfPresent(Sound.class, string).isPresent()));
 
         addIcon(2, new IntegerIcon(instance, "Pitch", voucher.getSoundPitch(), (player, number) -> {
-            voucher.setSoundPitch(number).saveSetting("sounds.pitch", number);
+            voucher.setSoundPitch(number);
             new SoundsMenu(instance, voucher).open(player);
         }));
 

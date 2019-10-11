@@ -17,9 +17,9 @@ import static org.bukkit.Material.PAPER;
 public class VoucherMenu extends IconInv {
 
     public VoucherMenu(EpicVouchers instance) {
-        super((int) (Math.ceil(instance.getVouchers().size() / 9.0) * 9 + (instance.getVouchers().size() % 9 == 0 ? 9 : 0)), "Vouchers");
+        super((int) (Math.ceil(instance.getVoucherManager().getVouchers().size() / 9.0) * 9 + (instance.getVoucherManager().getVouchers().size() % 9 == 0 ? 9 : 0)), "Vouchers");
 
-        for (Voucher voucher : instance.getVouchers().values()) {
+        for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             if (getInventory().firstEmpty() != -1) {
                 addIcon(getInventory().firstEmpty(), voucher.toItemStack(), event -> new OptionMenu(instance, voucher).open(event.getPlayer()));
             }
@@ -32,7 +32,7 @@ public class VoucherMenu extends IconInv {
             gui.setTitle("Insert id");
             gui.setAction(aevent -> {
                 final String msg = gui.getInputText().trim();
-                if (instance.getVouchers().containsKey(msg)) {
+                if (instance.getVoucherManager().getVoucher(msg) != null) {
                     event.getPlayer().sendMessage(TextUtils.formatText("&cAlready a voucher registered with the id: " + msg));
                     new VoucherMenu(instance).open(event.getPlayer());
                     return;
@@ -42,10 +42,7 @@ public class VoucherMenu extends IconInv {
                 voucher.setMaterial(PAPER);
                 voucher.setName("&f" + msg);
 
-                instance.getVouchers().put(msg, voucher);
-                instance.getConfig().set("vouchers." + msg + ".material", voucher.getMaterial().toString());
-                instance.getConfig().set("vouchers." + msg + ".name", voucher.getName(false));
-                instance.getVouchersConfig().save();
+                instance.getVoucherManager().addVoucher(voucher);
                 event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully created voucher with id &r" + msg + "&7."));
                 new VoucherMenu(instance).open(event.getPlayer());
             });

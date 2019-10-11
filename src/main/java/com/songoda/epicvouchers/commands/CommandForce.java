@@ -34,7 +34,7 @@ public class CommandForce extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        Voucher voucher = instance.getVouchers().get(args[1]);
+        Voucher voucher = instance.getVoucherManager().getVoucher(args[1]);
         if (voucher == null) {
             sender.sendMessage("Unknown voucher...");
             return ReturnType.FAILURE;
@@ -54,7 +54,7 @@ public class CommandForce extends AbstractCommand {
         if (args.length == 1) {
             return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList());
         } else if (args.length == 2) {
-            return new ArrayList<>(instance.getVouchers().keySet());
+            return instance.getVoucherManager().getVouchers().stream().map(Voucher::getKey).collect(Collectors.toList());
         } else if (args.length == 3) {
             return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         }

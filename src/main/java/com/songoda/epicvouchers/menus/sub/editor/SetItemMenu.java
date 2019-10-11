@@ -51,11 +51,9 @@ public class SetItemMenu extends FastInv {
                 voucher.setName("");
                 voucher.setLore(null);
                 voucher.setItemStack(itemStack);
-                voucher.saveSetting("itemstack", itemStack);
             }
 
             voucher.setMaterial(itemStack.getType());
-            voucher.saveSetting("material", itemStack.getType().toString());
 
             if (itemStack.getDurability() != 0) {
                 voucher.setData(itemStack.getDurability());
@@ -68,12 +66,10 @@ public class SetItemMenu extends FastInv {
 
             if (itemStack.getItemMeta().hasDisplayName()) {
                 voucher.setName(itemStack.getItemMeta().getDisplayName());
-                voucher.saveSetting("name", itemStack.getItemMeta().getDisplayName());
             }
 
             if (itemStack.getItemMeta().hasLore()) {
                 voucher.setLore(itemStack.getItemMeta().getLore());
-                voucher.saveSetting("lore", itemStack.getItemMeta().getLore());
             }
 
             new OptionMenu(instance, voucher).open(event.getPlayer());

@@ -32,31 +32,31 @@ public class VoucherEditorMenu extends IconInv {
 
         //Booleans
 
-        addIcon(0, new ToggleableIcon("Glow", event -> voucher.setGlow(!voucher.isGlow()).saveSetting("glow", voucher.isGlow()), voucher.isGlow()));
+        addIcon(0, new ToggleableIcon("Glow", event -> voucher.setGlow(!voucher.isGlow()), voucher.isGlow()));
 
-        addIcon(1, new ToggleableIcon("Confirm", event -> voucher.setConfirm(!voucher.isConfirm()).saveSetting("confirm", voucher.isConfirm()), voucher.isConfirm()));
+        addIcon(1, new ToggleableIcon("Confirm", event -> voucher.setConfirm(!voucher.isConfirm()), voucher.isConfirm()));
 
-        addIcon(2, new ToggleableIcon("Unbreakable", event -> voucher.setUnbreakable(!voucher.isUnbreakable()).saveSetting("unbreakable", voucher.isUnbreakable()), voucher.isUnbreakable()));
+        addIcon(2, new ToggleableIcon("Unbreakable", event -> voucher.setUnbreakable(!voucher.isUnbreakable()), voucher.isUnbreakable()));
 
-        addIcon(3, new ToggleableIcon("Hide Attributes", event -> voucher.setHideAttributes(!voucher.isHideAttributes()).saveSetting("hide-attributes", voucher.isHideAttributes()), voucher.isHideAttributes()));
+        addIcon(3, new ToggleableIcon("Hide Attributes", event -> voucher.setHideAttributes(!voucher.isHideAttributes()), voucher.isHideAttributes()));
 
-        addIcon(4, new ToggleableIcon("Remove Item", event -> voucher.setRemoveItem(!voucher.isRemoveItem()).saveSetting("remove-item", voucher.isRemoveItem()), voucher.isRemoveItem()));
+        addIcon(4, new ToggleableIcon("Remove Item", event -> voucher.setRemoveItem(!voucher.isRemoveItem()), voucher.isRemoveItem()));
 
-        addIcon(5, new ToggleableIcon("Feed Player", event -> voucher.setFeedPlayer(!voucher.isFeedPlayer()).saveSetting("feed-player", voucher.isFeedPlayer()), voucher.isFeedPlayer()));
+        addIcon(5, new ToggleableIcon("Feed Player", event -> voucher.setFeedPlayer(!voucher.isFeedPlayer()), voucher.isFeedPlayer()));
 
-        addIcon(6, new ToggleableIcon("Heal Player", event -> voucher.setHealPlayer(!voucher.isHealPlayer()).saveSetting("heal-player", voucher.isHealPlayer()), voucher.isHealPlayer()));
+        addIcon(6, new ToggleableIcon("Heal Player", event -> voucher.setHealPlayer(!voucher.isHealPlayer()), voucher.isHealPlayer()));
 
-        addIcon(7, new ToggleableIcon("Smite Effect", event -> voucher.setSmiteEffect(!voucher.isSmiteEffect()).saveSetting("smite-effect", voucher.isSmiteEffect()), voucher.isSmiteEffect()));
+        addIcon(7, new ToggleableIcon("Smite Effect", event -> voucher.setSmiteEffect(!voucher.isSmiteEffect()), voucher.isSmiteEffect()));
 
         //Strings
 
         addIcon(9, new StringIcon(instance, "Permission", voucher.getPermission(), (player, editString) -> {
-            voucher.setPermission(editString).saveSetting("permission", editString);
+            voucher.setPermission(editString);
             reopen(player);
         }));
 
         addIcon(10, new StringIcon(instance, "Actionbar", voucher.getActionBar(), (player, editString) -> {
-            voucher.setActionBar(editString).saveSetting("actionbar", editString);
+            voucher.setActionBar(editString);
             reopen(player);
         }));
 
@@ -65,7 +65,7 @@ public class VoucherEditorMenu extends IconInv {
                 voucher.setData(Short.parseShort(editString.split(":")[1]));
                 voucher.setMaterial(Material.valueOf(editString.split(":")[0]));
             } else {
-                voucher.setMaterial(Material.valueOf(editString)).saveSetting("material", editString);
+                voucher.setMaterial(Material.valueOf(editString));
             }
 
             reopen(player);
@@ -83,7 +83,7 @@ public class VoucherEditorMenu extends IconInv {
         }, true));
 
         addIcon(12, new StringIcon(instance, "Name", voucher.getName(false), (player, editString) -> {
-            voucher.setName(editString).saveSetting("name", editString);
+            voucher.setName(editString);
             reopen(player);
         }));
 

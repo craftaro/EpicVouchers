@@ -17,17 +17,17 @@ public class EffectsMenu extends IconInv {
         super(9, "Titles");
 
         addIcon(1, new StringIcon(instance, "Effect", voucher.getEffect(), (player, editString) -> {
-            voucher.setEffect(editString).saveSetting("effects.effect", editString);
+            voucher.setEffect(editString);
             new EffectsMenu(instance, voucher).open(player);
         }));
 
         addIcon(2, new IntegerIcon(instance, "Effect Amplifier", voucher.getEffectAmplifier(), (player, number) -> {
-            voucher.setEffectAmplifier(number).saveSetting("effects.amplifier", number);
+            voucher.setEffectAmplifier(number);
             new EffectsMenu(instance, voucher).open(player);
         }));
 
         addIcon(3, new IntegerIcon(instance, "Duration", voucher.getEffectDuration(), (player, number) -> {
-            voucher.setEffectDuration(number).saveSetting("effects.duration", number);
+            voucher.setEffectDuration(number);
             new EffectsMenu(instance, voucher).open(player);
         }));
 

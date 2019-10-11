@@ -30,7 +30,7 @@ public class PlayerInteractListener implements Listener {
             return;
         final Player player = event.getPlayer();
 
-        for (Voucher voucher : instance.getVouchers().values()) {
+        for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             final ItemStack voucherItem = voucher.toItemStack();
             // does the item they're holding match this voucher?
 

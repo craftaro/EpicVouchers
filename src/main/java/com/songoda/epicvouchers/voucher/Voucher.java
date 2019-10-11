@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -123,10 +122,21 @@ public class Voucher {
         return applyFormatting ? messages.stream().map(TextUtils::formatText).collect(Collectors.toList()) : messages;
     }
 
-    public void saveSetting(String key, Object value) {
-        ConfigurationSection cs = instance.getConfig().getConfigurationSection("vouchers." + getKey());
-        cs.set(key, value);
-        instance.getVouchersConfig().save();
+    public void saveSetting(String key, List<String> list) {
+        switch (key) {
+            case "Commands":
+                commands = list;
+                break;
+            case "Broadcasts":
+                broadcasts = list;
+                break;
+            case "Messages":
+                messages = list;
+                break;
+            case "Lore":
+                lore = list;
+                break;
+        }
     }
 
     @Override
