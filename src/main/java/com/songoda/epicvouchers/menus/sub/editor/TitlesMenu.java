@@ -17,27 +17,27 @@ public class TitlesMenu extends IconInv {
         super(9, "Titles");
 
         addIcon(1, new StringIcon(instance, "Title", voucher.getTitle(), (player, editString) -> {
-            voucher.setTitle(editString).saveSetting("titles.title", editString);
+            voucher.setTitle(editString);
             new TitlesMenu(instance, voucher).open(player);
         }));
 
         addIcon(2, new StringIcon(instance, "Subtitle", voucher.getSubTitle(), (player, editString) -> {
-            voucher.setSubTitle(editString).saveSetting("titles.subtitle", editString);
+            voucher.setSubTitle(editString);
             new TitlesMenu(instance, voucher).open(player);
         }));
 
         addIcon(3, new IntegerIcon(instance, "Fade in", voucher.getTitleFadeIn(), (player, number) -> {
-            voucher.setTitleFadeIn(number).saveSetting("titles.fade-in", number);
+            voucher.setTitleFadeIn(number);
             new TitlesMenu(instance, voucher).open(player);
         }));
 
         addIcon(4, new IntegerIcon(instance, "Fade out", voucher.getTitleFadeOut(), (player, number) -> {
-            voucher.setTitleFadeOut(number).saveSetting("titles.fade-out", number);
+            voucher.setTitleFadeOut(number);
             new TitlesMenu(instance, voucher).open(player);
         }));
 
         addIcon(5, new IntegerIcon(instance, "Stay", voucher.getTitleStay(), (player, number) -> {
-            voucher.setTitleStay(number).saveSetting("titles.stay", number);
+            voucher.setTitleStay(number);
             new TitlesMenu(instance, voucher).open(player);
         }));
 

@@ -17,12 +17,12 @@ public class ParticlesMenu extends IconInv {
         super(9, "Particles");
 
         addIcon(1, new StringIcon(instance, "Particle", voucher.getParticle(), (player, editString) -> {
-            voucher.setParticle(editString).saveSetting("particles.particle", editString);
+            voucher.setParticle(editString);
             new ParticlesMenu(instance, voucher).open(player);
         }));
 
         addIcon(2, new IntegerIcon(instance, "Stay", voucher.getParticleAmount(), (player, number) -> {
-            voucher.setParticleAmount(number).saveSetting("particles.amount", number);
+            voucher.setParticleAmount(number);
             new ParticlesMenu(instance, voucher).open(player);
         }));
 
