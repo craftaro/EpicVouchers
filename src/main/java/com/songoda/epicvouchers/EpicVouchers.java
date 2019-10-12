@@ -107,7 +107,6 @@ public class EpicVouchers extends SongodaPlugin {
 
         if (vouchersConfig.contains("vouchers")) {
             for (String key : vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
-                key = key.toLowerCase();
                 Voucher voucher = new Voucher(key, this);
                 ConfigurationSection cs = vouchersConfig.getConfigurationSection("vouchers." + key);
 
