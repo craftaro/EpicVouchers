@@ -142,7 +142,7 @@ public class VoucherExecutor {
                 }
 
                 if (voucher.getSound() != null && !voucher.getSound().isEmpty()) {
-                    player.getWorld().playSound(player.getLocation(), Sound.valueOf(voucher.getSound()), Integer.MAX_VALUE, voucher.getSoundPitch());
+                    player.playSound(player.getLocation(), Sound.valueOf(voucher.getSound()), Integer.MAX_VALUE, voucher.getSoundPitch());
                 }
 
                 String particle = voucher.getParticle();
