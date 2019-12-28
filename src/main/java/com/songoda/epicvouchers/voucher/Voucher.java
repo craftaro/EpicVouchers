@@ -95,7 +95,7 @@ public class Voucher {
         }
 
         if (unbreakable) {
-            meta.spigot().setUnbreakable(true);
+            meta.setUnbreakable(true);
         }
 
         if (hideAttributes) {
