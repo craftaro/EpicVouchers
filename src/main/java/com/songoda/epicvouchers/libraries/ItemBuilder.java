@@ -162,7 +162,7 @@ public class ItemBuilder {
      * Unbreakability:
      */
     public boolean isUnbreakable() {
-        return meta.spigot().isUnbreakable();
+        return meta.isUnbreakable();
     }
 
     public ItemBuilder unbreakable() {
@@ -171,7 +171,7 @@ public class ItemBuilder {
 
     @SuppressWarnings("deprecation")
     public ItemBuilder unbreakable(boolean unbreakable) {
-        meta.spigot().setUnbreakable(unbreakable);
+        meta.setUnbreakable(unbreakable);
         return this;
     }
 
