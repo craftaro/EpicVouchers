@@ -31,7 +31,7 @@ command:
   force:
     send: '&7You have forced &6%player% &7to redeem the voucher &6%voucher% &7(&6x%amount%&7).'
   list:
-    list: '&7List of all vouchers: &6%list%&7.
+    list: '&7List of all vouchers: &6%list%&7.'
 
 # Event Messages
 
