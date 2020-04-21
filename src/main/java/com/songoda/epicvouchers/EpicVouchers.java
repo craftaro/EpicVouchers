@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -92,7 +93,9 @@ public class EpicVouchers extends SongodaPlugin {
         manager.registerEvents(new PlayerInteractListener(this), this);
         manager.registerEvents(new PlayerCommandListener(), this);
 
-        saveResource("vouchers.yml", false);
+
+        if (!new File(this.getDataFolder(), "vouchers.yml").exists())
+            saveResource("vouchers.yml", false);
         vouchersConfig.load();
 
         loadVouchersFromFile();

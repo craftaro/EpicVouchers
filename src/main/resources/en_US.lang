@@ -1,29 +1,41 @@
-#General Messages
+# General Messages
 
-general.nametag.prefix = "&8[&6EpicVouchers&8] "
+general:
+  nametag:
+    prefix: '&8[&6EpicVouchers&8] '
 
-#Interface Messages
+# Interface Messages
 
-interface.confirmsettings.title = "&6Confirmation"
-interface.confirmsettings.confirmitemname = "&2&lCONFIRM"
-interface.confirmsettings.confirmitemlore = "&aClick here if you want to confirm your action."
-interface.confirmsettings.cancelitemname = "&4&lCANCEL"
-interface.confirmsettings.cancelitemlore = "&cClick here if you want to cancel your action."
+interface:
+  confirmsettings:
+    title: '&6Confirmation'
+    confirmitemname: '&2&lCONFIRM'
+    confirmitemlore: '&aClick here if you want to confirm your action.'
+    cancelitemname: '&4&lCANCEL'
+    cancelitemlore: '&cClick here if you want to cancel your action.'
 
-#Command Messages
+# Command Messages
 
-command.error.noplayer = "&7That user either does not exist or is not online"
-command.error.novoucher = "&cThat voucher does not exist."
-command.error.notexist = "&7The command you entered does not exist or is spelt incorrectly."
-command.error.notnumber = "&7Failed to parse that number into a valid amount."
-command.reload.success = "&7Reloaded all config files and vouchers."
-command.give.send = "&7You have given &6%player% &7the voucher &6%voucher% &7(&6x%amount%&7)."
-command.give.receive = "&7You have received the voucher &6%voucher% &7(&6x%amount%&7)."
-command.give.cancelled = "&cEvent got cancelled."
-command.force.send = "&7You have forced &6%player% &7to redeem the voucher &6%voucher% &7(&6x%amount%&7)."
-command.list.list = "&7List of all vouchers: &6%list%&7."
+command:
+  error:
+    noplayer: '&7That user either does not exist or is not online'
+    novoucher: '&cThat voucher does not exist.'
+    notexist: '&7The command you entered does not exist or is spelt incorrectly.'
+    notnumber: '&7Failed to parse that number into a valid amount.'
+  reload:
+    success: '&7Reloaded all config files and vouchers.'
+  give:
+    send: '&7You have given &6%player% &7the voucher &6%voucher% &7(&6x%amount%&7).'
+    receive: '&7You have received the voucher &6%voucher% &7(&6x%amount%&7).'
+    cancelled: '&cEvent got cancelled.'
+  force:
+    send: '&7You have forced &6%player% &7to redeem the voucher &6%voucher% &7(&6x%amount%&7).'
+  list:
+    list: '&7List of all vouchers: &6%list%&7.'
 
-#Event Messages
+# Event Messages
 
-event.general.nopermission = "&cYou do not have permission to do that."
-event.general.cooldown = "&7Please wait &6%time%&7 seconds before redeeming a new voucher."
+event:
+  general:
+    nopermission: '&cYou do not have permission to do that.'
+    cooldown: '&7Please wait &6%time%&7 seconds before redeeming a new voucher.'

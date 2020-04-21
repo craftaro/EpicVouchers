@@ -2,7 +2,7 @@
     <groupId>com.songoda</groupId>
     <artifactId>EpicVouchers</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <version>2.1.16</version>
+    <version>2.1.17</version>
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>EpicVouchers-${project.version}</finalName>
@@ -90,6 +90,10 @@
         <repository>
             <id>private</id>
             <url>https://repo.songoda.com/artifactory/private/</url>
+        </repository>
+        <repository>
+            <id>public</id>
+            <url>https://repo.songoda.com/artifactory/public/</url>
         </repository>
     </repositories>
 
