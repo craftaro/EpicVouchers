@@ -1,5 +1,8 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.core.compatibility.ServerVersion;
+import com.songoda.core.nms.NmsManager;
+import com.songoda.core.nms.nbt.NBTItem;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
@@ -94,15 +97,22 @@ public class Voucher {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
-        if (unbreakable) {
-            meta.setUnbreakable(true);
-        }
-
         if (hideAttributes) {
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         }
-        item.setItemMeta(meta);
+
+        if (unbreakable) {
+            if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
+                meta.setUnbreakable(true);
+                item.setItemMeta(meta);
+            } else {
+                item.setItemMeta(meta);
+                NBTItem nbtItem = NmsManager.getNbt().of(item);
+                nbtItem.set("Unbreakable", (byte) 1);
+                item = nbtItem.finish();
+            }
+        }
         return item;
     }
 
