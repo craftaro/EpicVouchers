@@ -39,9 +39,10 @@ public class SkullUtils {
             profileField.setAccessible(true);
             profileField.set(skullMeta, gameProfile);
             itemStack.setItemMeta(skullMeta);
-            return itemStack;
         } catch (IllegalAccessException | NoSuchFieldException ex) {
-            throw new RuntimeException("Reflection error while setting head texture", ex);
+            ex.printStackTrace();
         }
+
+        return itemStack;
     }
 }
