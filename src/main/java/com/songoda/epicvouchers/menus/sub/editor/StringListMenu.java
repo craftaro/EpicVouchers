@@ -1,12 +1,14 @@
 package com.songoda.epicvouchers.menus.sub.editor;
 
-import com.songoda.core.gui.AnvilGui;
+import com.songoda.core.input.ChatPrompt;
+import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.libraries.inventory.icons.ListEntryIcon;
 import com.songoda.epicvouchers.menus.VoucherEditorMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -32,13 +34,12 @@ public class StringListMenu extends IconInv {
                 .build());
 
         addIcon(size - 1, new ItemBuilder(PAPER).name(GREEN + "Add to list").build(), event -> {
-            AnvilGui gui = new AnvilGui(event.getPlayer());
-            gui.setAction(aevent -> {
-                list.add(gui.getInputText().trim());
-                voucher.saveSetting(key.toLowerCase(), list);
-                new StringListMenu(instance, key, list, toEdit, voucher).open(event.getPlayer());
+            ChatPrompt.showPrompt(instance, event.getPlayer(), TextUtils.formatText("Enter a new value."), aevent -> {
+               list.add(aevent.getMessage().trim());
+               voucher.saveSetting(key.toLowerCase(), list);
+                Bukkit.getScheduler().runTaskLater(instance, () -> new StringListMenu(instance, key, list, toEdit, voucher).open(event.getPlayer()), 1L);
+
             });
-            instance.getGuiManager().showGUI(event.getPlayer(), gui);
         });
 
         for (int i = 0; i < list.size(); i++) {

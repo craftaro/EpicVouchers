@@ -1,19 +1,16 @@
 package com.songoda.epicvouchers.listeners;
 
+import com.songoda.core.nms.NmsManager;
+import com.songoda.core.nms.nbt.NBTItem;
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.menus.ConfirmMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.UUID;
 
 public class PlayerInteractListener implements Listener {
 
@@ -28,10 +25,20 @@ public class PlayerInteractListener implements Listener {
         final ItemStack item = event.getItem();
         if (item == null || (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK))
             return;
-        final Player player = event.getPlayer();
+
+        final NBTItem itemNbt = NmsManager.getNbt().of(item);
 
         for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             final ItemStack voucherItem = voucher.toItemStack();
+
+            // Check voucher NBT.
+            if (itemNbt.has("epicvouchers:voucher") && itemNbt.getNBTObject("epicvouchers:voucher").asString().equals(voucher.getKey())) {
+                event.setCancelled(true);
+                voucher.redeemVoucher(event);
+                continue;
+            }
+
+            // Legacy crap.
             // does the item they're holding match this voucher?
 
             if (voucherItem != null && !voucherItem.isSimilar(item)) continue;
@@ -46,32 +53,7 @@ public class PlayerInteractListener implements Listener {
             }
 
             event.setCancelled(true);
-
-            // does the player have permission to redeem this voucher?
-            if (!voucher.getPermission().isEmpty() && !player.hasPermission(voucher.getPermission())) {
-                // todo: probably should send a message to the player...
-                return;
-            }
-
-            UUID uuid = player.getUniqueId();
-
-            if (instance.getCoolDowns().isOnCoolDown(uuid)) {
-                instance.getLocale().getMessage("event.general.cooldown")
-                        .processPlaceholder("time", instance.getCoolDowns().getTime(uuid))
-                        .processPlaceholder("voucher", voucher.getName(true))
-                        .sendPrefixedMessage(player);
-                return;
-            }
-
-            if (voucher.isConfirm()) {
-                new ConfirmMenu(instance,
-                        () -> instance.getVoucherExecutor().redeemVoucher(player, voucher, item, true, event),
-                        () -> {
-                        })
-                        .open(player);
-            } else {
-                instance.getVoucherExecutor().redeemVoucher(player, voucher, item, true, event);
-            }
+            voucher.redeemVoucher(event);
         }
     }
 }

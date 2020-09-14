@@ -1,9 +1,10 @@
 package com.songoda.epicvouchers.libraries.inventory.icons;
 
-import com.songoda.core.gui.AnvilGui;
+import com.songoda.core.input.ChatPrompt;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.utils.Pair;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
@@ -21,13 +22,9 @@ public class ListEntryIcon extends Icon {
                 onRemove.accept(event.getPlayer(), entry);
                 return;
             }
-
-            AnvilGui gui = new AnvilGui(event.getPlayer());
-            gui.setTitle("Current: " + entry);
-            gui.setAction(aevent -> onEdit.accept(event.getPlayer(), new Pair<>(entry, gui.getInputText().trim())));
-                instance.getGuiManager().showGUI(event.getPlayer(), gui);
+            ChatPrompt.showPrompt(instance, event.getPlayer(), aevent -> {
+                Bukkit.getScheduler().runTaskLater(instance, () -> onEdit.accept(event.getPlayer(), new Pair<>(entry, aevent.getMessage().trim())), 1L);
             });
-
-
-        }
+        });
     }
+}
