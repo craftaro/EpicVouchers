@@ -1,10 +1,11 @@
 package com.songoda.epicvouchers.libraries.inventory.icons;
 
 import com.songoda.core.compatibility.ServerVersion;
-import com.songoda.core.gui.AnvilGui;
+import com.songoda.core.input.ChatPrompt;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,18 +49,15 @@ public class StringIcon extends Icon {
                 consumer.accept(event.getPlayer(), "");
                 event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully cleared&7."));
             } else {
-                AnvilGui gui = new AnvilGui(event.getPlayer());
-                gui.setTitle("current:" + current);
-                gui.setAction(aevent -> {
-                    final String msg = gui.getInputText().trim();
+                ChatPrompt.showPrompt(instance, event.getPlayer(), TextUtils.formatText("&7Enter a new value. Current: &r" + current), aevent -> {
+                    final String msg = aevent.getMessage().trim();
                     if (!predicate.test(msg)) {
                         event.getPlayer().sendMessage(TextUtils.formatText("&cFailed to set value to: " + msg));
                         return;
                     }
-                    consumer.accept(event.getPlayer(), msg);
                     event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully set to &r" + msg + "&7."));
-                });
-                instance.getGuiManager().showGUI(event.getPlayer(), gui);
+                    Bukkit.getScheduler().runTaskLater(instance, () -> consumer.accept(event.getPlayer(), msg), 1L);
+            });
             }
 
         });

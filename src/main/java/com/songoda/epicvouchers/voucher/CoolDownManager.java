@@ -4,11 +4,12 @@ import com.songoda.epicvouchers.EpicVouchers;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CoolDownManager {
 
-    private final HashMap<UUID, Long> entries = new HashMap<>();
+    private final Map<UUID, Long> entries = new HashMap<>();
     private final EpicVouchers instance;
 
     public CoolDownManager(EpicVouchers instance) {

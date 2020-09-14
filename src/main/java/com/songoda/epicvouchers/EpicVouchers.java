@@ -92,8 +92,10 @@ public class EpicVouchers extends SongodaPlugin {
         guiManager.init();
         manager.registerEvents(new PlayerInteractListener(this), this);
         manager.registerEvents(new PlayerCommandListener(), this);
+    }
 
-
+    @Override
+    public void onDataLoad() {
         if (!new File(this.getDataFolder(), "vouchers.yml").exists())
             saveResource("vouchers.yml", false);
         vouchersConfig.load();
@@ -128,6 +130,7 @@ public class EpicVouchers extends SongodaPlugin {
                         .setData((short) cs.getInt("data", 0))
                         .setName(cs.getString("name", "default"))
                         .setLore(cs.getStringList("lore"))
+                        .setTexture(cs.getString("texture", ""))
                         .setGlow(cs.getBoolean("glow", false))
                         .setConfirm(cs.getBoolean("confirm", true))
                         .setUnbreakable(cs.getBoolean("unbreakable", false))
@@ -171,6 +174,7 @@ public class EpicVouchers extends SongodaPlugin {
             vouchersConfig.set(prefix + "data", voucher.getData());
             vouchersConfig.set(prefix + "name", voucher.getName());
             vouchersConfig.set(prefix + "lore", voucher.getLore());
+            vouchersConfig.set(prefix + "texture", voucher.getTexture());
             vouchersConfig.set(prefix + "glow", voucher.isGlow());
             vouchersConfig.set(prefix + "confirm", voucher.isConfirm());
             vouchersConfig.set(prefix + "unbreakable", voucher.isUnbreakable());
