@@ -15,7 +15,6 @@ import com.songoda.epicvouchers.menus.sub.editor.SoundsMenu;
 import com.songoda.epicvouchers.menus.sub.editor.TitlesMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
