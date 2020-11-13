@@ -41,6 +41,7 @@ public class VoucherMenu extends IconInv {
                 Voucher voucher = new Voucher(msg, instance);
                 voucher.setMaterial(PAPER);
                 voucher.setName("&f" + msg);
+                voucher.setTexture("");
 
                 instance.getVoucherManager().addVoucher(voucher);
                 event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully created voucher with id &r" + msg + "&7."));

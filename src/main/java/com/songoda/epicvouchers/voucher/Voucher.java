@@ -1,5 +1,6 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.core.nms.NmsManager;
 import com.songoda.core.nms.nbt.NBTItem;
@@ -7,18 +8,22 @@ import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
 import com.songoda.epicvouchers.events.VoucherReceiveEvent;
+import com.songoda.epicvouchers.menus.ConfirmMenu;
+import com.songoda.epicvouchers.utils.SkullUtils;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.bukkit.Material.PAPER;
@@ -34,6 +39,7 @@ public class Voucher {
     private int coolDown = 0;
     private String name;
     private List<String> lore = new ArrayList<>();
+    private String texture;
     private boolean glow = true;
     private boolean confirm = true;
     private boolean unbreakable = false;
@@ -113,7 +119,15 @@ public class Voucher {
                 item = nbtItem.finish();
             }
         }
-        return item;
+
+        if (texture != null && !texture.isEmpty() && CompatibleMaterial.PLAYER_HEAD.getMaterial() == material) {
+            item = SkullUtils.customTexture(itemStack, texture);
+        }
+
+        NBTItem nbtItem = NmsManager.getNbt().of(item);
+        nbtItem.set("epicvouchers:voucher", key);
+
+        return nbtItem.finish();
     }
 
     public String getName(boolean applyFormatting) {
@@ -198,6 +212,40 @@ public class Voucher {
                 instance.getVoucherExecutor().redeemVoucher(player, this, player.getItemInHand(), false, null);
             }
         }
+    }
+
+    public void redeemVoucher(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        // does the player have permission to redeem this voucher?
+        if (!permission.isEmpty() && !player.hasPermission(permission)) {
+            player.sendMessage(instance.getLocale().getMessage("event.general.nopermission").getPrefixedMessage());
+            return;
+        }
+
+        UUID uuid = player.getUniqueId();
+
+        if (instance.getCoolDowns().isOnCoolDown(uuid)) {
+            instance.getLocale().getMessage("event.general.cooldown")
+                    .processPlaceholder("time", instance.getCoolDowns().getTime(uuid))
+                    .processPlaceholder("voucher", getName(true))
+                    .sendPrefixedMessage(player);
+            return;
+        }
+
+        if (confirm) {
+            new ConfirmMenu(instance,
+                    () -> instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event),
+                    () -> {
+                    })
+                    .open(player);
+        } else {
+            instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event);
+        }
+    }
+
+    public String getTexture() {
+        return texture;
     }
 
     public String getActionBar() {
@@ -414,6 +462,11 @@ public class Voucher {
 
     public Voucher setCommands(List<String> commands) {
         this.commands = commands;
+        return this;
+    }
+
+    public Voucher setTexture(String texture) {
+        this.texture = texture;
         return this;
     }
 

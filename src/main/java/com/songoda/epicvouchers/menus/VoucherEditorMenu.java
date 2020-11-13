@@ -1,5 +1,7 @@
 package com.songoda.epicvouchers.menus;
 
+import com.songoda.core.compatibility.CompatibleMaterial;
+import com.songoda.core.utils.ItemUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
@@ -84,6 +86,13 @@ public class VoucherEditorMenu extends IconInv {
 
         addIcon(12, new StringIcon(instance, "Name", voucher.getName(false), (player, editString) -> {
             voucher.setName(editString);
+            reopen(player);
+        }));
+
+        addIcon(13, new StringIcon(instance, new ItemBuilder(voucher.getTexture() == null ? CompatibleMaterial.PLAYER_HEAD.getItem() : ItemUtils.getCustomHead(voucher.getTexture()))
+                .name(YELLOW + "Skull Texture")
+                .lore(GRAY + "Right click to edit", GRAY + "Left click to clear").build(), voucher.getTexture(), (player, editString) -> {
+            voucher.setTexture(editString);
             reopen(player);
         }));
 
