@@ -1,5 +1,6 @@
 package com.songoda.epicvouchers.voucher;
 
+import com.songoda.core.compatibility.CompatibleSound;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
@@ -142,7 +143,11 @@ public class VoucherExecutor {
                 }
 
                 if (voucher.getSound() != null && !voucher.getSound().isEmpty()) {
-                    player.playSound(player.getLocation(), Sound.valueOf(voucher.getSound()), Integer.MAX_VALUE, voucher.getSoundPitch());
+                    try {
+                        CompatibleSound sound = CompatibleSound.valueOf(voucher.getSound());
+                        sound.play(player, Integer.MAX_VALUE, voucher.getSoundPitch());
+                    } catch (IllegalArgumentException ignored) {
+                    }
                 }
 
                 String particle = voucher.getParticle();
