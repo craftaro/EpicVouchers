@@ -1,15 +1,14 @@
 package com.songoda.epicvouchers.voucher;
 
 import com.songoda.core.compatibility.CompatibleSound;
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
-import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -128,7 +127,7 @@ public class VoucherExecutor {
                 }
                 if (voucher.getActionBar() != null && !voucher.getActionBar().isEmpty()) {
                     String actionbar = voucher.getActionBar().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
-                    BountifulAPI.sendActionBar(player, actionbar);
+                    instance.getLocale().newMessage(actionbar).sendActionBar(player);
                 }
 
                 if (voucher.getTitle() != null && !voucher.getTitle().isEmpty()) {
@@ -139,7 +138,11 @@ public class VoucherExecutor {
                     int stay = voucher.getTitleStay();
                     int fadeout = voucher.getTitleFadeOut();
 
-                    BountifulAPI.sendTitle(player, fadein, stay, fadeout, title, subtitle);
+                    if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_11)) {
+                        player.sendTitle(title, subtitle, fadein, stay, fadeout);
+                    } else {
+                        player.sendTitle(title, subtitle);
+                    }
                 }
 
                 if (voucher.getSound() != null && !voucher.getSound().isEmpty()) {
