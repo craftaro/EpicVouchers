@@ -8,7 +8,6 @@ import com.songoda.core.configuration.Config;
 import com.songoda.core.gui.GuiManager;
 import com.songoda.epicvouchers.commands.*;
 import com.songoda.epicvouchers.handlers.Connections;
-import com.songoda.epicvouchers.libraries.BountifulAPI;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
@@ -79,7 +78,6 @@ public class EpicVouchers extends SongodaPlugin {
 
         FastInv.init(this);
         IconInv.init(this);
-        BountifulAPI.init(this);
 
         this.connections = new Connections(this);
         this.coolDowns = new CoolDownManager(this);

@@ -4,12 +4,12 @@ import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.core.nms.NmsManager;
 import com.songoda.core.nms.nbt.NBTItem;
+import com.songoda.core.utils.ItemUtils;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.ForceRedeemEvent;
 import com.songoda.epicvouchers.events.VoucherReceiveEvent;
 import com.songoda.epicvouchers.menus.ConfirmMenu;
-import com.songoda.epicvouchers.utils.SkullUtils;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -121,7 +121,7 @@ public class Voucher {
         }
 
         if (texture != null && !texture.isEmpty() && CompatibleMaterial.PLAYER_HEAD.getMaterial() == material) {
-            item = SkullUtils.customTexture(itemStack, texture);
+            item = ItemUtils.getCustomHead(texture);
         }
 
         NBTItem nbtItem = NmsManager.getNbt().of(item);
