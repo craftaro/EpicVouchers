@@ -4,10 +4,13 @@ import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import org.bukkit.entity.Player;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.Timestamp;
 
 public class Connections {
-
     private final EpicVouchers instance;
     private Connection connection;
 
@@ -25,7 +28,6 @@ public class Connections {
             String mysqlDatabase = instance.getConfig().getString("Database.Database Name");
             String mysqlUsername = instance.getConfig().getString("Database.Username");
             String mysqlPassword = instance.getConfig().getString("Database.Password");
-
 
             connection = DriverManager.getConnection("jdbc:mysql://" + mysqlIP + ":" + mysqlPort + "/" + mysqlDatabase + "?useSSL=true?autoReconnect=true", mysqlUsername, mysqlPassword);
             System.out.println(TextUtils.formatText("&fSuccessfully created a connection with MySQL."));
@@ -66,5 +68,4 @@ public class Connections {
             error.printStackTrace();
         }
     }
-
 }

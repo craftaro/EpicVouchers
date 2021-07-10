@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerInteractListener implements Listener {
-
     private final EpicVouchers instance;
 
     public PlayerInteractListener(EpicVouchers instance) {

@@ -6,11 +6,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 
 public class Icon {
-    private ItemStack itemStack;
-    private Consumer<IconClickEvent> consumer;
+    private final ItemStack itemStack;
+    private final Consumer<IconClickEvent> consumer;
 
     public Icon(ItemStack itemStack) {
-        this(itemStack, event -> {});
+        this(itemStack, event -> { });
     }
 
     public Icon(ItemStack item, Consumer<IconClickEvent> consumer) {

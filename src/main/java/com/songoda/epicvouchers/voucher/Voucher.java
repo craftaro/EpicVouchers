@@ -30,7 +30,6 @@ import static org.bukkit.Material.PAPER;
 
 @Accessors(chain = true)
 public class Voucher {
-
     private final String key;
     private final EpicVouchers instance;
     private String permission = "";
@@ -236,8 +235,7 @@ public class Voucher {
         if (confirm) {
             new ConfirmMenu(instance,
                     () -> instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event),
-                    () -> {
-                    })
+                    () -> { })
                     .open(player);
         } else {
             instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event);

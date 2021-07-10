@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class CommandEditor extends AbstractCommand {
-
     final EpicVouchers instance;
 
     public CommandEditor(EpicVouchers instance) {

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CommandForceAll extends AbstractCommand {
-
     final EpicVouchers instance;
 
     public CommandForceAll(EpicVouchers instance) {

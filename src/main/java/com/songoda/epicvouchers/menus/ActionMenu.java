@@ -20,7 +20,6 @@ import static org.bukkit.ChatColor.YELLOW;
 import static org.bukkit.Material.BARRIER;
 
 public class ActionMenu extends FastInv {
-
     public ActionMenu(EpicVouchers instance, Voucher voucher) {
         super(27, "Give menu");
 

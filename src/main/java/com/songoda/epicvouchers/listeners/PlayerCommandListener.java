@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayerCommandListener implements Listener {
-
     private static final HashMap<UUID, String> commands = new HashMap<>();
 
     @EventHandler
@@ -23,8 +22,8 @@ public class PlayerCommandListener implements Listener {
     public static void addCommand(UUID uuid, String command) {
         commands.put(uuid, command);
     }
+
     public static void removeCommand(UUID uuid) {
         commands.remove(uuid);
     }
-
 }

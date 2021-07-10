@@ -1,7 +1,6 @@
 package com.songoda.epicvouchers.menus;
 
 import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
@@ -13,7 +12,6 @@ import static org.bukkit.enchantments.Enchantment.DURABILITY;
 import static org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS;
 
 public class ConfirmMenu extends FastInv {
-
     public ConfirmMenu(EpicVouchers instance, Runnable success, Runnable failure) {
         super(27, instance.getLocale().getMessage("interface.confirmsettings.title").getMessage());
 

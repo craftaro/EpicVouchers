@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CoolDownManager {
-
     private final Map<UUID, Long> entries = new HashMap<>();
     private final EpicVouchers instance;
 
@@ -22,9 +21,9 @@ public class CoolDownManager {
         }
 
         if (voucher.getCoolDown() != 0) {
-            entries.put(uuid, System.currentTimeMillis() + voucher.getCoolDown() * 1000);
+            entries.put(uuid, System.currentTimeMillis() + voucher.getCoolDown() * 1000L);
         } else {
-            entries.put(uuid, System.currentTimeMillis() + instance.getConfig().getInt("Main.Cooldown Delay") * 1000);
+            entries.put(uuid, System.currentTimeMillis() + instance.getConfig().getInt("Main.Cooldown Delay") * 1000L);
         }
     }
 

@@ -45,6 +45,5 @@ public class TitlesMenu extends IconInv {
                 .name(YELLOW + "Return")
                 .lore(GRAY + "Return to the editor")
                 .build(), event -> new VoucherEditorMenu(instance, voucher).open(event.getPlayer()));
-
     }
 }

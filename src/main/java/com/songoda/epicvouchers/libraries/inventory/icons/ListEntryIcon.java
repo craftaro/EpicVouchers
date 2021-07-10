@@ -16,15 +16,17 @@ import static org.bukkit.Material.PAPER;
 
 public class ListEntryIcon extends Icon {
     public ListEntryIcon(EpicVouchers instance, String entry, BiConsumer<Player, String> onRemove, BiConsumer<Player, Pair<String, String>> onEdit) {
-        super(new ItemBuilder(PAPER).name(YELLOW + entry).lore(GRAY + "Right click to edit",
-                GRAY + "Left click to remove").build(), event -> {
-            if (event.getClickType() == ClickType.LEFT) {
-                onRemove.accept(event.getPlayer(), entry);
+        super(new ItemBuilder(PAPER)
+                .name(YELLOW + entry)
+                .lore(GRAY + "Right click to edit", GRAY + "Left click to remove")
+                .build(), clickEvent -> {
+            if (clickEvent.getClickType() == ClickType.LEFT) {
+                onRemove.accept(clickEvent.getPlayer(), entry);
                 return;
             }
-            ChatPrompt.showPrompt(instance, event.getPlayer(), aevent -> {
-                Bukkit.getScheduler().runTaskLater(instance, () -> onEdit.accept(event.getPlayer(), new Pair<>(entry, aevent.getMessage().trim())), 1L);
-            });
+            ChatPrompt.showPrompt(instance, clickEvent.getPlayer(),
+                    pEvent -> Bukkit.getScheduler().runTaskLater(instance,
+                            () -> onEdit.accept(clickEvent.getPlayer(), new Pair<>(entry, pEvent.getMessage().trim())), 1L));
         });
     }
 }

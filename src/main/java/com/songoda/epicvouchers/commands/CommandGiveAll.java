@@ -3,19 +3,13 @@ package com.songoda.epicvouchers.commands;
 import com.songoda.core.commands.AbstractCommand;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.voucher.Voucher;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CommandGiveAll extends AbstractCommand {
-
     final EpicVouchers instance;
 
     public CommandGiveAll(EpicVouchers instance) {

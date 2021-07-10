@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import static org.bukkit.Material.PAPER;
 
 public class VoucherMenu extends IconInv {
-
     public VoucherMenu(EpicVouchers instance) {
         super((int) (Math.ceil(instance.getVoucherManager().getVouchers().size() / 9.0) * 9 + (instance.getVoucherManager().getVouchers().size() % 9 == 0 ? 9 : 0)), "Vouchers");
 
@@ -54,5 +53,4 @@ public class VoucherMenu extends IconInv {
                 new ItemStack(Material.valueOf("GRAY_STAINED_GLASS_PANE")) :
                 new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, (short) 7)).name(ChatColor.RESET.toString()).build()));
     }
-
 }

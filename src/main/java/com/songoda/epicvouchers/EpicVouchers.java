@@ -6,7 +6,14 @@ import com.songoda.core.commands.CommandManager;
 import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.configuration.Config;
 import com.songoda.core.gui.GuiManager;
-import com.songoda.epicvouchers.commands.*;
+import com.songoda.epicvouchers.commands.CommandEditor;
+import com.songoda.epicvouchers.commands.CommandEpicVouchers;
+import com.songoda.epicvouchers.commands.CommandForce;
+import com.songoda.epicvouchers.commands.CommandForceAll;
+import com.songoda.epicvouchers.commands.CommandGive;
+import com.songoda.epicvouchers.commands.CommandGiveAll;
+import com.songoda.epicvouchers.commands.CommandList;
+import com.songoda.epicvouchers.commands.CommandReload;
 import com.songoda.epicvouchers.handlers.Connections;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;
@@ -27,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class EpicVouchers extends SongodaPlugin {
-
     private static EpicVouchers INSTANCE;
 
     private final GuiManager guiManager = new GuiManager(this);
@@ -37,7 +43,7 @@ public class EpicVouchers extends SongodaPlugin {
     private Connections connections;
     private CoolDownManager coolDowns;
     private VoucherExecutor voucherExecutor;
-    private Config vouchersConfig = new Config(this, "vouchers.yml");
+    private final Config vouchersConfig = new Config(this, "vouchers.yml");
 
     public static EpicVouchers getInstance() {
         return INSTANCE;
