@@ -30,6 +30,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -166,13 +167,17 @@ public class EpicVouchers extends SongodaPlugin {
     }
 
     private void saveVouchers() {
+        Collection<Voucher> voucherList = voucherManager.getVouchers();
+
         for (String voucherName : vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
-            if (voucherManager.getVouchers().stream().noneMatch(voucher -> voucher.getKey().equals(voucherName)))
+            if (voucherList.stream().noneMatch(voucher -> voucher.getKey().equals(voucherName))) {
                 vouchersConfig.set("vouchers." + voucherName, null);
+            }
         }
 
-        for (Voucher voucher : voucherManager.getVouchers()) {
+        for (Voucher voucher : voucherList) {
             String prefix = "vouchers." + voucher.getKey() + ".";
+
             vouchersConfig.set(prefix + "permission", voucher.getPermission());
             vouchersConfig.set(prefix + "material", voucher.getMaterial().name());
             vouchersConfig.set(prefix + "data", voucher.getData());
@@ -204,13 +209,16 @@ public class EpicVouchers extends SongodaPlugin {
             vouchersConfig.set(prefix + "effects.amplifier", voucher.getEffectAmplifier());
             vouchersConfig.set(prefix + "itemstack", voucher.getItemStack());
         }
+
         vouchersConfig.saveChanges();
     }
 
     @Override
     public void onConfigReload() {
         vouchersConfig.load();
+
         loadVouchersFromFile();
+
         this.setLocale(getConfig().getString("System.Language Mode"), true);
         this.locale.reloadMessages();
     }
