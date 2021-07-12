@@ -1,47 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.songoda</groupId>
     <artifactId>EpicVouchers</artifactId>
-    <modelVersion>4.0.0</modelVersion>
-    <version>2.1.21</version>
+    <version>2.1.22a2</version>
+
+    <name>EpicVouchers</name>
+    <description>Enhance your server with awesome customizable vouchers with a lot of features.</description>
+    <url>https://songoda.com/marketplace/product/25</url>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <java.release>8</java.release>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>EpicVouchers-${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
+
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <file>${project.build.directory}/classes/plugin.yml</file>
-                    <replacements>
-                        <replacement>
-                            <token>maven-version-number</token>
-                            <value>${project.version}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.3.0-SNAPSHOT</version>
+
                 <executions>
                     <execution>
                         <id>shaded</id>
@@ -49,14 +47,17 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+
                         <configuration>
                             <shadedArtifactAttached>false</shadedArtifactAttached>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+
                             <artifactSet>
                                 <includes>
                                     <include>com.songoda:SongodaCore</include>
                                 </includes>
                             </artifactSet>
+
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -67,6 +68,7 @@
                                     </excludes>
                                 </filter>
                             </filters>
+
                             <relocations>
                                 <relocation>
                                     <pattern>com.songoda.core</pattern>
@@ -78,6 +80,7 @@
                 </executions>
             </plugin>
         </plugins>
+
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -85,18 +88,21 @@
             </resource>
         </resources>
     </build>
+
     <pluginRepositories>
         <pluginRepository>
             <id>apache.snapshots</id>
             <url>https://repository.apache.org/snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
+
     <repositories>
         <repository>
-            <id>public</id>
+            <id>songoda-public</id>
             <url>https://repo.songoda.com/repository/public/</url>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -104,16 +110,18 @@
             <version>1.17</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.songoda</groupId>
             <artifactId>SongodaCore</artifactId>
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.2</version>
+            <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

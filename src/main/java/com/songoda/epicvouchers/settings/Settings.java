@@ -9,7 +9,6 @@ import org.bukkit.event.Listener;
  * Created by songo on 6/4/2017.
  */
 public class Settings implements Listener {
-
     static final Config config = EpicVouchers.getInstance().getCoreConfig();
 
     public static final ConfigSetting FILL_GLASS = new ConfigSetting(config, "Interface.Fill Interfaces With Glass", true);

@@ -63,7 +63,7 @@ public class VoucherEditorMenu extends IconInv {
         }));
 
         addIcon(11, new StringIcon(instance, "Material", voucher.getMaterial().toString(), (player, editString) -> {
-            if(editString.contains(":")) {
+            if (editString.contains(":")) {
                 voucher.setData(Short.parseShort(editString.split(":")[1]));
                 voucher.setMaterial(Material.valueOf(editString.split(":")[0]));
             } else {
@@ -72,11 +72,11 @@ public class VoucherEditorMenu extends IconInv {
 
             reopen(player);
         }, string -> {
-            if (string.isEmpty())  {
+            if (string.isEmpty()) {
                 return false;
             }
 
-            if(string.contains(":") && string.split(":").length == 2) {
+            if (string.contains(":") && string.split(":").length == 2) {
                 String[] split = string.split(":");
                 return Material.matchMaterial(split[0]) != null && StringUtils.isNumeric(split[1]);
             }

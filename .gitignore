@@ -1,4 +1,5 @@
-\.idea
-\target
-EpicVouchers.iml
-dependency-reduced-pom.xml
+/target/
+
+# JetBrains IDEs
+/.idea/
+*.iml

@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class CommandReload extends AbstractCommand {
-
     final EpicVouchers instance;
 
     public CommandReload(EpicVouchers instance) {

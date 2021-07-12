@@ -1,7 +1,6 @@
 package com.songoda.epicvouchers.menus;
 
 import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
@@ -9,14 +8,15 @@ import com.songoda.epicvouchers.libraries.inventory.FastInv;
 import com.songoda.epicvouchers.menus.sub.editor.SetItemMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
 
 import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.YELLOW;
-import static org.bukkit.Material.*;
+import static org.bukkit.Material.BARRIER;
+import static org.bukkit.Material.BOOK;
+import static org.bukkit.Material.FEATHER;
+import static org.bukkit.Material.STONE;
 
 public class OptionMenu extends FastInv {
-
     public OptionMenu(EpicVouchers instance, Voucher voucher) {
         super(27, "Options: " + voucher.getKey());
 
@@ -45,5 +45,4 @@ public class OptionMenu extends FastInv {
 
         fill(new ItemBuilder(CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem()).name(ChatColor.RESET.toString()).build());
     }
-
 }

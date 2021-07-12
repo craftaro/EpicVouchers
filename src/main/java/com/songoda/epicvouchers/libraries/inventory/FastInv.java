@@ -4,7 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -25,13 +29,12 @@ import java.util.Set;
  * @version 2.0.3 - Now supports async operations
  */
 public class FastInv implements InventoryHolder {
-
     private static Plugin plugin = null;
     private boolean cancelTasksOnClose = true, cancelled = true;
-    private Set<FastInvCloseListener> closeListeners = new HashSet<>();
-    private Set<FastInvClickListener> clickListeners = new HashSet<>();
-    private Map<Integer, FastInvClickListener> itemListeners = new HashMap<>();
-    private Set<BukkitTask> tasks = new HashSet<>();
+    private final Set<FastInvCloseListener> closeListeners = new HashSet<>();
+    private final Set<FastInvClickListener> clickListeners = new HashSet<>();
+    private final Map<Integer, FastInvClickListener> itemListeners = new HashMap<>();
+    private final Set<BukkitTask> tasks = new HashSet<>();
     private Inventory inventory;
 
     /**
@@ -67,6 +70,7 @@ public class FastInv implements InventoryHolder {
      *
      * @param type  The type of the menus.
      * @param title The title of the menus.
+     *
      * @throws IllegalStateException if FastInv is not init with FastInv.init(Plugin plugin)
      */
     public FastInv(InventoryType type, String title) {
@@ -103,6 +107,7 @@ public class FastInv implements InventoryHolder {
      * Add an {@link ItemStack} to the menus.
      *
      * @param item The item to add
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(ItemStack item) {
@@ -114,6 +119,7 @@ public class FastInv implements InventoryHolder {
      *
      * @param item     The item to add.
      * @param listener The {@link FastInvClickListener} for the item.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(ItemStack item, FastInvClickListener listener) {
@@ -131,6 +137,7 @@ public class FastInv implements InventoryHolder {
      *
      * @param slot The slot of the item.
      * @param item The item to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int slot, ItemStack item) {
@@ -140,8 +147,9 @@ public class FastInv implements InventoryHolder {
     /**
      * Add an {@link ItemStack} to the menus on specific slot with a {@link FastInvClickListener} to handle clicks.
      *
-     * @param slot     The slot of the item.
-     * @param itemStack     The icon to add.
+     * @param slot      The slot of the item.
+     * @param itemStack The icon to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int slot, ItemStack itemStack, FastInvClickListener listener) {
@@ -164,6 +172,7 @@ public class FastInv implements InventoryHolder {
      * @param slotFrom Starting slot to put the item in.
      * @param slotTo   Ending slot to put the item in.
      * @param item     The item to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int slotFrom, int slotTo, ItemStack item) {
@@ -177,6 +186,7 @@ public class FastInv implements InventoryHolder {
      * @param slotTo   Ending slot to put the item in.
      * @param item     The item to add.
      * @param listener The IconClickListener for the item.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int slotFrom, int slotTo, ItemStack item, FastInvClickListener listener) {
@@ -191,6 +201,7 @@ public class FastInv implements InventoryHolder {
      *
      * @param slots The slot of the item.
      * @param item  The item to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int[] slots, ItemStack item) {
@@ -201,6 +212,7 @@ public class FastInv implements InventoryHolder {
      * Add an {@link ItemStack} to the menus on the edges.
      *
      * @param item The item to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv edge(ItemStack item) {
@@ -223,6 +235,7 @@ public class FastInv implements InventoryHolder {
      * @param slots    The slots to place the item.
      * @param item     The item to add.
      * @param listener The IconClickListener for the item.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv addItem(int[] slots, ItemStack item, FastInvClickListener listener) {
@@ -243,7 +256,7 @@ public class FastInv implements InventoryHolder {
         return this;
     }
 
-    public  FastInv fill(ItemStack itemStack) {
+    public FastInv fill(ItemStack itemStack) {
         return fill(itemStack, null);
     }
 
@@ -251,6 +264,7 @@ public class FastInv implements InventoryHolder {
      * Add a {@link FastInvCloseListener} to listen on menus close.
      *
      * @param listener The {@link FastInvCloseListener} to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv onClose(FastInvCloseListener listener) {
@@ -262,6 +276,7 @@ public class FastInv implements InventoryHolder {
      * Add a {@link FastInvClickListener} to listen on menus click.
      *
      * @param listener The {@link FastInvClickListener} to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv onClick(FastInvClickListener listener) {
@@ -283,6 +298,7 @@ public class FastInv implements InventoryHolder {
      *
      * @param period   Delay between each run.
      * @param runnable The {@link Runnable} task to run.
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv onUpdate(long period, Runnable runnable) {
@@ -295,6 +311,7 @@ public class FastInv implements InventoryHolder {
      * @param delay    Ticks to wait before starting the task.
      * @param period   Delay between each run.
      * @param runnable The {@link Runnable} task to run.
+     *
      * @return This FastInv instance, for chaining
      */
     public FastInv onUpdate(long delay, long period, Runnable runnable) {
@@ -355,8 +372,8 @@ public class FastInv implements InventoryHolder {
 
     public static abstract class FastInvEvent {
 
-        private Player player;
-        private FastInv inventory;
+        private final Player player;
+        private final FastInv inventory;
         private boolean cancelled;
 
         FastInvEvent(Player player, FastInv inventory, boolean cancelled) {
@@ -404,10 +421,10 @@ public class FastInv implements InventoryHolder {
 
     public static class FastInvClickEvent extends FastInvEvent {
 
-        private int slot;
-        private ItemStack item;
-        private InventoryAction action;
-        private ClickType clickType;
+        private final int slot;
+        private final ItemStack item;
+        private final InventoryAction action;
+        private final ClickType clickType;
 
         private FastInvClickEvent(Player player, FastInv inventory, int slot, ItemStack item,
                                   boolean cancelled, InventoryAction action, ClickType clickType) {
@@ -532,6 +549,7 @@ public class FastInv implements InventoryHolder {
      * Set if the tasks will be cancel on menus close.
      *
      * @param cancelTasksOnClose Set if the tasks will be cancel
+     *
      * @return This FastInv instance, for chaining.
      */
     public FastInv setCancelTasksOnClose(boolean cancelTasksOnClose) {

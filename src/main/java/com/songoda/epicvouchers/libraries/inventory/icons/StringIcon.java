@@ -19,7 +19,6 @@ import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.WHITE;
 
 public class StringIcon extends Icon {
-
     public StringIcon(EpicVouchers instance, String string, String current, BiConsumer<Player, String> consumer) {
         this(instance, string, current, consumer, s -> true);
     }
@@ -57,10 +56,8 @@ public class StringIcon extends Icon {
                     }
                     event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully set to &r" + msg + "&7."));
                     Bukkit.getScheduler().runTaskLater(instance, () -> consumer.accept(event.getPlayer(), msg), 1L);
-            });
+                });
             }
-
         });
     }
-
 }

@@ -15,7 +15,6 @@ import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.YELLOW;
 
 public class SetItemMenu extends FastInv {
-
     public SetItemMenu(EpicVouchers instance, Voucher voucher) {
         super(27, "Set item");
 
@@ -74,6 +73,5 @@ public class SetItemMenu extends FastInv {
 
             new OptionMenu(instance, voucher).open(event.getPlayer());
         });
-
     }
 }

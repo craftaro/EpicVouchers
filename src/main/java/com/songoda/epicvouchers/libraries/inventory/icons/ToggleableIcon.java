@@ -14,7 +14,7 @@ public class ToggleableIcon extends Icon {
         super(new ItemBuilder(Material.PAPER)
                 .name(ChatColor.YELLOW + displayname)
                 .lore(state ? ChatColor.GREEN + "ENABLED" : ChatColor.RED + "DISABLED")
-                .build(), event -> {});
+                .build(), event -> { });
         this.consumer = consumer;
     }
 

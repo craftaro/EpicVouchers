@@ -5,7 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -27,13 +31,12 @@ import java.util.function.Consumer;
  * @version 2.0.3 - Now supports async operations
  */
 public class IconInv implements InventoryHolder {
-
     private static Plugin plugin = null;
     private boolean cancelTasksOnClose = true, cancelled = true;
-    private Set<IconInvCloseListener> closeListeners = new HashSet<>();
-    private Set<IconClickListener> clickListeners = new HashSet<>();
-    private Map<Integer, Icon> itemListeners = new HashMap<>();
-    private Set<BukkitTask> tasks = new HashSet<>();
+    private final Set<IconInvCloseListener> closeListeners = new HashSet<>();
+    private final Set<IconClickListener> clickListeners = new HashSet<>();
+    private final Map<Integer, Icon> itemListeners = new HashMap<>();
+    private final Set<BukkitTask> tasks = new HashSet<>();
     private Inventory inventory;
 
     /**
@@ -69,6 +72,7 @@ public class IconInv implements InventoryHolder {
      *
      * @param type  The type of the menus.
      * @param title The title of the menus.
+     *
      * @throws IllegalStateException if FastInv is not init with FastInv.init(Plugin plugin)
      */
     public IconInv(InventoryType type, String title) {
@@ -104,7 +108,8 @@ public class IconInv implements InventoryHolder {
     /**
      * Add an {@link ItemStack} to the menus with a {@link IconClickListener} to handle clicks.
      *
-     * @param icon     The icon to add.
+     * @param icon The icon to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(Icon icon) {
@@ -122,6 +127,7 @@ public class IconInv implements InventoryHolder {
      *
      * @param slot The slot of the item.
      * @param icon The icon to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(int slot, Icon icon) {
@@ -139,6 +145,7 @@ public class IconInv implements InventoryHolder {
      * @param slotFrom Starting slot to put the item in.
      * @param slotTo   Ending slot to put the item in.
      * @param icon     The icon to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(int slotFrom, int slotTo, Icon icon) {
@@ -152,6 +159,7 @@ public class IconInv implements InventoryHolder {
      * Add an {@link ItemStack} to the menus on the edges.
      *
      * @param icon The icon to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv edge(Icon icon) {
@@ -171,8 +179,9 @@ public class IconInv implements InventoryHolder {
     /**
      * Add an {@link ItemStack} to the menus on multiples slots with a {@link IconClickListener} to handle click.
      *
-     * @param slots    The slots to place the item.
-     * @param icon     The icon to add.
+     * @param slots The slots to place the item.
+     * @param icon  The icon to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(int[] slots, Icon icon) {
@@ -209,6 +218,7 @@ public class IconInv implements InventoryHolder {
      * Add a {@link IconInvCloseListener} to listen on menus close.
      *
      * @param listener The {@link IconInvCloseListener} to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv onClose(IconInvCloseListener listener) {
@@ -220,6 +230,7 @@ public class IconInv implements InventoryHolder {
      * Add a {@link IconClickListener} to listen on menus click.
      *
      * @param listener The {@link IconClickListener} to add.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv onClick(IconClickListener listener) {
@@ -232,6 +243,7 @@ public class IconInv implements InventoryHolder {
      *
      * @param period   Delay between each run.
      * @param runnable The {@link Runnable} task to run.
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv onUpdate(long period, Runnable runnable) {
@@ -244,6 +256,7 @@ public class IconInv implements InventoryHolder {
      * @param delay    Ticks to wait before starting the task.
      * @param period   Delay between each run.
      * @param runnable The {@link Runnable} task to run.
+     *
      * @return This FastInv instance, for chaining
      */
     public IconInv onUpdate(long delay, long period, Runnable runnable) {
@@ -298,6 +311,7 @@ public class IconInv implements InventoryHolder {
      * Set if the tasks will be cancel on menus close.
      *
      * @param cancelTasksOnClose Set if the tasks will be cancel
+     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv setCancelTasksOnClose(boolean cancelTasksOnClose) {
@@ -314,9 +328,8 @@ public class IconInv implements InventoryHolder {
     }
 
     public static abstract class IconEvent {
-
-        private Player player;
-        private IconInv inventory;
+        private final Player player;
+        private final IconInv inventory;
         private boolean cancelled;
 
         IconEvent(Player player, IconInv inventory, boolean cancelled) {
@@ -363,11 +376,10 @@ public class IconInv implements InventoryHolder {
     }
 
     public static class IconClickEvent extends IconEvent {
-
-        private int slot;
-        private ItemStack item;
-        private InventoryAction action;
-        private ClickType clickType;
+        private final int slot;
+        private final ItemStack item;
+        private final InventoryAction action;
+        private final ClickType clickType;
 
         private IconClickEvent(Player player, IconInv inventory, int slot, ItemStack item,
                                boolean cancelled, InventoryAction action, ClickType clickType) {

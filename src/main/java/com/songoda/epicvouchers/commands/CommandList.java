@@ -2,16 +2,13 @@ package com.songoda.epicvouchers.commands;
 
 import com.songoda.core.commands.AbstractCommand;
 import com.songoda.epicvouchers.EpicVouchers;
-import com.songoda.epicvouchers.menus.VoucherMenu;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.StringJoiner;
 
 public class CommandList extends AbstractCommand {
-
     final EpicVouchers instance;
 
     public CommandList(EpicVouchers instance) {
@@ -21,10 +18,15 @@ public class CommandList extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
+        StringJoiner joiner = new StringJoiner(", ");
+        for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+            joiner.add(voucher.getKey());
+        }
+
         instance.getLocale().getMessage("command.list.list")
-                .processPlaceholder("list",
-                        instance.getVoucherManager().getVouchers().stream().map(Voucher::getKey).collect(Collectors.joining(", ")))
+                .processPlaceholder("list", joiner.toString())
                 .sendPrefixedMessage(sender);
+
         return ReturnType.SUCCESS;
     }
 

@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class CommandEpicVouchers extends AbstractCommand {
-
     final EpicVouchers instance;
 
     public CommandEpicVouchers(EpicVouchers instance) {
