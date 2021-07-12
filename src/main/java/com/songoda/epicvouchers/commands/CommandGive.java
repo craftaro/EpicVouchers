@@ -5,13 +5,11 @@ import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandGive extends AbstractCommand {
     final EpicVouchers instance;
@@ -44,14 +42,23 @@ public class CommandGive extends AbstractCommand {
 
     @Override
     protected List<String> onTab(CommandSender sender, String... args) {
+        List<String> result = new ArrayList<>();
+
         if (args.length == 1) {
-            return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList());
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                result.add(online.getName());
+            }
         } else if (args.length == 2) {
-            return instance.getVoucherManager().getVouchers().stream().map(Voucher::getKey).collect(Collectors.toList());
+            for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+                result.add(voucher.getKey());
+            }
         } else if (args.length == 3) {
-            return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+            for (int i = 0; i < 10; ++i) {
+                result.add(String.valueOf(i + 1));
+            }
         }
-        return null;
+
+        return result;
     }
 
     @Override
