@@ -16,7 +16,12 @@ import static org.bukkit.Material.PAPER;
 
 public class VoucherMenu extends IconInv {
     public VoucherMenu(EpicVouchers instance) {
-        super((int) (Math.ceil(instance.getVoucherManager().getVouchers().size() / 9.0) * 9 + (instance.getVoucherManager().getVouchers().size() % 9 == 0 ? 9 : 0)), "Vouchers");
+        // FIXME: Having too many vouchers throws an error:
+        //        Size for custom inventory must be a multiple of 9 between 9 and 54 slots (got 594)
+        //        Applied hotfix to use a maximum size of 54
+        //        Example file: https://support.songoda.com/secure/attachment/17258/17258_vouchers.yml
+
+        super(Math.min((int) (Math.ceil(instance.getVoucherManager().getVouchers().size() / 9.0) * 9 + (instance.getVoucherManager().getVouchers().size() % 9 == 0 ? 9 : 0)), 54), "Vouchers");
 
         for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             if (getInventory().firstEmpty() != -1) {
