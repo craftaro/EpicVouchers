@@ -1,7 +1,6 @@
 package com.songoda.epicvouchers.listeners;
 
-import com.songoda.core.nms.NmsManager;
-import com.songoda.core.nms.nbt.NBTItem;
+import com.songoda.core.third_party.de.tr7zw.nbtapi.NBTItem;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.utils.CachedSet;
 import com.songoda.epicvouchers.voucher.Voucher;
@@ -27,9 +26,9 @@ public class PlayerInteractListener implements Listener {
         ItemStack item = e.getItem();
 
         if (item != null && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            NBTItem itemNbt = NmsManager.getNbt().of(item);
+            NBTItem itemNbt = new NBTItem(item);
 
-            boolean itemHasVoucher = itemNbt.has("epicvouchers:voucher");
+            boolean itemHasVoucher = itemNbt.hasKey("epicvouchers:voucher");
             String itemVoucherValue = itemNbt.getString("epicvouchers:voucher");
 
             boolean legacyChecked = checkedLegacyVouchers.contains(item);

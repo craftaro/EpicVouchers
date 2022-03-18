@@ -2,7 +2,6 @@ package com.songoda.epicvouchers.voucher;
 
 import com.songoda.core.compatibility.CompatibleSound;
 import com.songoda.core.compatibility.ServerVersion;
-import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;
@@ -167,13 +166,13 @@ public class VoucherExecutor {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));
                 }
 
-                instance.getLogger().log(Level.INFO, TextUtils.formatText("&f" + player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.INFO, player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + ".");
                 instance.getConnections().saveRedeem(player, voucher.getName(true));
             } else {
-                instance.getLogger().log(Level.WARNING, TextUtils.formatText("&c" + player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + "."));
+                instance.getLogger().log(Level.WARNING, player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + ".");
             }
         } catch (Exception error) {
-            instance.getLogger().log(Level.SEVERE, TextUtils.formatText("&cFailed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + "."));
+            instance.getLogger().log(Level.SEVERE, "Failed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + ".");
             instance.getLogger().log(Level.SEVERE, error.getMessage());
             error.printStackTrace();
         }
