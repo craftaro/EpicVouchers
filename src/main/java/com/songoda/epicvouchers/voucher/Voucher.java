@@ -2,8 +2,7 @@ package com.songoda.epicvouchers.voucher;
 
 import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.compatibility.ServerVersion;
-import com.songoda.core.nms.NmsManager;
-import com.songoda.core.nms.nbt.NBTItem;
+import com.songoda.core.third_party.de.tr7zw.nbtapi.NBTItem;
 import com.songoda.core.utils.ItemUtils;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
@@ -113,9 +112,10 @@ public class Voucher {
                 item.setItemMeta(meta);
             } else {
                 item.setItemMeta(meta);
-                NBTItem nbtItem = NmsManager.getNbt().of(item);
-                nbtItem.set("Unbreakable", (byte) 1);
-                item = nbtItem.finish();
+
+                NBTItem nbtItem = new NBTItem(item);
+                nbtItem.setByte("Unbreakable", (byte) 1);
+                item = nbtItem.getItem();
             }
         }
 
@@ -123,10 +123,10 @@ public class Voucher {
             item = ItemUtils.getCustomHead(texture);
         }
 
-        NBTItem nbtItem = NmsManager.getNbt().of(item);
-        nbtItem.set("epicvouchers:voucher", key);
+        NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setString("epicvouchers:voucher", key);
 
-        return nbtItem.finish();
+        return nbtItem.getItem();
     }
 
     public String getName(boolean applyFormatting) {
