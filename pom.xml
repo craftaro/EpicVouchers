@@ -6,7 +6,7 @@
 
     <groupId>com.songoda</groupId>
     <artifactId>EpicVouchers</artifactId>
-    <version>2.2.5-DEV</version>
+    <version>2.2.6-BETA</version>
 
     <name>EpicVouchers</name>
     <description>Enhance your server with awesome customizable vouchers with a lot of features.</description>
