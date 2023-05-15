@@ -12,10 +12,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collection;
+
 public class PlayerInteractListener implements Listener {
     private final EpicVouchers instance;
 
-    private final CachedSet<ItemStack> checkedLegacyVouchers = new CachedSet<>(3 * 60);
+    private final CachedSet<ItemStack> itemsThatGotLegacyChecked = new CachedSet<>(3 * 60);
 
     public PlayerInteractListener(EpicVouchers instance) {
         this.instance = instance;
@@ -24,53 +26,80 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void voucherListener(PlayerInteractEvent e) {
         ItemStack item = e.getItem();
+        if (item == null || !isRightClickAction(e.getAction())) {
+            return;
+        }
 
-        if (item != null && (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-            NBTItem itemNbt = new NBTItem(item);
+        NBTItem nbtItem = new NBTItem(item);
 
-            boolean itemHasVoucher = itemNbt.hasKey("epicvouchers:voucher");
-            String itemVoucherValue = itemNbt.getString("epicvouchers:voucher");
+        boolean itemHasVoucher = nbtItem.hasTag("epicvouchers:voucher");
+        boolean itemHasBeenLegacyChecked = this.itemsThatGotLegacyChecked.contains(item);
+        if (!itemHasVoucher && itemHasBeenLegacyChecked) {
+            return;
+        }
 
-            boolean legacyChecked = checkedLegacyVouchers.contains(item);
+        Voucher voucher;
+        Collection<Voucher> allVouchers = this.instance.getVoucherManager().getVouchers();
 
-            if (itemHasVoucher || !legacyChecked) {
-                boolean shouldBeLegacyCached = !itemHasVoucher;
+        if (itemHasVoucher) {
+            String voucherKey = nbtItem.getString("epicvouchers:voucher");
+            voucher = findVoucherForKey(voucherKey, allVouchers);
+            if (voucher != null) {
+                e.setCancelled(true);
+                voucher.redeemVoucher(e);
+            }
 
-                for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
-                    // Check voucher NBT.
-                    if (itemHasVoucher && itemVoucherValue.equals(voucher.getKey())) {
-                        e.setCancelled(true);
-                        voucher.redeemVoucher(e);
-                        break;
-                    }
+            return;
+        }
 
-                    // TODO: eventually make the legacy check configurable as a lot of players (and vouchers) quickly cause lag
-                    // Legacy crap.
-                    // does the item they're holding match this voucher?
-                    ItemStack voucherItem = voucher.toItemStack();
+        voucher = findVoucherForLegacyItem(item, allVouchers);
+        if (voucher == null) {
+            this.itemsThatGotLegacyChecked.add(item);
+            return;
+        }
 
-                    if ((voucherItem == null || voucherItem.isSimilar(item)) &&
-                            item.getType() == voucher.getMaterial() &&
-                            item.getDurability() == voucher.getData()) {
-                        // material matches - verify the name + lore
-                        ItemMeta meta = item.getItemMeta();
+        e.setCancelled(true);
+        voucher.redeemVoucher(e);
+    }
 
-                        if (meta != null && meta.hasDisplayName()
-                                && ChatColor.stripColor(meta.getDisplayName()).equals(ChatColor.stripColor(voucher.getName(true)))
-                                && (!meta.hasLore() || meta.getLore().equals(voucher.getLore(true)))) {
-                            e.setCancelled(true);
-                            voucher.redeemVoucher(e);
+    private boolean isRightClickAction(Action action) {
+        return action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK;
+    }
 
-                            shouldBeLegacyCached = false;
-                            break;
-                        }
-                    }
-                }
-
-                if (shouldBeLegacyCached) {
-                    this.checkedLegacyVouchers.add(item);
-                }
+    private Voucher findVoucherForKey(String voucherKey, Collection<Voucher> allVouchers) {
+        for (Voucher voucher : allVouchers) {
+            if (voucherKey.equals(voucher.getKey())) {
+                return voucher;
             }
         }
+
+        return null;
+    }
+
+    /**
+     * @deprecated This is a legacy method that is only used for backwards compatibility
+     *         with vouchers that were created before the voucher key was stored in NBT.
+     *         Some checks in here don't even look like they make sense or look redundant... Hard to touch this.
+     */
+    @Deprecated
+    private Voucher findVoucherForLegacyItem(ItemStack item, Collection<Voucher> allVouchers) {
+        for (Voucher voucher : allVouchers) {
+            ItemStack voucherItem = voucher.toItemStack();
+
+            if (voucherItem != null && !voucherItem.isSimilar(item)) {
+                continue;
+            }
+            if (item.getType() != voucher.getMaterial() || item.getDurability() != voucher.getData()) {
+                continue;
+            }
+
+            // material matches - verify the name + lore
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta.hasDisplayName() && ChatColor.stripColor(meta.getDisplayName()).equals(ChatColor.stripColor(voucher.getName(true))) && (!meta.hasLore() || meta.getLore().equals(voucher.getLore(true)))) {
+                return voucher;
+            }
+        }
+
+        return null;
     }
 }
