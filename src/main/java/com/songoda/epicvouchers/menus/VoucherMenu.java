@@ -34,7 +34,7 @@ public class VoucherMenu extends IconInv {
                 .lore(TextUtils.formatText("&eCreate a new voucher with set id.")).build(), event -> {
             AnvilGui gui = new AnvilGui(event.getPlayer());
             gui.setTitle("Insert id");
-            gui.setAction(aevent -> {
+            gui.setAction(aEvent -> {
                 final String msg = gui.getInputText().trim();
                 if (instance.getVoucherManager().getVoucher(msg) != null) {
                     event.getPlayer().sendMessage(TextUtils.formatText("&cAlready a voucher registered with the id: " + msg));

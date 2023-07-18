@@ -13,23 +13,24 @@ public class CommandForceAll extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandForceAll(EpicVouchers instance) {
-        super(false, "forceall");
+        super(CommandType.CONSOLE_OK, "forceall");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length != 2)
+        if (args.length != 2) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
-        Voucher voucher = instance.getVoucherManager().getVoucher(args[0]);
+        Voucher voucher = this.instance.getVoucherManager().getVoucher(args[0]);
         if (voucher == null) {
             sender.sendMessage("Unknown voucher...");
             return ReturnType.FAILURE;
         }
 
         voucher.forceRedeem(sender, new ArrayList<>(Bukkit.getOnlinePlayers()), Integer.parseInt(args[1]));
-        instance.getLocale().getMessage("command.force.send")
+        this.instance.getLocale().getMessage("command.force.send")
                 .processPlaceholder("player", "everyone")
                 .processPlaceholder("voucher", voucher.getName(true))
                 .processPlaceholder("amount", args[1].trim())
@@ -42,7 +43,7 @@ public class CommandForceAll extends AbstractCommand {
         List<String> result = new ArrayList<>();
 
         if (args.length == 1) {
-            for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+            for (Voucher voucher : this.instance.getVoucherManager().getVouchers()) {
                 result.add(voucher.getKey());
             }
         } else if (args.length == 2) {

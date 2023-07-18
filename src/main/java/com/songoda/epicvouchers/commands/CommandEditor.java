@@ -12,13 +12,13 @@ public class CommandEditor extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandEditor(EpicVouchers instance) {
-        super(true, "editor");
+        super(CommandType.PLAYER_ONLY, "EpicVouchers");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        new VoucherMenu(instance).open((Player) sender);
+        new VoucherMenu(this.instance).open((Player) sender);
         return ReturnType.SUCCESS;
     }
 

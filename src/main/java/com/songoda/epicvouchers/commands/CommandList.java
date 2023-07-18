@@ -12,18 +12,18 @@ public class CommandList extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandList(EpicVouchers instance) {
-        super(false, "list");
+        super(CommandType.CONSOLE_OK, "list");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         StringJoiner joiner = new StringJoiner(", ");
-        for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+        for (Voucher voucher : this.instance.getVoucherManager().getVouchers()) {
             joiner.add(voucher.getKey());
         }
 
-        instance.getLocale().getMessage("command.list.list")
+        this.instance.getLocale().getMessage("command.list.list")
                 .processPlaceholder("list", joiner.toString())
                 .sendPrefixedMessage(sender);
 

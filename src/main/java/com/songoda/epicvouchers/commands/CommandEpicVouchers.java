@@ -11,17 +11,17 @@ public class CommandEpicVouchers extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandEpicVouchers(EpicVouchers instance) {
-        super(false, "EpicVouchers");
+        super(CommandType.CONSOLE_OK, "EpicVouchers");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         sender.sendMessage("");
-        instance.getLocale().newMessage("&7Version " + instance.getDescription().getVersion()
+        this.instance.getLocale().newMessage("&7Version " + this.instance.getDescription().getVersion()
                 + " Created with <3 by &5&l&oSongoda").sendPrefixedMessage(sender);
 
-        for (AbstractCommand command : instance.getCommandManager().getAllCommands()) {
+        for (AbstractCommand command : this.instance.getCommandManager().getAllCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
             }

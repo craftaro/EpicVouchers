@@ -38,12 +38,12 @@ public class StringIcon extends Icon {
                 .lore(GRAY + "Current: " + WHITE + current, GRAY + "Right click to edit", GRAY + "Left click to clear").build(), current, consumer, predicate, noLeft);
     }
 
-    public StringIcon(EpicVouchers instance, ItemStack itemStack, String current, BiConsumer<Player, String> consumer) {
-        this(instance, itemStack, current, consumer, s -> true, false);
+    public StringIcon(EpicVouchers instance, ItemStack item, String current, BiConsumer<Player, String> consumer) {
+        this(instance, item, current, consumer, s -> true, false);
     }
 
-    public StringIcon(EpicVouchers instance, ItemStack itemStack, String current, BiConsumer<Player, String> consumer, Predicate<String> predicate, boolean noLeft) {
-        super(itemStack, event -> {
+    public StringIcon(EpicVouchers instance, ItemStack item, String current, BiConsumer<Player, String> consumer, Predicate<String> predicate, boolean noLeft) {
+        super(item, event -> {
             if (!noLeft && event.getClickType() == ClickType.LEFT) {
                 consumer.accept(event.getPlayer(), "");
                 event.getPlayer().sendMessage(TextUtils.formatText("&7Successfully cleared&7."));

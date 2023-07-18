@@ -8,10 +8,10 @@ public class ThreadSync {
     private final AtomicReference<Boolean> waiting = new AtomicReference<>(true);
 
     public void waitForRelease() {
-        synchronized (syncObj) {
-            while (waiting.get()) {
+        synchronized (this.syncObj) {
+            while (this.waiting.get()) {
                 try {
-                    syncObj.wait();
+                    this.syncObj.wait();
                 } catch (Exception ignore) {
                 }
             }
@@ -19,13 +19,13 @@ public class ThreadSync {
     }
 
     public void release() {
-        synchronized (syncObj) {
-            waiting.set(false);
-            syncObj.notifyAll();
+        synchronized (this.syncObj) {
+            this.waiting.set(false);
+            this.syncObj.notifyAll();
         }
     }
 
     public void reset() {
-        waiting.set(true);
+        this.waiting.set(true);
     }
 }

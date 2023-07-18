@@ -25,16 +25,16 @@ public class CachedSet<K> {
             clearStale();
         }
 
-        return this.cache.computeIfPresent(obj, (k, aLong) -> System.currentTimeMillis()) != null;
+        return this.cache.computeIfPresent(obj, (key, aLong) -> System.currentTimeMillis()) != null;
     }
 
     public void clearStale() {
-        this.cache.entrySet().removeIf(entry -> System.currentTimeMillis() - entry.getValue() >= ttl);
+        this.cache.entrySet().removeIf(entry -> System.currentTimeMillis() - entry.getValue() >= this.ttl);
 
         this.lastClear = System.currentTimeMillis();
     }
 
     private boolean shouldClear() {
-        return !this.cache.isEmpty() && System.currentTimeMillis() - lastClear > ttl;
+        return !this.cache.isEmpty() && System.currentTimeMillis() - this.lastClear > this.ttl;
     }
 }

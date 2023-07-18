@@ -12,16 +12,17 @@ public class CommandGiveAll extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandGiveAll(EpicVouchers instance) {
-        super(false, "giveall");
+        super(CommandType.CONSOLE_OK, "giveall");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length != 2)
+        if (args.length != 2) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
-        Voucher voucher = instance.getVoucherManager().getVoucher(args[0]);
+        Voucher voucher = this.instance.getVoucherManager().getVoucher(args[0]);
         if (voucher == null) {
             sender.sendMessage("Unknown voucher...");
             return ReturnType.FAILURE;
@@ -36,7 +37,7 @@ public class CommandGiveAll extends AbstractCommand {
         List<String> result = new ArrayList<>();
 
         if (args.length == 1) {
-            for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+            for (Voucher voucher : this.instance.getVoucherManager().getVouchers()) {
                 result.add(voucher.getKey());
             }
         } else if (args.length == 2) {

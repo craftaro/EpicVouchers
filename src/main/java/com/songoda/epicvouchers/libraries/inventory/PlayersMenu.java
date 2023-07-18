@@ -41,16 +41,16 @@ public abstract class PlayersMenu extends FastInv {
     @Override
     public void refresh() {
         fill(null);
-        final int startIndex = page * (players.size() - 1);
+        final int startIndex = this.page * (this.players.size() - 1);
 
-        IntStream.rangeClosed(0, SLOTS).forEach(slot -> {
+        IntStream.rangeClosed(0, this.SLOTS).forEach(slot -> {
             int index = startIndex + slot;
 
-            if (index >= players.size()) {
+            if (index >= this.players.size()) {
                 return;
             }
 
-            Player player = players.get(index);
+            Player player = this.players.get(index);
 
             ItemStack itemStack = CompatibleMaterial.PLAYER_HEAD.getItem();
 
@@ -64,42 +64,43 @@ public abstract class PlayersMenu extends FastInv {
             skullMeta.setDisplayName(YELLOW + player.getName());
             itemStack.setItemMeta(skullMeta);
 
-            addItem(slot, itemStack, event -> playerConsumer.accept(event.getPlayer(), player));
+            addItem(slot, itemStack, event -> this.playerConsumer.accept(event.getPlayer(), player));
         });
 
-        if (players.size() / SLOTS > page) {
+        if (this.players.size() / this.SLOTS > this.page) {
             addItem(26, new ItemBuilder(ARROW)
                     .name(YELLOW + "Next")
                     .lore(GRAY + "Click to go to the next page of players")
                     .build(), event -> {
-                page++;
+                this.page++;
                 refresh();
             });
         } else {
             addItem(26, null);
         }
 
-        if (page > 0) {
+        if (this.page > 0) {
             addItem(18, new ItemBuilder(ARROW)
                     .name(YELLOW + "Previous")
                     .lore(GRAY + "Click to go to the previous page of players")
                     .build(), event -> {
-                page--;
+                this.page--;
                 refresh();
             });
         } else {
             addItem(18, new ItemBuilder(BARRIER)
                     .name(YELLOW + "Return")
                     .lore(GRAY + "Return to the action menu")
-                    .addGlow().build(), event -> new ActionMenu(instance, voucher).open(event.getPlayer()));
+                    .addGlow().build(), event -> new ActionMenu(this.instance, this.voucher).open(event.getPlayer()));
         }
 
-        if (instance.getConfig().getBoolean("Interface.Fill Interfaces With Glass")) {
+        if (this.instance.getConfig().getBoolean("Interface.Fill Interfaces With Glass")) {
             ItemStack fillItem = CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem();
 
-            IntStream.rangeClosed(SLOTS + 1, 26).forEach(slot -> {
-                if (getInventory().getItem(slot) == null)
+            IntStream.rangeClosed(this.SLOTS + 1, 26).forEach(slot -> {
+                if (getInventory().getItem(slot) == null) {
                     addItem(slot, new ItemBuilder(fillItem).name(ChatColor.RESET.toString()).build());
+                }
             });
         }
     }

@@ -37,8 +37,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class EpicVouchers extends SongodaPlugin {
-    private static EpicVouchers INSTANCE;
-
     private final GuiManager guiManager = new GuiManager(this);
     private CommandManager commandManager;
     private VoucherManager voucherManager;
@@ -48,18 +46,21 @@ public class EpicVouchers extends SongodaPlugin {
     private VoucherExecutor voucherExecutor;
     private final Config vouchersConfig = new Config(this, "vouchers.yml");
 
+    /**
+     * @deprecated Use {@link org.bukkit.plugin.java.JavaPlugin#getPlugin(Class)} instead
+     */
+    @Deprecated
     public static EpicVouchers getInstance() {
-        return INSTANCE;
+        return getPlugin(EpicVouchers.class);
     }
 
     @Override
     public void onPluginLoad() {
-        INSTANCE = this;
     }
 
     @Override
     public void onPluginDisable() {
-        connections.closeMySQL();
+        this.connections.closeMySQL();
         saveVouchers();
     }
 
@@ -96,7 +97,7 @@ public class EpicVouchers extends SongodaPlugin {
         PluginManager manager = Bukkit.getServer().getPluginManager();
 
         // Listeners
-        guiManager.init();
+        this.guiManager.init();
         manager.registerEvents(new PlayerInteractListener(this), this);
         manager.registerEvents(new PlayerCommandListener(), this);
     }
@@ -107,13 +108,13 @@ public class EpicVouchers extends SongodaPlugin {
             saveResource("vouchers.yml", false);
         }
 
-        synchronized (vouchersConfig) {
-            vouchersConfig.load();
+        synchronized (this.vouchersConfig) {
+            this.vouchersConfig.load();
         }
 
         loadVouchersFromFile();
 
-        connections.openMySQL();
+        this.connections.openMySQL();
 
         // FIXME: Config system needs to be greatly redone and only write changes when changes were made - Maybe even split it into multiple smaler files
         //        Issue https://support.songoda.com/browse/SD-8155 has been hotfixed by writing changes to the file async and blocking the main thread when needed. This requires the use of `synchronized`
@@ -129,13 +130,13 @@ public class EpicVouchers extends SongodaPlugin {
     }
 
     private void loadVouchersFromFile() {
-        synchronized (vouchersConfig) {
-            voucherManager.clearVouchers();
+        synchronized (this.vouchersConfig) {
+            this.voucherManager.clearVouchers();
 
-            if (vouchersConfig.contains("vouchers")) {
-                for (String key : vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
+            if (this.vouchersConfig.contains("vouchers")) {
+                for (String key : this.vouchersConfig.getConfigurationSection("vouchers").getKeys(false)) {
                     Voucher voucher = new Voucher(key, this);
-                    ConfigurationSection cs = vouchersConfig.getConfigurationSection("vouchers." + key);
+                    ConfigurationSection cs = this.vouchersConfig.getConfigurationSection("vouchers." + key);
 
                     Material material;
                     String stringMaterial = cs.getString("material");
@@ -144,7 +145,9 @@ public class EpicVouchers extends SongodaPlugin {
                         material = Material.PAPER;
                     } else {
                         material = Material.matchMaterial(stringMaterial);
-                        if (material == null) material = Material.PAPER;
+                        if (material == null) {
+                            material = Material.PAPER;
+                        }
                     }
 
                     voucher.setPermission(cs.getString("permission", ""))
@@ -178,7 +181,7 @@ public class EpicVouchers extends SongodaPlugin {
                             .setEffectAmplifier(cs.getInt("effects.amplifier"))
                             .setItemStack(cs.getItemStack("itemstack", null));
 
-                    voucherManager.addVoucher(voucher);
+                    this.voucherManager.addVoucher(voucher);
                 }
             }
         }
@@ -201,14 +204,14 @@ public class EpicVouchers extends SongodaPlugin {
     private void saveVouchersAsync(Callback callback) {
         new Thread(() -> {
             try {
-                synchronized (vouchersConfig) {
-                    Collection<Voucher> voucherList = voucherManager.getVouchers();
+                synchronized (this.vouchersConfig) {
+                    Collection<Voucher> voucherList = this.voucherManager.getVouchers();
 
-                    ConfigurationSection cfgSec = vouchersConfig.getConfigurationSection("vouchers");
+                    ConfigurationSection cfgSec = this.vouchersConfig.getConfigurationSection("vouchers");
                     if (cfgSec != null) {
                         for (String voucherName : cfgSec.getKeys(false)) {
                             if (voucherList.stream().noneMatch(voucher -> voucher.getKey().equals(voucherName))) {
-                                vouchersConfig.set("vouchers." + voucherName, null);
+                                this.vouchersConfig.set("vouchers." + voucherName, null);
                             }
                         }
                     }
@@ -216,39 +219,39 @@ public class EpicVouchers extends SongodaPlugin {
                     for (Voucher voucher : voucherList) {
                         String prefix = "vouchers." + voucher.getKey() + ".";
 
-                        vouchersConfig.set(prefix + "permission", voucher.getPermission());
-                        vouchersConfig.set(prefix + "material", voucher.getMaterial().name());
-                        vouchersConfig.set(prefix + "data", voucher.getData());
-                        vouchersConfig.set(prefix + "name", voucher.getName());
-                        vouchersConfig.set(prefix + "lore", voucher.getLore());
-                        vouchersConfig.set(prefix + "texture", voucher.getTexture());
-                        vouchersConfig.set(prefix + "glow", voucher.isGlow());
-                        vouchersConfig.set(prefix + "confirm", voucher.isConfirm());
-                        vouchersConfig.set(prefix + "unbreakable", voucher.isUnbreakable());
-                        vouchersConfig.set(prefix + "hide-attributes", voucher.isHideAttributes());
-                        vouchersConfig.set(prefix + "remove-item", voucher.isRemoveItem());
-                        vouchersConfig.set(prefix + "heal-player", voucher.isHealPlayer());
-                        vouchersConfig.set(prefix + "smite-effect", voucher.isSmiteEffect());
-                        vouchersConfig.set(prefix + "coolDown", voucher.getCoolDown());
-                        vouchersConfig.set(prefix + "broadcasts", voucher.getBroadcasts());
-                        vouchersConfig.set(prefix + "messages", voucher.getMessages());
-                        vouchersConfig.set(prefix + "commands", voucher.getCommands());
-                        vouchersConfig.set(prefix + "actionbar", voucher.getActionBar());
-                        vouchersConfig.set(prefix + "titles.title", voucher.getTitle());
-                        vouchersConfig.set(prefix + "titles.subtitle", voucher.getSubTitle());
-                        vouchersConfig.set(prefix + "titles.fade-in", voucher.getTitleFadeIn());
-                        vouchersConfig.set(prefix + "titles.stay", voucher.getTitleStay());
-                        vouchersConfig.set(prefix + "titles.fade-out", voucher.getTitleFadeOut());
-                        vouchersConfig.set(prefix + "sounds.sound", voucher.getSound());
-                        vouchersConfig.set(prefix + "sounds.pitch", voucher.getSoundPitch());
-                        vouchersConfig.set(prefix + "particles.particle", voucher.getParticle());
-                        vouchersConfig.set(prefix + "particles.amount", voucher.getParticleAmount());
-                        vouchersConfig.set(prefix + "effects.effect", voucher.getEffect());
-                        vouchersConfig.set(prefix + "effects.amplifier", voucher.getEffectAmplifier());
-                        vouchersConfig.set(prefix + "itemstack", voucher.getItemStack());
+                        this.vouchersConfig.set(prefix + "permission", voucher.getPermission());
+                        this.vouchersConfig.set(prefix + "material", voucher.getMaterial().name());
+                        this.vouchersConfig.set(prefix + "data", voucher.getData());
+                        this.vouchersConfig.set(prefix + "name", voucher.getName());
+                        this.vouchersConfig.set(prefix + "lore", voucher.getLore());
+                        this.vouchersConfig.set(prefix + "texture", voucher.getTexture());
+                        this.vouchersConfig.set(prefix + "glow", voucher.isGlow());
+                        this.vouchersConfig.set(prefix + "confirm", voucher.isConfirm());
+                        this.vouchersConfig.set(prefix + "unbreakable", voucher.isUnbreakable());
+                        this.vouchersConfig.set(prefix + "hide-attributes", voucher.isHideAttributes());
+                        this.vouchersConfig.set(prefix + "remove-item", voucher.isRemoveItem());
+                        this.vouchersConfig.set(prefix + "heal-player", voucher.isHealPlayer());
+                        this.vouchersConfig.set(prefix + "smite-effect", voucher.isSmiteEffect());
+                        this.vouchersConfig.set(prefix + "coolDown", voucher.getCoolDown());
+                        this.vouchersConfig.set(prefix + "broadcasts", voucher.getBroadcasts());
+                        this.vouchersConfig.set(prefix + "messages", voucher.getMessages());
+                        this.vouchersConfig.set(prefix + "commands", voucher.getCommands());
+                        this.vouchersConfig.set(prefix + "actionbar", voucher.getActionBar());
+                        this.vouchersConfig.set(prefix + "titles.title", voucher.getTitle());
+                        this.vouchersConfig.set(prefix + "titles.subtitle", voucher.getSubTitle());
+                        this.vouchersConfig.set(prefix + "titles.fade-in", voucher.getTitleFadeIn());
+                        this.vouchersConfig.set(prefix + "titles.stay", voucher.getTitleStay());
+                        this.vouchersConfig.set(prefix + "titles.fade-out", voucher.getTitleFadeOut());
+                        this.vouchersConfig.set(prefix + "sounds.sound", voucher.getSound());
+                        this.vouchersConfig.set(prefix + "sounds.pitch", voucher.getSoundPitch());
+                        this.vouchersConfig.set(prefix + "particles.particle", voucher.getParticle());
+                        this.vouchersConfig.set(prefix + "particles.amount", voucher.getParticleAmount());
+                        this.vouchersConfig.set(prefix + "effects.effect", voucher.getEffect());
+                        this.vouchersConfig.set(prefix + "effects.amplifier", voucher.getEffectAmplifier());
+                        this.vouchersConfig.set(prefix + "itemstack", voucher.getItemStack());
                     }
 
-                    vouchersConfig.saveChanges();
+                    this.vouchersConfig.saveChanges();
 
                     callback.accept(null);
                 }
@@ -260,8 +263,8 @@ public class EpicVouchers extends SongodaPlugin {
 
     @Override
     public void onConfigReload() {
-        synchronized (vouchersConfig) {
-            vouchersConfig.load();
+        synchronized (this.vouchersConfig) {
+            this.vouchersConfig.load();
         }
 
         loadVouchersFromFile();
@@ -272,7 +275,7 @@ public class EpicVouchers extends SongodaPlugin {
 
     @Override
     public List<Config> getExtraConfig() {
-        return Collections.singletonList(vouchersConfig);
+        return Collections.singletonList(this.vouchersConfig);
     }
 
     public Connections getConnections() {
@@ -288,14 +291,14 @@ public class EpicVouchers extends SongodaPlugin {
     }
 
     public CommandManager getCommandManager() {
-        return commandManager;
+        return this.commandManager;
     }
 
     public VoucherManager getVoucherManager() {
-        return voucherManager;
+        return this.voucherManager;
     }
 
     public GuiManager getGuiManager() {
-        return guiManager;
+        return this.guiManager;
     }
 }

@@ -9,8 +9,9 @@ public class Icon {
     private final ItemStack itemStack;
     private final Consumer<IconClickEvent> consumer;
 
-    public Icon(ItemStack itemStack) {
-        this(itemStack, event -> { });
+    public Icon(ItemStack item) {
+        this(item, event -> {
+        });
     }
 
     public Icon(ItemStack item, Consumer<IconClickEvent> consumer) {
@@ -18,7 +19,11 @@ public class Icon {
         this.consumer = consumer;
     }
 
-    public void run(IconClickEvent e) { consumer.accept(e); }
+    public void run(IconClickEvent e) {
+        this.consumer.accept(e);
+    }
 
-    public ItemStack getItemStack() { return itemStack; }
+    public ItemStack getItemStack() {
+        return this.itemStack;
+    }
 }

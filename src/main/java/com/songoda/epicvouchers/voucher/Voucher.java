@@ -81,32 +81,32 @@ public class Voucher {
     }
 
     public ItemStack toItemStack(int amount) {
-        ItemStack item = itemStack == null ? new ItemStack(material, amount, data) : itemStack;
+        ItemStack item = this.itemStack == null ? new ItemStack(this.material, amount, this.data) : this.itemStack;
         ItemMeta meta = item.getItemMeta();
 
         if (meta == null) {
-            meta = Bukkit.getItemFactory().getItemMeta(material);
+            meta = Bukkit.getItemFactory().getItemMeta(this.material);
         }
 
-        if (!name.isEmpty()) {
-            meta.setDisplayName(TextUtils.formatText(name));
+        if (!this.name.isEmpty()) {
+            meta.setDisplayName(TextUtils.formatText(this.name));
         }
 
-        if (lore != null) {
+        if (this.lore != null) {
             meta.setLore(getLore(true));
         }
 
-        if (glow) {
+        if (this.glow) {
             meta.addEnchant(Enchantment.DURABILITY, 1, false);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
-        if (hideAttributes) {
+        if (this.hideAttributes) {
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         }
 
-        if (unbreakable) {
+        if (this.unbreakable) {
             if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
                 meta.setUnbreakable(true);
                 item.setItemMeta(meta);
@@ -119,18 +119,18 @@ public class Voucher {
             }
         }
 
-        if (texture != null && !texture.isEmpty() && CompatibleMaterial.PLAYER_HEAD.getMaterial() == material) {
-            item = ItemUtils.getCustomHead(texture);
+        if (this.texture != null && !this.texture.isEmpty() && CompatibleMaterial.PLAYER_HEAD.getMaterial() == this.material) {
+            item = ItemUtils.getCustomHead(this.texture);
         }
 
         NBTItem nbtItem = new NBTItem(item);
-        nbtItem.setString("epicvouchers:voucher", key);
+        nbtItem.setString("epicvouchers:voucher", this.key);
 
         return nbtItem.getItem();
     }
 
     public String getName(boolean applyFormatting) {
-        return applyFormatting ? TextUtils.formatText(name) : name;
+        return applyFormatting ? TextUtils.formatText(this.name) : this.name;
     }
 
     public List<String> getLore(boolean applyFormatting) {
@@ -172,23 +172,23 @@ public class Voucher {
     public void saveSetting(String key, List<String> list) {
         switch (key) {
             case "Commands":
-                commands = list;
+                this.commands = list;
                 break;
             case "Broadcasts":
-                broadcasts = list;
+                this.broadcasts = list;
                 break;
             case "Messages":
-                messages = list;
+                this.messages = list;
                 break;
             case "Lore":
-                lore = list;
+                this.lore = list;
                 break;
         }
     }
 
     @Override
     public String toString() {
-        return key;
+        return this.key;
     }
 
     public void giveAll(CommandSender sender, int amount) {
@@ -196,13 +196,13 @@ public class Voucher {
     }
 
     public void give(CommandSender sender, List<Player> players, int amount) {
-        String giveMessage = instance.getLocale().getMessage("command.give.send")
+        String giveMessage = this.instance.getLocale().getMessage("command.give.send")
                 .processPlaceholder("player", players.size() == 1 ? players.get(0).getName() : "everyone")
                 .processPlaceholder("voucher", getName(true))
                 .processPlaceholder("amount", String.valueOf(amount)).getPrefixedMessage();
 
         for (Player player : players) {
-            String receiveMessage = instance.getLocale().getMessage("command.give.receive")
+            String receiveMessage = this.instance.getLocale().getMessage("command.give.receive")
                     .processPlaceholder("voucher", getName(true))
                     .processPlaceholder("player", player.getName())
                     .processPlaceholder("amount", String.valueOf(amount)).getPrefixedMessage();
@@ -211,7 +211,7 @@ public class Voucher {
             Bukkit.getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) {
-                instance.getLocale().getMessage("command.give.cancelled").sendPrefixedMessage(sender);
+                this.instance.getLocale().getMessage("command.give.cancelled").sendPrefixedMessage(sender);
                 continue;
             }
 
@@ -232,7 +232,7 @@ public class Voucher {
             }
 
             for (int i = 0; i < amount; i++) {
-                instance.getVoucherExecutor().redeemVoucher(player, this, player.getItemInHand(), false, null);
+                this.instance.getVoucherExecutor().redeemVoucher(player, this, player.getItemInHand(), false, null);
             }
         }
     }
@@ -241,45 +241,46 @@ public class Voucher {
         Player player = event.getPlayer();
 
         // does the player have permission to redeem this voucher?
-        if (!permission.isEmpty() && !player.hasPermission(permission)) {
-            player.sendMessage(instance.getLocale().getMessage("event.general.nopermission").getPrefixedMessage());
+        if (!this.permission.isEmpty() && !player.hasPermission(this.permission)) {
+            player.sendMessage(this.instance.getLocale().getMessage("event.general.nopermission").getPrefixedMessage());
             return;
         }
 
         UUID uuid = player.getUniqueId();
 
-        if (instance.getCoolDowns().isOnCoolDown(uuid)) {
-            instance.getLocale().getMessage("event.general.cooldown")
-                    .processPlaceholder("time", instance.getCoolDowns().getTime(uuid))
+        if (this.instance.getCoolDowns().isOnCoolDown(uuid)) {
+            this.instance.getLocale().getMessage("event.general.cooldown")
+                    .processPlaceholder("time", this.instance.getCoolDowns().getTime(uuid))
                     .processPlaceholder("voucher", getName(true))
                     .sendPrefixedMessage(player);
             return;
         }
 
-        if (confirm) {
-            new ConfirmMenu(instance,
-                    () -> instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event),
-                    () -> { })
+        if (this.confirm) {
+            new ConfirmMenu(this.instance,
+                    () -> this.instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event),
+                    () -> {
+                    })
                     .open(player);
         } else {
-            instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event);
+            this.instance.getVoucherExecutor().redeemVoucher(player, this, event.getItem(), true, event);
         }
     }
 
     public String getTexture() {
-        return texture;
+        return this.texture;
     }
 
     public String getActionBar() {
-        return TextUtils.formatText(actionBar);
+        return TextUtils.formatText(this.actionBar);
     }
 
     public String getSubTitle() {
-        return TextUtils.formatText(subTitle);
+        return TextUtils.formatText(this.subTitle);
     }
 
     public String getTitle() {
-        return TextUtils.formatText(title);
+        return TextUtils.formatText(this.title);
     }
 
     public String getKey() {

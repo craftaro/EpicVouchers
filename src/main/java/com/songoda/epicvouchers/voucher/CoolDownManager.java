@@ -21,14 +21,14 @@ public class CoolDownManager {
         }
 
         if (voucher.getCoolDown() != 0) {
-            entries.put(uuid, System.currentTimeMillis() + voucher.getCoolDown() * 1000L);
+            this.entries.put(uuid, System.currentTimeMillis() + voucher.getCoolDown() * 1000L);
         } else {
-            entries.put(uuid, System.currentTimeMillis() + instance.getConfig().getInt("Main.Cooldown Delay") * 1000L);
+            this.entries.put(uuid, System.currentTimeMillis() + this.instance.getConfig().getInt("Main.Cooldown Delay") * 1000L);
         }
     }
 
     public boolean isOnCoolDown(UUID uuid) {
-        Long time = entries.get(uuid);
+        Long time = this.entries.get(uuid);
 
         if (time == null) {
             return false;
@@ -38,12 +38,12 @@ public class CoolDownManager {
             return true;
         }
 
-        entries.remove(uuid);
+        this.entries.remove(uuid);
         return false;
     }
 
     public long getTime(UUID uuid) {
-        Long time = entries.get(uuid);
+        Long time = this.entries.get(uuid);
 
         if (time == null) {
             return 0L;

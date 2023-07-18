@@ -10,14 +10,14 @@ public class CommandReload extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandReload(EpicVouchers instance) {
-        super(false, "reload");
+        super(CommandType.CONSOLE_OK, "reload");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        instance.reloadConfig();
-        instance.getLocale().getMessage("&7Configuration and Language files reloaded.").sendPrefixedMessage(sender);
+        this.instance.reloadConfig();
+        this.instance.getLocale().getMessage("&7Configuration and Language files reloaded.").sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }
 

@@ -85,8 +85,8 @@ public class PlayerInteractListener implements Listener {
 
     /**
      * @deprecated This is a legacy method that is only used for backwards compatibility
-     *         with vouchers that were created before the voucher key was stored in NBT.
-     *         Some checks in here don't even look like they make sense or look redundant... Hard to touch this.
+     * with vouchers that were created before the voucher key was stored in NBT.
+     * Some checks in here don't even look like they make sense or look redundant... Hard to touch this.
      */
     @Deprecated
     private Voucher findVoucherForLegacyItem(ItemStack item, Collection<Voucher> allVouchers) {

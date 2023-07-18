@@ -12,5 +12,5 @@ commands:
   epicvouchers:
     description: View information on this plugin.
     default: true
-    aliases: [ev]
+    aliases: [ ev ]
     usage: /ev

@@ -63,7 +63,7 @@ public class ItemBuilder {
     }
 
     public ItemMeta getMeta() {
-        return meta;
+        return this.meta;
     }
 
     public ItemBuilder meta(ItemMeta meta) {
@@ -75,15 +75,15 @@ public class ItemBuilder {
      * Name:
      */
     public boolean hasName() {
-        return meta.hasDisplayName();
+        return this.meta.hasDisplayName();
     }
 
     public String getName() {
-        return meta.getDisplayName();
+        return this.meta.getDisplayName();
     }
 
     public ItemBuilder name(String name) {
-        meta.setDisplayName(name);
+        this.meta.setDisplayName(name);
         return this;
     }
 
@@ -91,11 +91,11 @@ public class ItemBuilder {
      * Lore:
      */
     public boolean hasLore() {
-        return meta.hasLore();
+        return this.meta.hasLore();
     }
 
     public List<String> getLore() {
-        return meta.getLore();
+        return this.meta.getLore();
     }
 
     public ItemBuilder lore(String... lore) {
@@ -103,7 +103,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder lore(List<String> lore) {
-        meta.setLore(lore);
+        this.meta.setLore(lore);
         return this;
     }
 
@@ -111,28 +111,28 @@ public class ItemBuilder {
      * Enchantments:
      */
     public boolean hasEnchants() {
-        return meta.hasEnchants();
+        return this.meta.hasEnchants();
     }
 
     public boolean hasEnchant(Enchantment enchantment) {
-        return meta.hasEnchant(enchantment);
+        return this.meta.hasEnchant(enchantment);
     }
 
     public boolean hasConflictingEnchant(Enchantment enchantment) {
-        return meta.hasConflictingEnchant(enchantment);
+        return this.meta.hasConflictingEnchant(enchantment);
     }
 
     public Map<Enchantment, Integer> getEnchants() {
-        return meta.getEnchants();
+        return this.meta.getEnchants();
     }
 
     public ItemBuilder enchant(Enchantment enchantment, int level) {
-        meta.addEnchant(enchantment, level, true);
+        this.meta.addEnchant(enchantment, level, true);
         return this;
     }
 
     public ItemBuilder removeEnchant(Enchantment enchantment) {
-        meta.removeEnchant(enchantment);
+        this.meta.removeEnchant(enchantment);
         return this;
     }
 
@@ -144,20 +144,20 @@ public class ItemBuilder {
      * Flags:
      */
     public boolean hasFlag(ItemFlag flag) {
-        return meta.hasItemFlag(flag);
+        return this.meta.hasItemFlag(flag);
     }
 
     public Set<ItemFlag> getFlags() {
-        return meta.getItemFlags();
+        return this.meta.getItemFlags();
     }
 
     public ItemBuilder addFlags(ItemFlag... flags) {
-        meta.addItemFlags(flags);
+        this.meta.addItemFlags(flags);
         return this;
     }
 
     public ItemBuilder removeFlags(ItemFlag... flags) {
-        meta.removeItemFlags(flags);
+        this.meta.removeItemFlags(flags);
         return this;
     }
 
@@ -165,16 +165,15 @@ public class ItemBuilder {
      * Unbreakability:
      */
     public boolean isUnbreakable() {
-        return meta.isUnbreakable();
+        return this.meta.isUnbreakable();
     }
 
     public ItemBuilder unbreakable() {
         return unbreakable(true);
     }
 
-    @SuppressWarnings("deprecation")
     public ItemBuilder unbreakable(boolean unbreakable) {
-        meta.setUnbreakable(unbreakable);
+        this.meta.setUnbreakable(unbreakable);
         return this;
     }
 
@@ -190,36 +189,36 @@ public class ItemBuilder {
      * Banners:
      */
     public DyeColor getBannerBaseColor() {
-        return ((BannerMeta) meta).getBaseColor();
+        return ((BannerMeta) this.meta).getBaseColor();
     }
 
     public List<Pattern> getBannerPatterns() {
-        return ((BannerMeta) meta).getPatterns();
+        return ((BannerMeta) this.meta).getPatterns();
     }
 
     @SuppressWarnings("deprecation")
     public ItemBuilder bannerBaseColor(DyeColor color) {
-        ((BannerMeta) meta).setBaseColor(color);
+        ((BannerMeta) this.meta).setBaseColor(color);
         return this;
     }
 
     public ItemBuilder bannerPatterns(List<Pattern> patterns) {
-        ((BannerMeta) meta).setPatterns(patterns);
+        ((BannerMeta) this.meta).setPatterns(patterns);
         return this;
     }
 
     public ItemBuilder bannerPattern(int i, Pattern pattern) {
-        ((BannerMeta) meta).setPattern(i, pattern);
+        ((BannerMeta) this.meta).setPattern(i, pattern);
         return this;
     }
 
     public ItemBuilder addBannerPatterns(Pattern pattern) {
-        ((BannerMeta) meta).addPattern(pattern);
+        ((BannerMeta) this.meta).addPattern(pattern);
         return this;
     }
 
     public ItemBuilder removeBannerPattern(int i) {
-        ((BannerMeta) meta).removePattern(i);
+        ((BannerMeta) this.meta).removePattern(i);
         return this;
     }
 
@@ -227,11 +226,11 @@ public class ItemBuilder {
      * Leather armor:
      */
     public Color getLeatherArmorColor() {
-        return ((LeatherArmorMeta) meta).getColor();
+        return ((LeatherArmorMeta) this.meta).getColor();
     }
 
     public ItemBuilder leatherArmorColor(Color color) {
-        ((LeatherArmorMeta) meta).setColor(color);
+        ((LeatherArmorMeta) this.meta).setColor(color);
         return this;
     }
 
@@ -239,23 +238,23 @@ public class ItemBuilder {
      * Skulls:
      */
     public boolean hasSkullOwner() {
-        return ((SkullMeta) meta).hasOwner();
+        return ((SkullMeta) this.meta).hasOwner();
     }
 
     @SuppressWarnings("deprecation")
     public String getSkullOwner() {
-        return ((SkullMeta) meta).getOwner();
+        return ((SkullMeta) this.meta).getOwner();
     }
 
     @SuppressWarnings("deprecation")
     public ItemBuilder skullOwner(String owner) {
-        item.setDurability((short) 3);
-        ((SkullMeta) meta).setOwner(owner);
+        this.item.setDurability((short) 3);
+        ((SkullMeta) this.meta).setOwner(owner);
         return this;
     }
 
     public ItemBuilder durability(int durability) {
-        item.setDurability((short) durability);
+        this.item.setDurability((short) durability);
         return this;
     }
 
@@ -263,19 +262,19 @@ public class ItemBuilder {
      * Potions:
      */
     public boolean hasPotionEffect(PotionEffectType type) {
-        return ((PotionMeta) meta).hasCustomEffect(type);
+        return ((PotionMeta) this.meta).hasCustomEffect(type);
     }
 
     public boolean hasPotionEffects() {
-        return ((PotionMeta) meta).hasCustomEffects();
+        return ((PotionMeta) this.meta).hasCustomEffects();
     }
 
     public List<PotionEffect> getPotionEffects() {
-        return ((PotionMeta) meta).getCustomEffects();
+        return ((PotionMeta) this.meta).getCustomEffects();
     }
 
     public ItemBuilder addPotionEffect(PotionEffect effect, boolean overwrite) {
-        ((PotionMeta) meta).addCustomEffect(effect, overwrite);
+        ((PotionMeta) this.meta).addCustomEffect(effect, overwrite);
         return this;
     }
 
@@ -283,7 +282,7 @@ public class ItemBuilder {
      * Build the ItemStack.
      */
     public ItemStack build() {
-        item.setItemMeta(meta);
-        return item;
+        this.item.setItemMeta(this.meta);
+        return this.item;
     }
 }

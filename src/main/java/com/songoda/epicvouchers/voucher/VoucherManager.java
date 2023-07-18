@@ -8,22 +8,22 @@ public class VoucherManager {
     private final Map<String, Voucher> registeredVouchers = new HashMap<>();
 
     public Voucher addVoucher(Voucher voucher) {
-        return registeredVouchers.put(voucher.getKey(), voucher);
+        return this.registeredVouchers.put(voucher.getKey(), voucher);
     }
 
     public Voucher removeVoucher(Voucher voucher) {
-        return registeredVouchers.remove(voucher);
+        return this.registeredVouchers.remove(voucher);
     }
 
     public Voucher getVoucher(String key) {
-        return registeredVouchers.get(key);
+        return this.registeredVouchers.get(key);
     }
 
     public Collection<Voucher> getVouchers() {
-        return registeredVouchers.values();
+        return this.registeredVouchers.values();
     }
 
     public void clearVouchers() {
-        registeredVouchers.clear();
+        this.registeredVouchers.clear();
     }
 }

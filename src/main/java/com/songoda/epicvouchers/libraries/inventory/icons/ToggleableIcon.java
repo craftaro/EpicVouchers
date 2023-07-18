@@ -8,18 +8,19 @@ import org.bukkit.Material;
 import java.util.function.Consumer;
 
 public class ToggleableIcon extends Icon {
-    private Consumer<IconClickEvent> consumer;
+    private final Consumer<IconClickEvent> consumer;
 
     public ToggleableIcon(String displayname, Consumer<IconClickEvent> consumer, boolean state) {
         super(new ItemBuilder(Material.PAPER)
                 .name(ChatColor.YELLOW + displayname)
                 .lore(state ? ChatColor.GREEN + "ENABLED" : ChatColor.RED + "DISABLED")
-                .build(), event -> { });
+                .build(), event -> {
+        });
         this.consumer = consumer;
     }
 
     @Override
-    public void run(IconClickEvent event) {
-        consumer.accept(event);
+    public void run(IconClickEvent e) {
+        this.consumer.accept(e);
     }
 }

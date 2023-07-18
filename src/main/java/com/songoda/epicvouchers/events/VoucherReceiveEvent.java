@@ -8,8 +8,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
 public class VoucherReceiveEvent extends Event implements Cancellable {
-
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final Player player;
     private final String voucher;
@@ -28,39 +27,39 @@ public class VoucherReceiveEvent extends Event implements Cancellable {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public String getVoucher() {
-        return voucher;
+        return this.voucher;
     }
 
     public ItemStack getItem() {
-        return item;
+        return this.item;
     }
 
     public int getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public CommandSender getSender() {
-        return sender;
+        return this.sender;
     }
 
     public boolean isCancelled() {
-        return cancelled;
+        return this.cancelled;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel) {
+        this.cancelled = cancel;
     }
 
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLER_LIST;
     }
-    
+
     public static HandlerList getHandlerList() {
-       return handlers;
+        return HANDLER_LIST;
     }
 
 }

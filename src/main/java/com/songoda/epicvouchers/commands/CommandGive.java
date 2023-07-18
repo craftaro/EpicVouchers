@@ -15,22 +15,23 @@ public class CommandGive extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandGive(EpicVouchers instance) {
-        super(false, "give");
+        super(CommandType.CONSOLE_OK, "give");
         this.instance = instance;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length != 3)
+        if (args.length != 3) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
         Player player = Bukkit.getPlayer(args[0]);
         if (Bukkit.getPlayer(args[0]) == null) {
-            instance.getLocale().newMessage("&cThat player does not exist or is currently offline.").sendPrefixedMessage(sender);
+            this.instance.getLocale().newMessage("&cThat player does not exist or is currently offline.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        Voucher voucher = instance.getVoucherManager().getVoucher(args[1]);
+        Voucher voucher = this.instance.getVoucherManager().getVoucher(args[1]);
         if (voucher == null) {
             sender.sendMessage("Unknown voucher...");
             return ReturnType.FAILURE;
@@ -49,7 +50,7 @@ public class CommandGive extends AbstractCommand {
                 result.add(online.getName());
             }
         } else if (args.length == 2) {
-            for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
+            for (Voucher voucher : this.instance.getVoucherManager().getVouchers()) {
                 result.add(voucher.getKey());
             }
         } else if (args.length == 3) {

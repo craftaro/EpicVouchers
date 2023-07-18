@@ -19,7 +19,9 @@ public class Pair<K, V> implements Serializable {
      *
      * @return key for this pair
      */
-    public String getKey() { return key; }
+    public String getKey() {
+        return this.key;
+    }
 
     /**
      * Value of this this <code>Pair</code>.
@@ -31,7 +33,9 @@ public class Pair<K, V> implements Serializable {
      *
      * @return value for this pair
      */
-    public String getValue() { return value; }
+    public String getValue() {
+        return this.value;
+    }
 
     /**
      * Creates a new pair
@@ -54,7 +58,7 @@ public class Pair<K, V> implements Serializable {
      */
     @Override
     public String toString() {
-        return key + "=" + value;
+        return this.key + "=" + this.value;
     }
 
     /**
@@ -72,7 +76,7 @@ public class Pair<K, V> implements Serializable {
         // these two parameters:
         //  name: a  value: aa
         //  name: aa value: a
-        return key.hashCode() * 13 + (value == null ? 0 : value.hashCode());
+        return this.key.hashCode() * 13 + (this.value == null ? 0 : this.value.hashCode());
     }
 
     /**
@@ -88,17 +92,19 @@ public class Pair<K, V> implements Serializable {
      *
      * @param o the <code>Object</code> to test for
      *          equality with this <code>Pair</code>
-     *
      * @return <code>true</code> if the given <code>Object</code> is
-     *         equal to this <code>Pair</code> else <code>false</code>
+     * equal to this <code>Pair</code> else <code>false</code>
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
-        return Objects.equals(key, pair.key) && Objects.equals(value, pair.value);
+        return Objects.equals(this.key, pair.key) && Objects.equals(this.value, pair.value);
     }
 }
-

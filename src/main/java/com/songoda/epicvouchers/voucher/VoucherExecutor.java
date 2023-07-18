@@ -51,7 +51,7 @@ public class VoucherExecutor {
 
             if (!duplication) {
                 if (manual) {
-                    instance.getCoolDowns().addCoolDown(player.getUniqueId(), voucher);
+                    this.instance.getCoolDowns().addCoolDown(player.getUniqueId(), voucher);
                     if (voucher.isRemoveItem()) {
                         if (item.getAmount() <= 1) {
                             item = null;
@@ -116,17 +116,14 @@ public class VoucherExecutor {
                         String delayCommand = StringUtils.substringBetween(command, "[", "]");
                         int delay = Integer.parseInt(delayCommand.split("-", 2)[1]);
                         final String finalCommand = command.replace("[" + delayCommand + "]", "");
-                        final ItemStack heldItem = item;
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> {
-                            runCommand(finalCommand, player);
-                        }, 20 * delay);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(this.instance, () -> runCommand(finalCommand, player), 20L * delay);
                     } else {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
                 }
                 if (voucher.getActionBar() != null && !voucher.getActionBar().isEmpty()) {
                     String actionbar = voucher.getActionBar().replaceAll("%player%", name).replaceAll("%voucher%", voucher.getName(true));
-                    instance.getLocale().newMessage(actionbar).sendActionBar(player);
+                    this.instance.getLocale().newMessage(actionbar).sendActionBar(player);
                 }
 
                 if (voucher.getTitle() != null && !voucher.getTitle().isEmpty()) {
@@ -166,14 +163,14 @@ public class VoucherExecutor {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect), duration, amplifier));
                 }
 
-                instance.getLogger().log(Level.INFO, player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + ".");
-                instance.getConnections().saveRedeem(player, voucher.getName(true));
+                this.instance.getLogger().log(Level.INFO, player.getName() + " has successfully redeemed the voucher " + voucher.getKey() + ".");
+                this.instance.getConnections().saveRedeem(player, voucher.getName(true));
             } else {
-                instance.getLogger().log(Level.WARNING, player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + ".");
+                this.instance.getLogger().log(Level.WARNING, player.getName() + " has failed to duplicate the voucher " + voucher.getKey() + ".");
             }
         } catch (Exception error) {
-            instance.getLogger().log(Level.SEVERE, "Failed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + ".");
-            instance.getLogger().log(Level.SEVERE, error.getMessage());
+            this.instance.getLogger().log(Level.SEVERE, "Failed to redeem the voucher " + voucher.getKey() + " for the player " + player.getName() + ".");
+            this.instance.getLogger().log(Level.SEVERE, error.getMessage());
             error.printStackTrace();
         }
     }

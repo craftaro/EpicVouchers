@@ -72,7 +72,6 @@ public class IconInv implements InventoryHolder {
      *
      * @param type  The type of the menus.
      * @param title The title of the menus.
-     *
      * @throws IllegalStateException if FastInv is not init with FastInv.init(Plugin plugin)
      */
     public IconInv(InventoryType type, String title) {
@@ -86,9 +85,9 @@ public class IconInv implements InventoryHolder {
 
         runSync(() -> {
             if (type == InventoryType.CHEST && size > 0) {
-                inventory = Bukkit.createInventory(this, size, title);
+                this.inventory = Bukkit.createInventory(this, size, title);
             } else {
-                inventory = Bukkit.createInventory(this, type, title);
+                this.inventory = Bukkit.createInventory(this, type, title);
             }
         });
     }
@@ -109,12 +108,11 @@ public class IconInv implements InventoryHolder {
      * Add an {@link ItemStack} to the menus with a {@link IconClickListener} to handle clicks.
      *
      * @param icon The icon to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(Icon icon) {
         runSync(() -> {
-            int slot = inventory.firstEmpty();
+            int slot = this.inventory.firstEmpty();
             if (slot >= 0) {
                 addIcon(slot, icon);
             }
@@ -127,13 +125,12 @@ public class IconInv implements InventoryHolder {
      *
      * @param slot The slot of the item.
      * @param icon The icon to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(int slot, Icon icon) {
         runSync(() -> {
-            inventory.setItem(slot, icon.getItemStack());
-            itemListeners.put(slot, icon);
+            this.inventory.setItem(slot, icon.getItemStack());
+            this.itemListeners.put(slot, icon);
         });
 
         return this;
@@ -145,7 +142,6 @@ public class IconInv implements InventoryHolder {
      * @param slotFrom Starting slot to put the item in.
      * @param slotTo   Ending slot to put the item in.
      * @param icon     The icon to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(int slotFrom, int slotTo, Icon icon) {
@@ -159,14 +155,13 @@ public class IconInv implements InventoryHolder {
      * Add an {@link ItemStack} to the menus on the edges.
      *
      * @param icon The icon to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv edge(Icon icon) {
-        int height = inventory.getSize() / 9;
+        int height = this.inventory.getSize() / 9;
 
         addIcon(0, 9, icon);
-        addIcon(inventory.getSize() - 9, inventory.getSize() - 1, icon);
+        addIcon(this.inventory.getSize() - 9, this.inventory.getSize() - 1, icon);
 
         for (int i = 0; i < height; i++) {
             addIcon(i * 9, icon);
@@ -181,7 +176,6 @@ public class IconInv implements InventoryHolder {
      *
      * @param slots The slots to place the item.
      * @param icon  The icon to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv addIcon(int[] slots, Icon icon) {
@@ -193,8 +187,8 @@ public class IconInv implements InventoryHolder {
 
     public IconInv fill(Icon icon) {
         runSync(() -> {
-            for (int i = 0; i < inventory.getSize(); i++) {
-                if (inventory.getItem(i) == null) {
+            for (int i = 0; i < this.inventory.getSize(); i++) {
+                if (this.inventory.getItem(i) == null) {
                     addIcon(i, icon);
                 }
             }
@@ -218,11 +212,10 @@ public class IconInv implements InventoryHolder {
      * Add a {@link IconInvCloseListener} to listen on menus close.
      *
      * @param listener The {@link IconInvCloseListener} to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv onClose(IconInvCloseListener listener) {
-        closeListeners.add(listener);
+        this.closeListeners.add(listener);
         return this;
     }
 
@@ -230,11 +223,10 @@ public class IconInv implements InventoryHolder {
      * Add a {@link IconClickListener} to listen on menus click.
      *
      * @param listener The {@link IconClickListener} to add.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv onClick(IconClickListener listener) {
-        clickListeners.add(listener);
+        this.clickListeners.add(listener);
         return this;
     }
 
@@ -243,7 +235,6 @@ public class IconInv implements InventoryHolder {
      *
      * @param period   Delay between each run.
      * @param runnable The {@link Runnable} task to run.
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv onUpdate(long period, Runnable runnable) {
@@ -256,11 +247,10 @@ public class IconInv implements InventoryHolder {
      * @param delay    Ticks to wait before starting the task.
      * @param period   Delay between each run.
      * @param runnable The {@link Runnable} task to run.
-     *
      * @return This FastInv instance, for chaining
      */
     public IconInv onUpdate(long delay, long period, Runnable runnable) {
-        tasks.add(Bukkit.getScheduler().runTaskTimer(plugin, runnable, delay, period));
+        this.tasks.add(Bukkit.getScheduler().runTaskTimer(plugin, runnable, delay, period));
         return this;
     }
 
@@ -270,7 +260,7 @@ public class IconInv implements InventoryHolder {
      * @param player The player to open the menu.
      */
     public void open(Player player) {
-        Bukkit.getScheduler().runTask(plugin, () -> player.openInventory(inventory));
+        Bukkit.getScheduler().runTask(plugin, () -> player.openInventory(this.inventory));
     }
 
     /**
@@ -281,7 +271,7 @@ public class IconInv implements InventoryHolder {
     public void open(Player... players) {
         Bukkit.getScheduler().runTask(plugin, () -> {
             for (Player p : players) {
-                p.openInventory(inventory);
+                p.openInventory(this.inventory);
             }
         });
     }
@@ -290,8 +280,8 @@ public class IconInv implements InventoryHolder {
      * Cancel all tasks.
      */
     public void cancelTasks() {
-        tasks.forEach(BukkitTask::cancel);
-        tasks.clear();
+        this.tasks.forEach(BukkitTask::cancel);
+        this.tasks.clear();
     }
 
     /**
@@ -311,7 +301,6 @@ public class IconInv implements InventoryHolder {
      * Set if the tasks will be cancel on menus close.
      *
      * @param cancelTasksOnClose Set if the tasks will be cancel
-     *
      * @return This FastInv instance, for chaining.
      */
     public IconInv setCancelTasksOnClose(boolean cancelTasksOnClose) {
@@ -327,7 +316,7 @@ public class IconInv implements InventoryHolder {
         void onClose(IconInvCloseEvent event);
     }
 
-    public static abstract class IconEvent {
+    public abstract static class IconEvent {
         private final Player player;
         private final IconInv inventory;
         private boolean cancelled;
@@ -344,7 +333,7 @@ public class IconInv implements InventoryHolder {
          * @return This associated FastInv instance.
          */
         public IconInv getInventory() {
-            return inventory;
+            return this.inventory;
         }
 
         /**
@@ -353,7 +342,7 @@ public class IconInv implements InventoryHolder {
          * @return the player who clicked.
          */
         public Player getPlayer() {
-            return player;
+            return this.player;
         }
 
         /**
@@ -362,7 +351,7 @@ public class IconInv implements InventoryHolder {
          * @return Whether the event was cancelled.
          */
         public boolean isCancelled() {
-            return cancelled;
+            return this.cancelled;
         }
 
         /**
@@ -434,11 +423,11 @@ public class IconInv implements InventoryHolder {
     }
 
     public boolean getDefaultCancel() {
-        return cancelled;
+        return this.cancelled;
     }
 
     public IconInv setDefaultCancel(boolean value) {
-        cancelled = value;
+        this.cancelled = value;
         return this;
     }
 
@@ -449,7 +438,7 @@ public class IconInv implements InventoryHolder {
      */
     @Override
     public Inventory getInventory() {
-        return inventory;
+        return this.inventory;
     }
 
     private static Listener getListener() {

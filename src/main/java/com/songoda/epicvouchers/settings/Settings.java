@@ -5,11 +5,8 @@ import com.songoda.core.configuration.ConfigSetting;
 import com.songoda.epicvouchers.EpicVouchers;
 import org.bukkit.event.Listener;
 
-/**
- * Created by songo on 6/4/2017.
- */
 public class Settings implements Listener {
-    static final Config config = EpicVouchers.getInstance().getCoreConfig();
+    static final Config config = EpicVouchers.getPlugin(EpicVouchers.class).getCoreConfig();
 
     public static final ConfigSetting FILL_GLASS = new ConfigSetting(config, "Interface.Fill Interfaces With Glass", true);
     public static final ConfigSetting COOLDOWN_DELAY = new ConfigSetting(config, "Main.Cooldown Delay", 10);

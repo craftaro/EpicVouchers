@@ -131,6 +131,6 @@ public class VoucherEditorMenu extends IconInv {
     }
 
     private void reopen(Player player) {
-        new VoucherEditorMenu(instance, voucher).open(player);
+        new VoucherEditorMenu(this.instance, this.voucher).open(player);
     }
 }
