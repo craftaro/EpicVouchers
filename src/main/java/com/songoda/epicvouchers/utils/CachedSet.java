@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 public class CachedSet<K> {
-    private final Map<K, Long> cache = new WeakHashMap<>();
+    private final Map<K, Long> cache = new WeakHashMap<>(0);
     private final int ttl;
 
     private long lastClear = System.currentTimeMillis();

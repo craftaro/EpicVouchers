@@ -2,6 +2,7 @@ package com.songoda.epicvouchers.listeners;
 
 import com.songoda.core.third_party.de.tr7zw.nbtapi.NBTItem;
 import com.songoda.epicvouchers.EpicVouchers;
+import com.songoda.epicvouchers.settings.Settings;
 import com.songoda.epicvouchers.utils.CachedSet;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.ChatColor;
@@ -25,6 +26,8 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void voucherListener(PlayerInteractEvent e) {
+        boolean legacyCheckEnabled = Settings.CHECK_FOR_LEGACY_ITEMS.getBoolean();
+
         ItemStack item = e.getItem();
         if (item == null || !isRightClickAction(e.getAction())) {
             return;
@@ -33,7 +36,7 @@ public class PlayerInteractListener implements Listener {
         NBTItem nbtItem = new NBTItem(item);
 
         boolean itemHasVoucher = nbtItem.hasTag("epicvouchers:voucher");
-        boolean itemHasBeenLegacyChecked = this.itemsThatGotLegacyChecked.contains(item);
+        boolean itemHasBeenLegacyChecked = !legacyCheckEnabled || this.itemsThatGotLegacyChecked.contains(item);
         if (!itemHasVoucher && itemHasBeenLegacyChecked) {
             return;
         }
@@ -49,6 +52,10 @@ public class PlayerInteractListener implements Listener {
                 voucher.redeemVoucher(e);
             }
 
+            return;
+        }
+
+        if (!Settings.CHECK_FOR_LEGACY_ITEMS.getBoolean()) {
             return;
         }
 

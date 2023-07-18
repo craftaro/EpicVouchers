@@ -21,9 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.bukkit.Material.PAPER;
 
@@ -134,15 +134,39 @@ public class Voucher {
     }
 
     public List<String> getLore(boolean applyFormatting) {
-        return applyFormatting ? lore.stream().map(TextUtils::formatText).collect(Collectors.toList()) : lore;
+        if (!applyFormatting) {
+            return Collections.unmodifiableList(this.lore);
+        }
+
+        List<String> lore = new ArrayList<>();
+        for (String line : this.lore) {
+            lore.add(TextUtils.formatText(line));
+        }
+        return lore;
     }
 
     public List<String> getBroadcasts(boolean applyFormatting) {
-        return applyFormatting ? broadcasts.stream().map(TextUtils::formatText).collect(Collectors.toList()) : broadcasts;
+        if (!applyFormatting) {
+            return this.broadcasts;
+        }
+
+        List<String> result = new ArrayList<>();
+        for (String broadcast : this.broadcasts) {
+            result.add(TextUtils.formatText(broadcast));
+        }
+        return result;
     }
 
     public List<String> getMessages(boolean applyFormatting) {
-        return applyFormatting ? messages.stream().map(TextUtils::formatText).collect(Collectors.toList()) : messages;
+        if (!applyFormatting) {
+            return this.messages;
+        }
+
+        List<String> list = new ArrayList<>();
+        for (String message : this.messages) {
+            list.add(TextUtils.formatText(message));
+        }
+        return list;
     }
 
     public void saveSetting(String key, List<String> list) {
