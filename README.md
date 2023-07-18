@@ -3,7 +3,8 @@
 <img src="https://craftaro.com/images/products/509/icons/5EJsLZfmeHcwy9rIY0dAgnzqR4rL4iCKAEyjgjIk.png" width="128px">
 
 # EpicVouchers
-Create vouchers that players can claim for rewards with seemingly infinite possibilities. Customize your server’s vouchers through an intuitive in-game editor
+**Create vouchers that players can claim for rewards with seemingly infinite possibilities**
+**Customize your server&#39;s vouchers through an intuitive in-game editor**
 
 
 [![Discord][Discord shield]][Discord invite]
