@@ -9,72 +9,56 @@
     <version>2.2.6</version>
 
     <name>EpicVouchers</name>
-    <description>Enhance your server with awesome customizable vouchers with a lot of features.</description>
-    <url>https://songoda.com/marketplace/product/25</url>
+    <description>Create vouchers that players can claim for rewards with seemingly infinite possibilities</description>
+    <url>https://craftaro.com/marketplace/product/25</url>
 
     <properties>
-        <java.version>1.8</java.version>
-        <java.release>8</java.release>
+        <maven.compiler.release>8</maven.compiler.release>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
-        <finalName>EpicVouchers-${project.version}</finalName>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.5.0</version>
 
                 <executions>
                     <execution>
-                        <id>shaded</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
 
                         <configuration>
+                            <finalName>${project.name}-${project.version}</finalName>
+
                             <shadedArtifactAttached>false</shadedArtifactAttached>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-
-                            <artifactSet>
-                                <includes>
-                                    <include>com.craftaroSongodaCore</include>
-                                </includes>
-                            </artifactSet>
-
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
+                            <useDependencyReducedPomInJar>true</useDependencyReducedPomInJar>
+                            <minimizeJar>true</minimizeJar>
 
                             <relocations>
                                 <relocation>
                                     <pattern>com.craftaro.core</pattern>
-                                    <shadedPattern>${project.groupId}.epicvouchers.core</shadedPattern>
+                                    <shadedPattern>com.songoda.epicvouchers.core</shadedPattern>
                                 </relocation>
                             </relocations>
+
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+
+                                    <excludes>
+                                        <exclude>META-INF/**</exclude>
+                                        <exclude>LICENSE</exclude>
+                                        <exclude>LICENSE.**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -88,13 +72,6 @@
             </resource>
         </resources>
     </build>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <url>https://repository.apache.org/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <repositories>
         <repository>

@@ -5,12 +5,10 @@ api-version: 1.13
 
 main: com.songoda.epicvouchers.EpicVouchers
 
-author: Songoda
+author: Craftaro
 website: ${project.url}
 
 commands:
-  epicvouchers:
-    description: View information on this plugin.
+  EpicVouchers:
     default: true
     aliases: [ ev ]
-    usage: /ev
