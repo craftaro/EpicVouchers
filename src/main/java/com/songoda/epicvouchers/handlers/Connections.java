@@ -1,6 +1,6 @@
 package com.songoda.epicvouchers.handlers;
 
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.settings;
 
-import com.songoda.core.configuration.Config;
-import com.songoda.core.configuration.ConfigSetting;
+import com.craftaro.core.configuration.Config;
+import com.craftaro.core.configuration.ConfigSetting;
 import com.songoda.epicvouchers.EpicVouchers;
 import org.bukkit.event.Listener;
 

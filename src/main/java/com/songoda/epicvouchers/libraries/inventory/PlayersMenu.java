@@ -1,6 +1,7 @@
 package com.songoda.epicvouchers.libraries.inventory;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.SkullUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.menus.ActionMenu;
@@ -9,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -52,17 +53,11 @@ public abstract class PlayersMenu extends FastInv {
 
             Player player = this.players.get(index);
 
-            ItemStack itemStack = CompatibleMaterial.PLAYER_HEAD.getItem();
+            ItemStack itemStack = SkullUtils.getSkull(player.getUniqueId());
 
-            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-
-            try {
-                skullMeta.setOwningPlayer(player);
-            } catch (Throwable ignore) {
-            }
-
-            skullMeta.setDisplayName(YELLOW + player.getName());
-            itemStack.setItemMeta(skullMeta);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(YELLOW + player.getName());
+            itemStack.setItemMeta(itemMeta);
 
             addItem(slot, itemStack, event -> this.playerConsumer.accept(event.getPlayer(), player));
         });
@@ -95,7 +90,7 @@ public abstract class PlayersMenu extends FastInv {
         }
 
         if (this.instance.getConfig().getBoolean("Interface.Fill Interfaces With Glass")) {
-            ItemStack fillItem = CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem();
+            ItemStack fillItem = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
 
             IntStream.rangeClosed(this.SLOTS + 1, 26).forEach(slot -> {
                 if (getInventory().getItem(slot) == null) {

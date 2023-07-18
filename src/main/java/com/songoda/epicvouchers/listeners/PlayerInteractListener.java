@@ -1,6 +1,6 @@
 package com.songoda.epicvouchers.listeners;
 
-import com.songoda.core.third_party.de.tr7zw.nbtapi.NBTItem;
+import com.craftaro.core.third_party.de.tr7zw.nbtapi.NBTItem;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.settings.Settings;
 import com.songoda.epicvouchers.utils.CachedSet;

@@ -1,6 +1,6 @@
 package com.songoda.epicvouchers.menus.sub.editor;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
@@ -20,7 +20,7 @@ public class SetItemMenu extends FastInv {
 
         setDefaultCancel(false);
 
-        fill(new ItemBuilder(CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem())
+        fill(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem())
                 .name(ChatColor.RESET.toString()).build(), event -> event.setCancelled(true));
 
         addItem(13, null);

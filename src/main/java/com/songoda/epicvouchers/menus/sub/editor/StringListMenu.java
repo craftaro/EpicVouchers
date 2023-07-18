@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.menus.sub.editor;
 
-import com.songoda.core.input.ChatPrompt;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.input.ChatPrompt;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;

@@ -1,6 +1,6 @@
 package com.songoda.epicvouchers.commands;
 
-import com.songoda.core.commands.AbstractCommand;
+import com.craftaro.core.commands.AbstractCommand;
 import com.songoda.epicvouchers.EpicVouchers;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

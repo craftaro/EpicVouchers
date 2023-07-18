@@ -1,6 +1,6 @@
 package com.songoda.epicvouchers.libraries.inventory.icons;
 
-import com.songoda.core.input.ChatPrompt;
+import com.craftaro.core.input.ChatPrompt;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.utils.Pair;

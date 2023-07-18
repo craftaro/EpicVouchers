@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.menus;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
@@ -61,7 +61,7 @@ public class ActionMenu extends FastInv {
                 .addGlow().build(), event -> new VoucherMenu(instance).open(event.getPlayer()));
 
         if (instance.getConfig().getBoolean("Interface.Fill Interfaces With Glass")) {
-            ItemStack fillItem = CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem();
+            ItemStack fillItem = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
 
             fill(new ItemBuilder(fillItem).name(ChatColor.RESET.toString()).build());
         }

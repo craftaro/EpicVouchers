@@ -1,6 +1,6 @@
 package com.songoda.epicvouchers.commands;
 
-import com.songoda.core.commands.AbstractCommand;
+import com.craftaro.core.commands.AbstractCommand;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.voucher.Voucher;
 import org.bukkit.Bukkit;

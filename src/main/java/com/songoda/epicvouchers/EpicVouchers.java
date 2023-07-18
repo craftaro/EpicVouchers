@@ -1,11 +1,11 @@
 package com.songoda.epicvouchers;
 
-import com.songoda.core.SongodaCore;
-import com.songoda.core.SongodaPlugin;
-import com.songoda.core.commands.CommandManager;
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.configuration.Config;
-import com.songoda.core.gui.GuiManager;
+import com.craftaro.core.SongodaCore;
+import com.craftaro.core.SongodaPlugin;
+import com.craftaro.core.commands.CommandManager;
+import com.craftaro.core.configuration.Config;
+import com.craftaro.core.gui.GuiManager;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.songoda.epicvouchers.commands.CommandEditor;
 import com.songoda.epicvouchers.commands.CommandEpicVouchers;
 import com.songoda.epicvouchers.commands.CommandForce;
@@ -67,7 +67,7 @@ public class EpicVouchers extends SongodaPlugin {
     @Override
     public void onPluginEnable() {
         // Run Songoda Updater
-        SongodaCore.registerPlugin(this, 25, CompatibleMaterial.EMERALD);
+        SongodaCore.registerPlugin(this, 25, XMaterial.EMERALD);
 
         // Setup Config
         Settings.setupConfig();

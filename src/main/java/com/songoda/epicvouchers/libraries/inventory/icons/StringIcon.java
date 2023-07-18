@@ -1,8 +1,8 @@
 package com.songoda.epicvouchers.libraries.inventory.icons;
 
-import com.songoda.core.compatibility.ServerVersion;
-import com.songoda.core.input.ChatPrompt;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.compatibility.ServerVersion;
+import com.craftaro.core.input.ChatPrompt;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import org.bukkit.Bukkit;

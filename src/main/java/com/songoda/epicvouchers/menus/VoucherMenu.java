@@ -1,8 +1,8 @@
 package com.songoda.epicvouchers.menus;
 
-import com.songoda.core.compatibility.ServerVersion;
-import com.songoda.core.gui.AnvilGui;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.compatibility.ServerVersion;
+import com.craftaro.core.gui.AnvilGui;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.IconInv;

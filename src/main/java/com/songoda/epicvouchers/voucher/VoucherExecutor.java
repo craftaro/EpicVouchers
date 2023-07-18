@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.voucher;
 
-import com.songoda.core.compatibility.CompatibleSound;
-import com.songoda.core.compatibility.ServerVersion;
+import com.craftaro.core.compatibility.CompatibleSound;
+import com.craftaro.core.compatibility.ServerVersion;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.events.VoucherRedeemEvent;
 import com.songoda.epicvouchers.listeners.PlayerCommandListener;

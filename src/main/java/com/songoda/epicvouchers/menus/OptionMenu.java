@@ -1,7 +1,7 @@
 package com.songoda.epicvouchers.menus;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.epicvouchers.EpicVouchers;
 import com.songoda.epicvouchers.libraries.ItemBuilder;
 import com.songoda.epicvouchers.libraries.inventory.FastInv;
@@ -43,6 +43,6 @@ public class OptionMenu extends FastInv {
                 .lore(TextUtils.formatText("&eSet the options of your voucher."))
                 .build(), event -> new VoucherEditorMenu(instance, voucher).open(event.getPlayer()));
 
-        fill(new ItemBuilder(CompatibleMaterial.GRAY_STAINED_GLASS_PANE.getItem()).name(ChatColor.RESET.toString()).build());
+        fill(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial()).name(ChatColor.RESET.toString()).build());
     }
 }
