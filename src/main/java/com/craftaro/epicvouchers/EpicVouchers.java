@@ -4,8 +4,9 @@ import com.craftaro.core.SongodaCore;
 import com.craftaro.core.SongodaPlugin;
 import com.craftaro.core.commands.CommandManager;
 import com.craftaro.core.configuration.Config;
+import com.craftaro.core.dependency.Dependency;
 import com.craftaro.core.gui.GuiManager;
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.epicvouchers.commands.CommandEditor;
 import com.craftaro.epicvouchers.commands.CommandEpicVouchers;
 import com.craftaro.epicvouchers.commands.CommandForce;
@@ -34,7 +35,9 @@ import org.bukkit.plugin.PluginManager;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EpicVouchers extends SongodaPlugin {
     private final GuiManager guiManager = new GuiManager(this);
@@ -52,6 +55,11 @@ public class EpicVouchers extends SongodaPlugin {
     @Deprecated
     public static EpicVouchers getInstance() {
         return getPlugin(EpicVouchers.class);
+    }
+
+    @Override
+    protected Set<Dependency> getDependencies() {
+        return new HashSet<>();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.craftaro.epicvouchers.libraries.inventory;
 
-import com.craftaro.core.third_party.com.cryptomorin.xseries.SkullUtils;
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.third_party.com.cryptomorin.xseries.SkullUtils;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.libraries.ItemBuilder;
 import com.craftaro.epicvouchers.menus.ActionMenu;

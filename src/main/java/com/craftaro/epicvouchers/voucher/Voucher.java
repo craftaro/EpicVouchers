@@ -1,7 +1,7 @@
 package com.craftaro.epicvouchers.voucher;
 
 import com.craftaro.core.compatibility.ServerVersion;
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.core.third_party.de.tr7zw.nbtapi.NBTItem;
 import com.craftaro.core.utils.ItemUtils;
 import com.craftaro.core.utils.TextUtils;

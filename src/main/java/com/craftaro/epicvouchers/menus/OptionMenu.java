@@ -1,6 +1,6 @@
 package com.craftaro.epicvouchers.menus;
 
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.core.utils.TextUtils;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.libraries.ItemBuilder;
