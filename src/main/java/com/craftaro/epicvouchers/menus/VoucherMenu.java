@@ -8,9 +8,11 @@ import com.craftaro.epicvouchers.libraries.ItemBuilder;
 import com.craftaro.epicvouchers.libraries.inventory.IconInv;
 import com.craftaro.epicvouchers.libraries.inventory.icons.Icon;
 import com.craftaro.epicvouchers.voucher.Voucher;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import static org.bukkit.Material.PAPER;
 
@@ -25,7 +27,12 @@ public class VoucherMenu extends IconInv {
 
         for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             if (getInventory().firstEmpty() != -1) {
-                addIcon(getInventory().firstEmpty(), voucher.toItemStack(), event -> new OptionMenu(instance, voucher).open(event.getPlayer()));
+                ItemStack voucherr = voucher.toItemStack();
+                ItemMeta vouchermeta = voucherr.getItemMeta();
+                vouchermeta.setDisplayName(voucher.getName());
+                Bukkit.broadcastMessage(voucher.getName());
+                voucherr.setItemMeta(vouchermeta);
+                addIcon(getInventory().firstEmpty(), voucherr, event -> new OptionMenu(instance, voucher).open(event.getPlayer()));
             }
         }
 
