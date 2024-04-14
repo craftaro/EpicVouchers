@@ -30,7 +30,6 @@ public class VoucherMenu extends IconInv {
                 ItemStack voucherr = voucher.toItemStack();
                 ItemMeta vouchermeta = voucherr.getItemMeta();
                 vouchermeta.setDisplayName(voucher.getName());
-                Bukkit.broadcastMessage(voucher.getName());
                 voucherr.setItemMeta(vouchermeta);
                 addIcon(getInventory().firstEmpty(), voucherr, event -> new OptionMenu(instance, voucher).open(event.getPlayer()));
             }
