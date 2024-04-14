@@ -62,6 +62,9 @@
                                 <filter>
                                     <artifact>com.craftaro:CraftaroCore</artifact>
                                     <excludeDefaults>false</excludeDefaults>
+                                    <includes>
+                                        <include>**/nms/v*/**</include>
+                                    </includes>
                                     <excludes>
                                         <exclude>**/third_party/org/apache/**</exclude>
                                         <exclude>**/third_party/net/kyori/**</exclude>
