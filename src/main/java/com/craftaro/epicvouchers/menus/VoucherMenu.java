@@ -27,11 +27,11 @@ public class VoucherMenu extends IconInv {
 
         for (Voucher voucher : instance.getVoucherManager().getVouchers()) {
             if (getInventory().firstEmpty() != -1) {
-                ItemStack voucherr = voucher.toItemStack();
-                ItemMeta vouchermeta = voucherr.getItemMeta();
-                vouchermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', voucher.getName()));
-                voucherr.setItemMeta(vouchermeta);
-                addIcon(getInventory().firstEmpty(), voucherr, event -> new OptionMenu(instance, voucher).open(event.getPlayer()));
+                ItemStack voucherItemStack = voucher.toItemStack();
+                ItemMeta voucherItemMeta = voucherItemStack.getItemMeta();
+                voucherItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', voucher.getName()));
+                voucherItemStack.setItemMeta(voucherItemMeta);
+                addIcon(getInventory().firstEmpty(), voucherItemStack, event -> new OptionMenu(instance, voucher).open(event.getPlayer()));
             }
         }
 
