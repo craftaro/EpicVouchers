@@ -1,6 +1,8 @@
 package com.craftaro.epicvouchers.voucher;
 
+import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.compatibility.ServerVersion;
+import com.craftaro.core.third_party.net.kyori.adventure.text.Component;
 import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.core.third_party.de.tr7zw.nbtapi.NBTItem;
 import com.craftaro.core.utils.ItemUtils;
@@ -196,13 +198,13 @@ public class Voucher {
     }
 
     public void give(CommandSender sender, List<Player> players, int amount) {
-        String giveMessage = this.instance.getLocale().getMessage("command.give.send")
+        Component giveMessage = this.instance.getLocale().getMessage("command.give.send")
                 .processPlaceholder("player", players.size() == 1 ? players.get(0).getName() : "everyone")
                 .processPlaceholder("voucher", getName(true))
                 .processPlaceholder("amount", String.valueOf(amount)).getPrefixedMessage();
 
         for (Player player : players) {
-            String receiveMessage = this.instance.getLocale().getMessage("command.give.receive")
+            Component receiveMessage = this.instance.getLocale().getMessage("command.give.receive")
                     .processPlaceholder("voucher", getName(true))
                     .processPlaceholder("player", player.getName())
                     .processPlaceholder("amount", String.valueOf(amount)).getPrefixedMessage();
@@ -215,11 +217,11 @@ public class Voucher {
                 continue;
             }
 
-            player.sendMessage(receiveMessage);
+            AdventureUtils.sendMessage(EpicVouchers.getInstance(), receiveMessage, player);
             player.getInventory().addItem(toItemStack(amount));
         }
 
-        sender.sendMessage(giveMessage);
+        AdventureUtils.sendMessage(EpicVouchers.getInstance(), giveMessage, sender);
     }
 
     public void forceRedeem(CommandSender sender, List<Player> players, int amount) {
@@ -242,7 +244,7 @@ public class Voucher {
 
         // does the player have permission to redeem this voucher?
         if (!this.permission.isEmpty() && !player.hasPermission(this.permission)) {
-            player.sendMessage(this.instance.getLocale().getMessage("event.general.nopermission").getPrefixedMessage());
+            this.instance.getLocale().getMessage("event.general.nopermission").sendPrefixedMessage(player);
             return;
         }
 

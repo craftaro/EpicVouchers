@@ -1,5 +1,6 @@
 package com.craftaro.epicvouchers.libraries.inventory;
 
+import com.craftaro.core.utils.SkullItemCreator;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.libraries.ItemBuilder;
 import com.craftaro.epicvouchers.menus.ActionMenu;
@@ -54,7 +55,7 @@ public abstract class PlayersMenu extends FastInv {
 
             Player player = this.players.get(index);
 
-            ItemStack itemStack = XSkull.createItem().profile(new Profileable.OfflinePlayerProfileable(player)).apply();
+            ItemStack itemStack = SkullItemCreator.byPlayer(player);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(YELLOW + player.getName());
