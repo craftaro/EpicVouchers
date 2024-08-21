@@ -6,7 +6,7 @@
 
     <groupId>com.craftaro</groupId>
     <artifactId>EpicVouchers-Plugin</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.1</version>
 
     <name>EpicVouchers</name>
     <description>Create vouchers that players can claim for rewards with seemingly infinite possibilities</description>
