@@ -6,8 +6,6 @@ import com.craftaro.epicvouchers.libraries.ItemBuilder;
 import com.craftaro.epicvouchers.menus.ActionMenu;
 import com.craftaro.epicvouchers.voucher.Voucher;
 import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
-import com.craftaro.third_party.com.cryptomorin.xseries.profiles.builder.XSkull;
-import com.craftaro.third_party.com.cryptomorin.xseries.profiles.objects.Profileable;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
