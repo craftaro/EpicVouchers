@@ -12,7 +12,7 @@ public class CommandEditor extends AbstractCommand {
     final EpicVouchers instance;
 
     public CommandEditor(EpicVouchers instance) {
-        super(CommandType.PLAYER_ONLY, "EpicVouchers");
+        super(CommandType.PLAYER_ONLY, "editor");
         this.instance = instance;
     }
 

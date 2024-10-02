@@ -1,11 +1,11 @@
 package com.craftaro.epicvouchers.libraries.inventory;
 
-import com.craftaro.third_party.com.cryptomorin.xseries.SkullUtils;
-import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.SkullItemCreator;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.libraries.ItemBuilder;
 import com.craftaro.epicvouchers.menus.ActionMenu;
 import com.craftaro.epicvouchers.voucher.Voucher;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,7 +53,7 @@ public abstract class PlayersMenu extends FastInv {
 
             Player player = this.players.get(index);
 
-            ItemStack itemStack = SkullUtils.getSkull(player.getUniqueId());
+            ItemStack itemStack = SkullItemCreator.byPlayer(player);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(YELLOW + player.getName());

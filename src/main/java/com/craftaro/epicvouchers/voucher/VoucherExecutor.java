@@ -1,10 +1,10 @@
 package com.craftaro.epicvouchers.voucher;
 
-import com.craftaro.core.compatibility.CompatibleSound;
 import com.craftaro.core.compatibility.ServerVersion;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.events.VoucherRedeemEvent;
 import com.craftaro.epicvouchers.listeners.PlayerCommandListener;
+import com.craftaro.third_party.com.cryptomorin.xseries.XSound;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Optional;
 import java.util.logging.Level;
 
 public class VoucherExecutor {
@@ -142,11 +143,8 @@ public class VoucherExecutor {
                 }
 
                 if (voucher.getSound() != null && !voucher.getSound().isEmpty()) {
-                    try {
-                        CompatibleSound sound = CompatibleSound.valueOf(voucher.getSound());
-                        sound.play(player, Integer.MAX_VALUE, voucher.getSoundPitch());
-                    } catch (IllegalArgumentException ignored) {
-                    }
+                    Optional<XSound> sound = XSound.matchXSound(voucher.getSound());
+                    sound.ifPresent(xSound -> xSound.play(player, 1.0f, voucher.getSoundPitch()));
                 }
 
                 String particle = voucher.getParticle();
