@@ -1,7 +1,7 @@
 package com.craftaro.epicvouchers.menus;
 
+import com.craftaro.core.utils.SkullItemCreator;
 import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
-import com.craftaro.core.utils.ItemUtils;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.libraries.ItemBuilder;
 import com.craftaro.epicvouchers.libraries.inventory.IconInv;
@@ -21,6 +21,7 @@ import org.bukkit.event.inventory.ClickType;
 
 import static org.bukkit.ChatColor.GRAY;
 import static org.bukkit.ChatColor.YELLOW;
+import static org.bukkit.ChatColor.RED;
 import static org.bukkit.Material.BOOK;
 
 public class VoucherEditorMenu extends IconInv {
@@ -89,9 +90,9 @@ public class VoucherEditorMenu extends IconInv {
             reopen(player);
         }));
 
-        addIcon(13, new StringIcon(instance, new ItemBuilder(voucher.getTexture() == null ? XMaterial.PLAYER_HEAD.parseItem() : ItemUtils.getCustomHead(voucher.getTexture()))
+        addIcon(13, new StringIcon(instance, new ItemBuilder(voucher.getTexture() == null ? XMaterial.PLAYER_HEAD.parseItem() : SkullItemCreator.byTextureValue(voucher.getTexture()))
                 .name(YELLOW + "Skull Texture")
-                .lore(GRAY + "Right click to edit", GRAY + "Left click to clear").build(), voucher.getTexture(), (player, editString) -> {
+                .lore(GRAY + "Right click to edit", GRAY + "Left click to clear", RED + "This requires texture value").build(), voucher.getTexture(), (player, editString) -> {
             voucher.setTexture(editString);
             reopen(player);
         }));

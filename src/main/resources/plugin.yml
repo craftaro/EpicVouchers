@@ -5,7 +5,7 @@ api-version: 1.13
 
 main: com.craftaro.epicvouchers.EpicVouchers
 
-author: Craftaro
+author: Songoda
 website: ${project.url}
 
 commands:
