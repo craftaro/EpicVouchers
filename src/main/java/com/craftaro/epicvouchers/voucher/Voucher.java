@@ -3,9 +3,9 @@ package com.craftaro.epicvouchers.voucher;
 import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.compatibility.ServerVersion;
 import com.craftaro.core.third_party.net.kyori.adventure.text.Component;
+import com.craftaro.core.utils.SkullItemCreator;
 import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.core.third_party.de.tr7zw.nbtapi.NBTItem;
-import com.craftaro.core.utils.ItemUtils;
 import com.craftaro.core.utils.TextUtils;
 import com.craftaro.epicvouchers.EpicVouchers;
 import com.craftaro.epicvouchers.events.ForceRedeemEvent;
@@ -122,7 +122,7 @@ public class Voucher {
         }
 
         if (this.texture != null && !this.texture.isEmpty() && XMaterial.PLAYER_HEAD.parseMaterial() == this.material) {
-            item = ItemUtils.getCustomHead(this.texture);
+            item = SkullItemCreator.byTextureValue(this.texture);
         }
 
         NBTItem nbtItem = new NBTItem(item);
