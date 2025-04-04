@@ -19,7 +19,7 @@ public class CommandEpicVouchers extends AbstractCommand {
     protected ReturnType runCommand(CommandSender sender, String... args) {
         sender.sendMessage("");
         this.instance.getLocale().newMessage("&7Version " + this.instance.getDescription().getVersion()
-                + " Created with <3 by &5&l&oCraftaro").sendPrefixedMessage(sender);
+                + " Created with <3 by &5&l&oSongoda").sendPrefixedMessage(sender);
 
         for (AbstractCommand command : this.instance.getCommandManager().getAllCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {
