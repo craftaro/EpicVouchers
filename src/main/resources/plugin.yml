@@ -3,7 +3,7 @@ description: ${project.description}
 version: ${project.version}
 api-version: 1.13
 
-main: com.craftaro.epicvouchers.EpicVouchers
+main: com.songoda.epicvouchers.EpicVouchers
 
 author: Songoda
 website: ${project.url}
