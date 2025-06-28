@@ -217,11 +217,11 @@ public class Voucher {
                 continue;
             }
 
-            AdventureUtils.sendMessage(EpicVouchers.getInstance(), receiveMessage, player);
+            AdventureUtils.sendMessage(receiveMessage, player);
             player.getInventory().addItem(toItemStack(amount));
         }
 
-        AdventureUtils.sendMessage(EpicVouchers.getInstance(), giveMessage, sender);
+        AdventureUtils.sendMessage(giveMessage, sender);
     }
 
     public void forceRedeem(CommandSender sender, List<Player> players, int amount) {
